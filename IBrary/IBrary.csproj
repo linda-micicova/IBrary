@@ -278,21 +278,6 @@
     <None Include="Resources\user1.png" />
     <None Include="Resources\arrow.png" />
     <None Include="Resources\add.png" />
-    <Content Include="FlashcardImages\4fb73c2b-a73f-4f6c-858a-f1c743adade4.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FlashcardImages\5aabc57b-5cfe-42ce-b18f-12d2e13efd6b.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FlashcardImages\b0b8a624-6fbb-4b70-8b3e-cc994257526a.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FlashcardImages\e3ae3b89-248f-4d84-a8eb-c3fb4dedfa83.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FlashcardImages\ed31ce74-b0f2-4b92-af14-d91b46a20661.jpeg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="flashcard_app_icon.ico" />
     <Content Include="Resources\drag-and-drop.png" />
     <None Include="Resources\drag-and-drop1.png" />
