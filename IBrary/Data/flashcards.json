@@ -1,0 +1,578 @@
+[
+  
+  {
+    "FlashcardId": "e95a5255-f9ae-4498-9abd-17e8e5a0c8e8",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "State what is meant by a longitudinal traveling wave.",
+        "Answer": "A longitudinal traveling wave is a wave in which the oscillations of the particles in the medium are parallel to the direction of energy transfer.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T20:36:32.5061656+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": true
+  },
+  {
+    "FlashcardId": "3a9e97a4-749c-404f-a480-d3620d8f1a11",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "For a longitudinal wave in this displacement-distance graph, identify centers of compression and rarefraction.",
+        "Answer": "Centre of rarefraction - F\nCenters of compression - C,H",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "5aabc57b-5cfe-42ce-b18f-12d2e13efd6b.png",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T21:13:06.0367868+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "7a2567c2-1438-40f2-8413-2e5230b0b603",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "A longitudinal wave is traveling in a medium from left to right. The graph \nshows the variation with distance x of the displacement y of the particles in the \nmedium. The solid line and the dotted line show the displacement at t = 0 and \nt = 0.882 ms, respectively. The period of the wave is greater than 0.882 ms. A \ndisplacement to the right of the equilibrium position is positive. \n\nThe equilibrium position of a particle in the medium is at x = 0.80 m. For \nthis particle at t = 0, state and explain the direction of motion ",
+        "Answer": "The particle appears from the graph as though it is about to go \u2018down\u2019. However,\nthis is a longitudinal wave, and so the appropriate option is \u2018left\u2019, as this coincides\nwith the parallel particle oscillations and wave propagation. We know this because\nits displacement is about to become negative. ",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "e3ae3b89-248f-4d84-a8eb-c3fb4dedfa83.jpeg",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T21:17:14.9793405+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "111dd9be-557b-426c-8109-0a122699133d",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define what is meant by the speed of a wave. ",
+        "Answer": "The speed of a wave is the distance traveled by the wave profile per unit time.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T21:20:04.0854508+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "c4bf094d-3d43-4a7f-8434-8e0028cd7188",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Which graph shows the variation of amplitude with intensity for a wave? ",
+        "Answer": "Intensity is proportional to the square of amplitude. Therefore, amplitude is proportional to\nthe square root of intensity.\nAnswer: A",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "ed31ce74-b0f2-4b92-af14-d91b46a20661.jpeg",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T21:22:50.4655757+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "7b090e0f-a7ed-4616-8be6-a68ce27bb82b",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define wavelength",
+        "Answer": "The distance between two consecutive crests or any two \nconsecutive points that are in phase. ",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T21:42:44.7199878+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "9ecf6eaa-4e94-4903-b6b3-9cb48ad8e415",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Order of electromagnetic spectrum from lowest frequency to highest?",
+        "Answer": "Radio waves, Microwaves, Infrared, Visible light, Ultraviolet, X-rays, and Gamma rays (Raging Martians Invaded Venus Using X-ray Guns)",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T21:54:58.7860262+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "241eeec9-9379-4754-9a87-e5a4a76bece8",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "What is intensity of a wave, and what is its relationship with amplitude?",
+        "Answer": "Power per unit area received by the observer, proportional to the square of its amplitude",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:12:42.6204439+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "abcfa33e-7fb0-4336-8d59-d530cd305f93",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Sound waves travel in air at room temperature at approximately 3.3 x 10^3 m/s whereas light, which is an electromagnetic wave, travels at 3.0 x 10^8 m/s.\nOutline the nature of:\ni. sound waves\nii. electromagnetic waves.",
+        "Answer": "Sound waves are longitudinal mechanical waves that require a medium, propagating via particle compressions and rarefactions (e.g., air at ~343 m/s). Electromagnetic waves are transverse waves consisting of oscillating electric and magnetic fields, traveling at ~3.0 \u00D7 10\u2078 m/s in vacuum without a medium.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:26:50.0893653+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "56f92050-159c-40ac-84a7-a45d2846d9ec",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Discuss the similarities and differences between transverse and longitudinal waves.",
+        "Answer": "Similarities:\n\u2022 Both transfer energy\n\u2022 Exhibit reflection/refraction/diffraction/interference\n\u2022 Follow v = f\u03BB\n\nTransverse Waves:\n\u2022 Particle motion: \u27C2 to wave direction\n\u2022 Features: Crests \u0026 troughs\n\u2022 Travel in vacuum (e.g., light, EM waves)\n\u2022 Examples: Light, water waves\n\nLongitudinal Waves:\n\u2022 Particle motion: \u2225 to wave direction\n\u2022 Features: Compressions \u0026 rarefactions\n\u2022 Require medium (e.g., sound in air)\n\u2022 Examples: Sound, seismic P-waves",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:38:33.5717634+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "5882c005-b275-4564-83d8-8d6e866cca6b",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define wave",
+        "Answer": "A disturbance that transfers energy from point to point in a medium",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:41:48.6217052+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "1cddbc94-d460-4628-8146-4f4e92ed83cc",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define frequency of a wave",
+        "Answer": "Frequency f is the number of oscillations per second formed by the wave\nsource. This is also the number of crests that pass a point in one second.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:51:39.9666488+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "e00f1413-eea9-42b4-a76f-ddc3c5d9256b",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define time period of a wave",
+        "Answer": "Time period T is the time that it takes one wavelength to pass a fixed point.\nThis is the same as the time for one particle in the wave to undertake one\ncycle of the oscillation",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:52:35.994668+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "16dfd90d-eb77-43fd-a804-16185d7968dd",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define amplitude of a wave",
+        "Answer": "Amplitude is the maximum displacement of a particle in the wave from its\nequilibrium (rest) position.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:53:06.9951738+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "4232486e-1beb-4cc9-b145-fc28273b9ef7",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define speed of a wave",
+        "Answer": "Wave speed is the distance a wave moves forward in one second in its\ndirection of propagation.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-02T22:54:28.7101854+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_model"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "56faf958-b3ae-4991-83e7-0674387e1b28",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define the refractive index of a medium ",
+        "Answer": "It is the ratio of the speed of light in a vacuum to the speed of light in the medium",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-03T13:26:59.3635549+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": "2025-09-03T00:00:00+02:00",
+    "LastSeen": "2025-09-04T00:00:00+02:00",
+    "Seen": 4,
+    "Errors": 2,
+    "important": true
+  },
+  {
+    "FlashcardId": "118df012-5111-4b21-beaf-f0cdb589f284",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "A ray oflight traveling in air is incident on a glass block at an angle of 56\u00B0. Calculate \nthe angle of refraction if the refractive index of glass is 1.5. ",
+        "Answer": ".",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "4fb73c2b-a73f-4f6c-858a-f1c743adade4.jpeg",
+        "Timestamp": "2025-08-03T13:30:30.6626985+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": "2025-09-03T00:00:00+02:00",
+    "LastSeen": "2025-09-04T00:00:00+02:00",
+    "Seen": 4,
+    "Errors": 1,
+    "important": false
+  },
+  {
+    "FlashcardId": "64d6f679-b31e-4324-921e-084435051514",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "What does each letter respresent in theequation\ns = \uD835\uDF06\uD835\uDC37 / \uD835\uDC51\t",
+        "Answer": "s = fringe spacing,\t\n\uD835\uDF06 = wavelength,\nD = distance between sources and screen,\t\nd = distance between sources",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-03T14:03:29.5293586+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": "2025-09-03T00:00:00+02:00",
+    "LastSeen": "2025-09-04T00:00:00+02:00",
+    "Seen": 4,
+    "Errors": 1,
+    "important": false
+  },
+  {
+    "FlashcardId": "f868f1b8-6cf9-43f4-8e10-5e3a6c0f035b",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "What conditions must two wave sources meet to be considered coherent in interference experiments?",
+        "Answer": "Two sources are said to be coherent if they have the same frequency, similar\namplitude and a constant phase difference.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-03T14:08:18.5886136+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": "2025-09-03T00:00:00+02:00",
+    "LastSeen": "2025-09-03T00:00:00+02:00",
+    "Seen": 2,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "7b4f3a3b-0ed7-41c3-9410-7c4836325fff",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Discuss the differences between traveling waves and standing waves ",
+        "Answer": "Energy is propagated in traveling waves whereas it is stored in standing waves.\nIn a traveling wave every particle in the medium oscillates with the same amplitude, whereas in a standing wave particles oscillate with different amplitudes.",
+        "Editor": "sunflowerfield",
+        "Deleted": false,
+        "QuestionImagePath": "",
+        "AnswerImagePath": "",
+        "Timestamp": "2025-08-04T23:43:06.6788734+02:00"
+      }
+    ],
+    "Topics": [
+      "standing_waves_and_resonance"
+    ],
+    "FirstSeen": "2025-09-03T00:00:00+02:00",
+    "LastSeen": "2025-09-03T00:00:00+02:00",
+    "Seen": 2,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "84e01e17-e0af-4513-a96f-94ea6fcdef0b",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define coherent waves",
+        "Answer": "waves with the same frequency and constant phase difference",
+        "Editor": "codliver",
+        "Deleted": false,
+        "QuestionImagePath": null,
+        "AnswerImagePath": null,
+        "Timestamp": "2025-09-15T14:41:58.1257875+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "609664a9-5119-4733-8608-9bd814e93d75",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define path difference",
+        "Answer": "Amount of progress made by waves along a path, the difference in the distance travelled by the 2 waves",
+        "Editor": "codliver",
+        "Deleted": false,
+        "QuestionImagePath": null,
+        "AnswerImagePath": null,
+        "Timestamp": "2025-09-15T14:43:49.4828569+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "84af91aa-387e-4b28-95ef-c8ff2972080d",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Monochromatic means",
+        "Answer": "having the same wavelength",
+        "Editor": "codliver",
+        "Deleted": false,
+        "QuestionImagePath": null,
+        "AnswerImagePath": null,
+        "Timestamp": "2025-09-15T14:47:46.3053695+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "65079fe1-de0c-40af-95f9-157893574489",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "Define ray",
+        "Answer": "A line that indicates the direction of energy propagation",
+        "Editor": "codliver",
+        "Deleted": false,
+        "QuestionImagePath": null,
+        "AnswerImagePath": null,
+        "Timestamp": "2025-09-15T15:26:24.1179449+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  },
+  {
+    "FlashcardId": "96a727a0-f324-4854-a59e-65d9f33cf65a",
+    "Level": "SL",
+    "Versions": [
+      {
+        "Question": "When light from two sources produces an observable interference pattern it is necessary that",
+        "Answer": "The light emitted from the sources is in phase and has the same frequency",
+        "Editor": "codliver",
+        "Deleted": false,
+        "QuestionImagePath": null,
+        "AnswerImagePath": null,
+        "Timestamp": "2025-09-15T15:35:32.9387337+02:00"
+      }
+    ],
+    "Topics": [
+      "wave_behavior"
+    ],
+    "FirstSeen": null,
+    "LastSeen": null,
+    "Seen": 0,
+    "Errors": 0,
+    "important": false
+  }
+]

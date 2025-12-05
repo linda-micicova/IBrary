@@ -1,0 +1,75 @@
+[
+  {
+    "SubjectName": "Mathematics",
+    "SubjectId": "math",
+    "Topics": [
+      "geometry",
+      "differential_equations"
+    ],
+    "Flashcards": [
+    ]
+  },
+  {
+    "SubjectName": "Economics",
+    "SubjectId": "econ",
+    "Topics": [
+      "micro",
+      "macro",
+      "064d6c11-672b-44f9-afd5-dc615f499d2b"
+    ],
+    "Flashcards": [
+    ]
+  },
+  {
+    "SubjectName": "Biology",
+    "SubjectId": "bio",
+    "Topics": [],
+    "Flashcards": [
+    ]
+  },
+  {
+    "SubjectName": "Physics",
+    "SubjectId": "physics",
+    "Topics": [
+      "wave_model",
+      "wave_behavior",
+      "standing_waves_and_resonance"
+    ],
+    "Flashcards": [
+      "1c2ee154-494d-4691-9d88-50317c2a4c1e",
+      "9496dec9-8b9d-4698-917c-6ebdb67a5214",
+      "e95a5255-f9ae-4498-9abd-17e8e5a0c8e8",
+      "3a9e97a4-749c-404f-a480-d3620d8f1a11",
+      "7a2567c2-1438-40f2-8413-2e5230b0b603",
+      "111dd9be-557b-426c-8109-0a122699133d",
+      "c4bf094d-3d43-4a7f-8434-8e0028cd7188",
+      "7b090e0f-a7ed-4616-8be6-a68ce27bb82b",
+      "9ecf6eaa-4e94-4903-b6b3-9cb48ad8e415",
+      "241eeec9-9379-4754-9a87-e5a4a76bece8",
+      "abcfa33e-7fb0-4336-8d59-d530cd305f93",
+      "56f92050-159c-40ac-84a7-a45d2846d9ec",
+      "5882c005-b275-4564-83d8-8d6e866cca6b",
+      "1cddbc94-d460-4628-8146-4f4e92ed83cc",
+      "e00f1413-eea9-42b4-a76f-ddc3c5d9256b",
+      "16dfd90d-eb77-43fd-a804-16185d7968dd",
+      "4232486e-1beb-4cc9-b145-fc28273b9ef7",
+      "56faf958-b3ae-4991-83e7-0674387e1b28",
+      "118df012-5111-4b21-beaf-f0cdb589f284",
+      "64d6f679-b31e-4324-921e-084435051514",
+      "f868f1b8-6cf9-43f4-8e10-5e3a6c0f035b",
+      "7b4f3a3b-0ed7-41c3-9410-7c4836325fff",
+      "84e01e17-e0af-4513-a96f-94ea6fcdef0b",
+      "609664a9-5119-4733-8608-9bd814e93d75",
+      "84af91aa-387e-4b28-95ef-c8ff2972080d",
+      "65079fe1-de0c-40af-95f9-157893574489",
+      "96a727a0-f324-4854-a59e-65d9f33cf65a"
+    ]
+  },
+  {
+    "SubjectName": "History",
+    "SubjectId": "history",
+    "Topics": [],
+    "Flashcards": [
+    ]
+  }
+]

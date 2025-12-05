@@ -1,0 +1,20 @@
+{
+  "Username": "",
+  "MySubjectIds": [
+    "math",
+    "econ",
+    "physics"
+  ],
+  "MySubjectLevels": {
+    "math": "HL",
+    "physics": "SL",
+    "econ": "HL"
+  },
+  "ErrorRateWeight": 5,
+  "TimeFactorWeight": 5,
+  "ImportantTagWeight": 5,
+  "LastSelectedSubjectId": "physics",
+  "LastSelectedTopicIds": [],
+  "BlockedUsers": [],
+  "Theme": "Dark"
+}
