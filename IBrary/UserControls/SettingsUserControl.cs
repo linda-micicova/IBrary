@@ -33,7 +33,7 @@ namespace IBrary.UserControls
         private MinimalButton ExportButton;
         private MinimalButton ThemeButton;
         private MinimalButton ResetFlashcardStatsButton;
-        private MinimalButton SyncButton;
+        //private MinimalButton SyncButton;
 
         // Public events for main form to subscribe to
         public event EventHandler LoginRequested;
@@ -120,17 +120,14 @@ namespace IBrary.UserControls
             {
                 Text = "My Subjects"
             };
-            //MySubjectsButton.Click += (s, e) => MySubjectsRequested?.Invoke(this, EventArgs.Empty);
             PriorityCalculationsButton = new MinimalButton
             {
                 Text = "Flashcard priority calculations"
             };
-            //PriorityCalculationsButton.Click += (s, e) => PriorityCalculationsRequested?.Invoke(this, EventArgs.Empty);
             BlockedUsersButton = new MinimalButton
             {
                 Text = "Blocked Users"
             };
-            //BlockedUsersButton.Click += (s, e) => BlockedUsersRequested?.Invoke(this, EventArgs.Empty);
             ImportButton = new MinimalButton
             {
                 Text = "Import data"
@@ -156,11 +153,6 @@ namespace IBrary.UserControls
             {
                 Text = "Switch theme"
             };
-            /*ThemeButton.Click += (s, e) =>
-            {
-                SettingsManager.ChangeTheme();
-                ChangeThemeRequested?.Invoke(this, EventArgs.Empty);
-            };*/
             ResetFlashcardStatsButton = new MinimalButton
             {
                 Text = "Reset all flashcard stats"
@@ -178,10 +170,10 @@ namespace IBrary.UserControls
                     FlashcardManager.ResetAllFlashcardStats();
                 }
             };
-            SyncButton = new MinimalButton
+            /*SyncButton = new MinimalButton
             {
                 Text = "Manage Network Sync"
-            };
+            };*/
 
             // Set the font for all labels in the user control
             foreach (Control control in this.Controls)
@@ -195,7 +187,7 @@ namespace IBrary.UserControls
             MySubjectsButton.Click += (s, e) => Navigator.GoToMySubjects();
             PriorityCalculationsButton.Click += (s, e) => Navigator.GoToPriorityCalculations();
             BlockedUsersButton.Click += (s, e) => Navigator.GoToBlockedUsers();
-            SyncButton.Click += (s, e) => Navigator.GoToManageNetworkSync();
+            //SyncButton.Click += (s, e) => Navigator.GoToManageNetworkSync();
 
             ThemeButton.Click += (s, e) =>
             {
@@ -212,7 +204,7 @@ namespace IBrary.UserControls
             SettingsPanel.Controls.Add(ExportButton);
             SettingsPanel.Controls.Add(ThemeButton);
             SettingsPanel.Controls.Add(ResetFlashcardStatsButton);
-            SettingsPanel.Controls.Add(SyncButton);
+            //SettingsPanel.Controls.Add(SyncButton);
 
 
             this.Controls.Add(LoginPanel);
@@ -220,34 +212,7 @@ namespace IBrary.UserControls
 
 
         }
-        /*private void ImportButton_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "JSON Files (*.json)|*.json";
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        string json = File.ReadAllText(ofd.FileName);
-                        var flashcardsToImport = JsonConvert.DeserializeObject<List<Flashcard>>(json);
-                        if (flashcardsToImport != null && flashcardsToImport.Count > 0)
-                        {
-                            FlashcardManager.MergeFlashcards(flashcardsToImport);
-                            MessageBox.Show("Flashcards imported successfully!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("No valid flashcards found in the file.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error importing flashcards: {ex.Message}");
-                    }
-                }
-            }
-        }*/
+
         private void ImportButton_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
@@ -279,16 +244,6 @@ namespace IBrary.UserControls
                 }
             }
         }
-
-        // Helper methods for importing different data types
-        /*private void ImportFlashcards(dynamic flashcardsData, dynamic settingsData)
-        {
-            if (flashcardsData != null)
-            {
-                var flashcards = JsonConvert.DeserializeObject<List<Flashcard>>(flashcardsData.ToString());
-                FlashcardManager.MergeFlashcards(flashcards, settingsData.Username ? settingsData.Username  : false); // or your save method
-            }
-        }*/
         private void ImportFlashcards(dynamic flashcardsData, dynamic settingsData)
         {
             if (flashcardsData != null)
@@ -323,45 +278,6 @@ namespace IBrary.UserControls
             }
         }
 
-        /*private void ImportSettings(dynamic settingsData)
-        {
-            if (settingsData != null)
-            {
-                var settings = JsonConvert.DeserializeObject<Dictionary<string, object>>(settingsData.ToString());
-                SettingsManager.Save(settings); // or your save method
-            }
-        }*/
-        /*private void ImportSettings(dynamic settingsData)
-        {
-            if (settingsData != null)
-            {
-                try
-                {
-                    var settings = JsonConvert.DeserializeObject<Dictionary<string, object>>(settingsData.ToString());
-                    SettingsManager.Save(settings);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Warning: Could not import settings. {ex.Message}");
-                    // Continue with other imports even if settings fail
-                }
-            }
-        }*/
-        /*private void ImportSettings(dynamic settingsData)
-        {
-            if (settingsData != null)
-            {
-                try
-                {
-                    var settings = JsonConvert.DeserializeObject<UserSettings>(settingsData.ToString());
-                    SettingsManager.Save(settings);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Warning: Could not import settings. {ex.Message}");
-                }
-            }
-        }*/
         private void ImportSettings(dynamic settingsData)
         {
             if (settingsData != null)
@@ -403,57 +319,6 @@ namespace IBrary.UserControls
             Navigator.GoToImportFromQuizlet();
         }
         
-        /*private void ExportButton_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog sfd = new SaveFileDialog())
-            {
-                sfd.Filter = "JSON Files (*.json)|*.json";
-                sfd.FileName = "FlashcardsExport.json";
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    var flashcardsToExport = FlashcardManager.Load(); // or a filtered list
-
-                    string json = JsonConvert.SerializeObject(flashcardsToExport, Newtonsoft.Json.Formatting.Indented);
-
-                    File.WriteAllText(sfd.FileName, json);
-
-                    MessageBox.Show("Flashcards exported successfully!");
-                }
-            }
-        }*/
-        /*private void ExportButton_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog sfd = new SaveFileDialog())
-            {
-                sfd.Filter = "JSON Files (*.json)|*.json";
-                sfd.FileName = "IBraryDataExport.json";
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        // Create a comprehensive data object
-                        var exportData = new
-                        {
-                            Flashcards = FlashcardManager.Load(),
-                            Topics = TopicManager.Load(), // assuming you have this
-                            Subjects = SubjectManager.Load(), // assuming you have this
-                            Settings = SettingsManager.Load(), // assuming you have this
-                            ExportDate = DateTime.Now,
-                            Version = "1.0" // for future compatibility
-                        };
-
-                        string json = JsonConvert.SerializeObject(exportData, Newtonsoft.Json.Formatting.Indented);
-                        File.WriteAllText(sfd.FileName, json);
-                        MessageBox.Show("All data exported successfully!");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error exporting data: {ex.Message}");
-                    }
-                }
-            }
-        }*/
         private void ExportButton_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
@@ -537,7 +402,7 @@ namespace IBrary.UserControls
             ExportButton.Location = new Point(SettingsPanel.Width / 20, ImportQuizletButton.Bottom + 10);
             ThemeButton.Location = new Point(SettingsPanel.Width / 20, ExportButton.Bottom + 10);
             ResetFlashcardStatsButton.Location = new Point(SettingsPanel.Width / 20, ThemeButton.Bottom + 10);
-            SyncButton.Location = new Point(SettingsPanel.Width / 20, ResetFlashcardStatsButton.Bottom + 10);
+            //SyncButton.Location = new Point(SettingsPanel.Width / 20, ResetFlashcardStatsButton.Bottom + 10);
 
             foreach (Control control in SettingsPanel.Controls)
             {

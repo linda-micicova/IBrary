@@ -17,9 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
-
-
 namespace IBrary
 {
     public partial class MainForm : Form
@@ -185,9 +182,6 @@ namespace IBrary
                 flashcardUC.ForceRefresh();
             }
 
-            // Optional: Show notification (commented out to avoid popup spam)
-            // MessageBox.Show("Flashcards synced from network!", "Sync Complete", 
-            //     MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void addIcon_Click(object sender, EventArgs e)

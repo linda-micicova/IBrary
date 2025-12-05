@@ -52,10 +52,8 @@ namespace IBrary.UserControls
 
         public event Action<UserControl> RequestUserControlSwitch;
         public event EventHandler UserViewRequested;
-        //public event EventHandler EditFlashcardRequested;
 
         private ComboBox orderingComboBox;
-        //private Label orderingLabel;
 
         private bool isShowingQuestion = true;
         public class OrderingOption
@@ -74,10 +72,6 @@ namespace IBrary.UserControls
             InitializeUI();
             this.Resize += Flashcards_Resize;
 
-            /*MessageBox.Show($"Flashcards JSON: {FlashcardManager.flashcardsPath}\n\nImages folder: {Path.Combine(Application.StartupPath, "FlashcardImages")}",
-                            "File Locations",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);*/
         }
         private void InitializeUI()
         {
@@ -146,29 +140,21 @@ namespace IBrary.UserControls
                         ? Properties.Resources.starFullDarkmode
                         : Properties.Resources.starEmptyDarkmode;
 
-                    // 1. Get the current flashcard ID
+                    // Get the current flashcard ID
                     var currentFlashcardId = currentFlashcards[currentIndex].FlashcardId;
 
-                    // 3. Find the same flashcard in the complete list
+                    // Find the same flashcard in the complete list
                     var flashcardToUpdate = allFlashcards.FirstOrDefault(f => f.FlashcardId == currentFlashcardId);
 
                     if (flashcardToUpdate != null)
                     {
                         flashcardToUpdate.important = currentFlashcards[currentIndex].important;
 
-                        // 5. Save ALL flashcards
+                        // Save ALL flashcards
                         FlashcardManager.SaveFlashcards(allFlashcards);
                     }
                 }
             };
-            // In the InitializeUI() method, modify the ordering ComboBox setup:
-            /*orderingLabel = new Label
-            {
-                Text = "Order by:",
-                Font = new Font("Arial", 12),
-                ForeColor = SettingsManager.TextColor,
-                AutoSize = true
-            };*/
 
             orderingComboBox = new ComboBox
             {
@@ -277,8 +263,6 @@ namespace IBrary.UserControls
             usernameLabel.Cursor = Cursors.Hand;
             usernameLabel.Click += usernameLabel_Click; // Make the username label clickable
 
-
-
             flashcardPanel.Controls.Add(flashcardPictureBox);
             flashcardPanel.Controls.Add(usernameLabel);
             flashcardPanel.Controls.Add(starPictureBox);
@@ -292,14 +276,12 @@ namespace IBrary.UserControls
             this.Controls.Add(topicCheckedListBox);
             flashcardPanel.Controls.Add(flashcardLabel);
 
-
             UpdateSizes();
 
             //Display flashcard
             ShowCurrentQuestion();
 
         }
-        // Add this new method to handle ordering changes:
         private void OrderingComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!isInitialized) return;
@@ -313,53 +295,12 @@ namespace IBrary.UserControls
 
         private void usernameLabel_Click(object sender, EventArgs e)
         {
-            //UserViewRequested?.Invoke(this, EventArgs.Empty);
             Navigator.GoToUserView(usernameLabel.Text);
         }
         private void flashcardLabel_Click(object sender, EventArgs e)
         {
             FlashcardPanel_Click(sender, e);
         }
-
-        /*private void FlashcardPanel_Click(object sender, EventArgs e)
-        {
-            if (currentFlashcardVersion == null) 
-                return;
-
-            if (flashcardLabel.Text == currentFlashcardVersion.Question)
-            {
-                flashcardLabel.Text = currentFlashcardVersion.Answer;
-                if (currentFlashcardVersion.AnswerImagePath != null)
-                {
-                    try
-                    {
-                        ImageFlashcard(currentFlashcardVersion.AnswerImagePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        NoImageFlashcard();
-                    }
-                }
-                else NoImageFlashcard();
-            }
-            else
-            {
-                flashcardLabel.Text = currentFlashcardVersion.Question;
-                if (currentFlashcardVersion.QuestionImagePath != null)
-                {
-                    try
-                    {
-                        ImageFlashcard(currentFlashcardVersion.QuestionImagePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        NoImageFlashcard();
-                    }
-                }
-                else NoImageFlashcard();
-
-            }
-        }*/
         
         private void FlashcardPanel_Click(object sender, EventArgs e)
         {
@@ -420,24 +361,6 @@ namespace IBrary.UserControls
             selectedTopics = topicCheckedListBox.CheckedItems.Cast<Topic>().ToList();
         }
 
-        /*private void LoadFlashcards()
-        {
-            allFlashcards = FlashcardManager.Load();
-            var selectedTopicIds = selectedTopics.Select(t => t.TopicId).ToHashSet();
-
-            // For single subjects, we still need allowedLevels (for performance)
-            var allowedLevels = new HashSet<Level> { Level.SL, Level.HL }; // Not used for "All Subjects"
-            if (selectedSubject != null && selectedSubject.SubjectId != "ALL_SUBJECTS")
-            {
-                var userLevel = SettingsManager.CurrentSettings.MySubjectLevels.TryGetValue(selectedSubject.SubjectId, out var level) ? level : Level.HL;
-                allowedLevels = (userLevel == Level.HL) ? new HashSet<Level> { Level.SL, Level.HL } : new HashSet<Level> { Level.SL };
-            }
-
-
-            currentFlashcards = FlashcardManager.GetFlashcardsOrderedByPriority(
-                allFlashcards.Where(f => IsValidFlashcard(f, selectedTopicIds, allowedLevels)).ToList()
-            );
-        }*/
         private void LoadFlashcards()
         {
             allFlashcards = FlashcardManager.Load();
@@ -456,7 +379,6 @@ namespace IBrary.UserControls
             var selectedOrdering = (OrderingOption)orderingComboBox.SelectedItem;
             currentFlashcards = ApplyOrdering(validFlashcards, selectedOrdering.Value);
         }
-        // Add this new method to apply different ordering criteria:
         private List<Flashcard> ApplyOrdering(List<Flashcard> flashcards, string orderingType)
         {
             switch (orderingType)
@@ -524,28 +446,6 @@ namespace IBrary.UserControls
                    (selectedTopicIds.Count == 0 || f.Topics.Any(id => selectedTopicIds.Contains(id)));
         }
 
-        /*private void ShowCurrentQuestion()
-        {
-            // Endless cycling
-            if (currentIndex >= currentFlashcards.Count)
-                currentIndex = 0;
-
-            if (currentFlashcards.Count == 0)
-            {
-                currentFlashcardVersion = null;
-                NoFlashcard();
-                return;
-            }
-
-            var version = FindValidVersion();
-            if (version == null)
-            {
-                currentIndex = (currentIndex + 1) % currentFlashcards.Count; // Cycle
-                return;
-            }
-
-            DisplayFlashcard(version);
-        }*/
         private void ShowCurrentQuestion()
         {
             // Ensure currentFlashcards is not null
@@ -575,23 +475,6 @@ namespace IBrary.UserControls
             DisplayFlashcard(version);
         }
 
-        /*private CardVersion FindValidVersion()
-        {
-            int startIndex = currentIndex;
-            do
-            {
-                var currentFlashcard = currentFlashcards[currentIndex];
-                var version = currentFlashcard.GetDisplayVersion(SettingsManager.CurrentSettings.BlockedUsers);
-
-                if (version != null)
-                    return version;
-
-                currentIndex = (currentIndex + 1) % currentFlashcards.Count;
-
-            } while (currentIndex != startIndex); // Prevent infinite loop
-
-            return null; // No valid versions found in entire list
-        }*/
         private CardVersion FindValidVersion()
         {
             if (currentFlashcards == null || currentFlashcards.Count == 0)
@@ -680,29 +563,13 @@ namespace IBrary.UserControls
 
                 // Switch to manual positioning when there's an image
                 flashcardLabel.Dock = DockStyle.None;
-                UpdateSizes(); // This will position everything correctly
+                UpdateSizes();
             }
             catch (Exception ex)
             {
                 NoImageFlashcard();
             }
         }
-        /*private void ImageFlashcard(string imagePath)
-        {
-            try
-            {
-                flashcardPictureBox.Visible = true;
-                flashcardPictureBox.Image = Image.FromFile(imagePath);
-
-                // Switch to manual positioning when there's an image
-                flashcardLabel.Dock = DockStyle.None;
-                UpdateSizes(); // This will position everything correctly
-            }
-            catch (Exception ex)
-            {
-                NoImageFlashcard();
-            }
-        }*/
         private void subjectComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selectedSubject = subjectComboBox.SelectedItem as Subject;

@@ -14,11 +14,6 @@ namespace IBrary.Managers
 {
     public static class FlashcardManager
     {
-        //json file path
-        /*public static readonly string flashcardsPath = Path.Combine(
-        Application.StartupPath,
-        "Data",
-        "flashcards.json");*/
         public static readonly string flashcardsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",

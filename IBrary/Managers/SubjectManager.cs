@@ -17,11 +17,6 @@ namespace IBrary.Managers
 {
     public static class SubjectManager
     {
-        // json file path
-        /*public static readonly string subjectsPath = Path.Combine(
-        Application.StartupPath,
-        "Data",
-        "subjects.json");*/
         public static readonly string subjectsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",

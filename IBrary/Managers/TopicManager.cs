@@ -16,11 +16,6 @@ namespace IBrary.Managers
 {
     public static class TopicManager
     {
-        // json file path
-        /*public static readonly string topicsPath = Path.Combine(
-        Application.StartupPath,
-        "Data",
-        "topics.json");*/
         public static readonly string topicsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",

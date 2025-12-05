@@ -7,8 +7,12 @@ using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
 
+
 namespace IBrary.UserControls
 {
+    // NOT ACTUALLYY USED, ONLY TO DEBUG NETWORKSYNCSERVICE
+    // Start Listening button tries to use the same port as the service that runs
+    // on the background, so this only works if MainForm doesn't start the service.
     public partial class ManageNetworkSyncUserControl : UserControl
     {
         private NetworkSyncService networkService;
