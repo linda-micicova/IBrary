@@ -88,7 +88,7 @@ namespace IBrary.Managers
 
         public static void RemoveTopic(Topic topic)
         {
-            if (UserManager.isAdmin() && AllTopics.Any(t => t.TopicId == topic.TopicId))
+            if (UserManager.IsAdmin() && AllTopics.Any(t => t.TopicId == topic.TopicId))
             {
                 AllTopics.Remove(topic);
                 Save();

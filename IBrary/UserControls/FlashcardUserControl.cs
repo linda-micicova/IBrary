@@ -135,8 +135,8 @@ namespace IBrary.UserControls
             {
                 if (currentFlashcardVersion != null)
                 {
-                    currentFlashcards[currentIndex].important = !currentFlashcards[currentIndex].important;
-                    starPictureBox.Image = currentFlashcards[currentIndex].important
+                    currentFlashcards[currentIndex].Important = !currentFlashcards[currentIndex].Important;
+                    starPictureBox.Image = currentFlashcards[currentIndex].Important
                         ? Properties.Resources.starFullDarkmode
                         : Properties.Resources.starEmptyDarkmode;
 
@@ -148,7 +148,7 @@ namespace IBrary.UserControls
 
                     if (flashcardToUpdate != null)
                     {
-                        flashcardToUpdate.important = currentFlashcards[currentIndex].important;
+                        flashcardToUpdate.Important = currentFlashcards[currentIndex].Important;
 
                         // Save ALL flashcards
                         FlashcardManager.SaveFlashcards(allFlashcards);
@@ -379,6 +379,7 @@ namespace IBrary.UserControls
             var selectedOrdering = (OrderingOption)orderingComboBox.SelectedItem;
             currentFlashcards = ApplyOrdering(validFlashcards, selectedOrdering.Value);
         }
+        // Applies ordering o
         private List<Flashcard> ApplyOrdering(List<Flashcard> flashcards, string orderingType)
         {
             switch (orderingType)
@@ -396,7 +397,7 @@ namespace IBrary.UserControls
                     return flashcards.OrderBy(f => f.Seen).ToList();
 
                 case "important":
-                    return flashcards.OrderByDescending(f => f.important)
+                    return flashcards.OrderByDescending(f => f.Important)
                                    .ThenBy(f => f.Seen == 0 ? DateTime.MinValue : f.LastSeen).ToList();
 
                 case "random":
@@ -514,7 +515,7 @@ namespace IBrary.UserControls
             flashcardLabel.Text = version.Question ?? "No question available";
             usernameLabel.Text = version.Editor ?? "Unknown";
             currentFlashcardVersion = version;
-            starPictureBox.Image = currentFlashcards[currentIndex].important
+            starPictureBox.Image = currentFlashcards[currentIndex].Important
                 ? Properties.Resources.starFullDarkmode
                 : Properties.Resources.starEmptyDarkmode
             ;

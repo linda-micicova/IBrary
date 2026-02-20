@@ -63,32 +63,31 @@ namespace IBrary.UserControls
             this.Controls.AddRange(new Control[] { keyLabel, keyTextBox, loginButton });
         }
 
+        // Validate the access key and retrieve the username
         private void ValidateKey(string key)
         {
-            if (string.IsNullOrWhiteSpace(key))
+            if (string.IsNullOrWhiteSpace(key)) // Validate that the key is not empty or whitespace
             {
                 MessageBox.Show("Please enter an access key", "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             try
             {
-                string username = UserManager.GetUsernameFromKey(key);
-                SettingsManager.CurrentSettings.Username = username;
-                SettingsManager.Save();
-
-                SettingsRequested?.Invoke(this, EventArgs.Empty);
+                string username = UserManager.GetUsernameFromKey(key); // Attempt to get the username from the key
+                SettingsManager.CurrentSettings.Username = username; // Set the username in settings
+                SettingsManager.Save(); // Save the username in JSON file
+                SettingsRequested?.Invoke(this, EventArgs.Empty); // Navigate to settings after successful login
             }
-            catch (FormatException)
+            catch (FormatException) // The key is not in Base64 format
             {
                 MessageBox.Show("The key format is invalid. Please check and try again.");
             }
-            catch (CryptographicException)
+            catch (CryptographicException) // The key is in Base64 but decryption fails (likely invalid key)
             {
                 MessageBox.Show("Failed to decrypt the key. The key might be invalid.");
             }
-            catch (Exception ex)
+            catch (Exception ex) // Catch any other unexpected exceptions
             {
                 MessageBox.Show("An unexpected error occurred: " + ex.Message);
             }

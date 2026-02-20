@@ -92,7 +92,7 @@ namespace IBrary.Managers
         // Delete subject
         public static void RemoveSubject(Subject subject)
         {
-            if (UserManager.isAdmin() && AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
+            if (UserManager.IsAdmin() && AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
             {
                 AllSubjects.Remove(subject);
                 Save();

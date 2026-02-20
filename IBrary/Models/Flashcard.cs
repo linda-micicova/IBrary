@@ -31,7 +31,7 @@ namespace IBrary.Models
         public DateTime? LastSeen { get; set; }
         public int Seen { get; set; } = 0;
         public int Errors { get; set; } = 0;
-        public bool important { get; set; } = false;
+        public bool Important { get; set; } = false;
 
         [JsonIgnore]
         public double ErrorRate => Seen == 0 ? 0 : (double)Errors / Seen;
@@ -41,19 +41,44 @@ namespace IBrary.Models
         [JsonIgnore]
         public double Priority => CalculatePriority();
 
+        // Calculate priority order for flashcard review
         public double CalculatePriority()
         {
-            double flashcardPriority = ErrorRate * SettingsManager.CurrentSettings.ErrorRateWeight
-                + ((FirstSeen.HasValue) ? (DateTime.Today - FirstSeen.Value).TotalSeconds / 1000 : 0) /** SettingsManager.CurrentSettings.FirstRevisedWeight*/
-                + ((LastSeen.HasValue) ? (DateTime.Today - LastSeen.Value).TotalSeconds / 1000 : 0) * SettingsManager.CurrentSettings.TimeFactorWeight;
+            double errorRate = ErrorRate; // 0 = perfect, 1 = always wrong
+
+            // Time factor: normalize logarithmic time to 0-1 using max expected days 
+            double maxDays = Math.Log(1 + 600); // normalization constant, 600 days = approx. Sep Y1 - May Y2 = IB duration
+            double sinceFirstSeen = FirstSeen.HasValue ?
+                Math.Log(1 + (DateTime.Today - FirstSeen.Value).TotalDays) / maxDays : 0;
+            double sinceLastSeen = LastSeen.HasValue ?
+                Math.Log(1 + (DateTime.Today - LastSeen.Value).TotalDays) / maxDays : 0;
+
+            // Old cards studied recently get lower priority
+            double timeFactor = sinceLastSeen + (sinceFirstSeen * (sinceLastSeen / (sinceLastSeen + 1)));
+            timeFactor = Math.Min(timeFactor, 1); // Clamp to 1
+
+            // Star rating, 1 - important, 0 - not important
+            double starFactor = Important ? 1.0 : 0.0;
+
+            // Overall priority, weight set in settings
+            double flashcardPriority =
+                errorRate * SettingsManager.CurrentSettings.ErrorRateWeight
+                + timeFactor * SettingsManager.CurrentSettings.TimeFactorWeight
+                + starFactor * SettingsManager.CurrentSettings.ImportantTagWeight;
+
             double topicPriority = 0;
+            var allTopics = TopicManager.AllTopics; 
             foreach (var topicId in Topics)
             {
-                var topic = TopicManager.Load().FirstOrDefault(t => t.TopicId == topicId);
+                var topic = allTopics.FirstOrDefault(t => t.TopicId == topicId); // Find topic by ID
                 if (topic != null)
                 {
+                    // Calculate topic priority contribution
+                    double topicSinceLastSeen = topic.LatestSeen.HasValue ?
+                        Math.Min(Math.Log(1 + (DateTime.Today - topic.LatestSeen.Value).TotalDays) / maxDays, 1) : 0;
+
                     topicPriority += topic.AverageErrorRate * SettingsManager.CurrentSettings.ErrorRateWeight
-                        + ((topic.LatestSeen.HasValue) ? (DateTime.Today - topic.LatestSeen.Value).TotalSeconds / 1000 : 0) * SettingsManager.CurrentSettings.TimeFactorWeight;
+                        + topicSinceLastSeen * SettingsManager.CurrentSettings.TimeFactorWeight;
                 }
             }
             return flashcardPriority + topicPriority;

@@ -186,13 +186,6 @@ namespace IBrary.Managers
             }
         }
 
-        // Updated method to set username securely
-        public static void SetUsername(string username)
-        {
-            CurrentSettings.Username = username; // This will auto-generate the hash
-            Save();
-        }
-
         // Updated LogOut method
         public static void LogOut()
         {

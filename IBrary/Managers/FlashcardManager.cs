@@ -29,24 +29,27 @@ namespace IBrary.Managers
             return AllFlashcards;
         }
 
+        // Loads flashcards from specified json file path 
         public static List<Flashcard> LoadFlashcardsFromJson(string path)
         {
-            if (!File.Exists(path))
+            if (!File.Exists(path)) // File doesn't exist, return empty list
                 return new List<Flashcard>();
 
             try
             {
-                string json = File.ReadAllText(path);
+                string json = File.ReadAllText(path); // Read file content
 
-                var options = new JsonSerializerOptions
+                // Handles enum deseralization for flashcard levels (SL/HL)
+                var options = new JsonSerializerOptions 
                 {
                     Converters = { new JsonStringEnumConverter() }
                 };
 
+                // Deserialize JSON into list of flashcards, return empty list if deserialization fails
                 return JsonSerializer.Deserialize<List<Flashcard>>(json, options)
                     ?? new List<Flashcard>();
             }
-            catch (Exception ex)
+            catch (Exception ex) // Error reading or deserializing file, return empty list
             {
                 return new List<Flashcard>();
             }
@@ -145,7 +148,7 @@ namespace IBrary.Managers
             int index = flashcards.FindIndex(f => f.FlashcardId == flashcardId);
             if (index != -1)
             {
-                if (UserManager.isAdmin())
+                if (UserManager.IsAdmin())
                 {
                     // Remove flashcard completely
                     flashcards.RemoveAt(index);
@@ -178,26 +181,27 @@ namespace IBrary.Managers
         // Merges with currently stored flashcards
         public static void MergeFlashcards(List<Flashcard> flashcardsToMerge, bool preserveStats = false)
         {
-            var allFlashcards = Load();
+            var allFlashcards = Load(); // Load current flashcards to merge with
 
-            if (!preserveStats)
+            // Stats should reset if the file is imported by a different user
+            if (!preserveStats) 
             {
                 flashcardsToMerge = ResetAllFlashcardStats(flashcardsToMerge);
             }
-
             foreach (var flashcard in flashcardsToMerge)
             {
-                var existingCard = allFlashcards.FirstOrDefault(f => f.FlashcardId == flashcard.FlashcardId);
+                var existingCard = allFlashcards.FirstOrDefault(f => f.FlashcardId == flashcard.FlashcardId); // Find matching flashcard if it exists
 
-                if (existingCard != null)
+                if (existingCard != null) // If matching flashcard exists, merge versions and update stats if the new one is more up to date
                 {
-                    foreach (var newVersion in flashcard.Versions)
+                    foreach (var newVersion in flashcard.Versions) // Check each version of incoming flashcard
                     {
+                        // Check if the version exists using timestamp and editor as unique identifiers
                         bool versionExists = existingCard.Versions.Any(v =>
                             v.Timestamp == newVersion.Timestamp &&
                             v.Editor == newVersion.Editor);
-
-                        if (!versionExists)
+                        
+                        if (!versionExists) // If version doesn't exist, add it to existing flashcard
                         {
                             existingCard.Versions.Add(newVersion);
                         }
@@ -212,21 +216,25 @@ namespace IBrary.Managers
                         existingCard.LastSeen = flashcard.LastSeen;
                     }
                 }
-                else
+                else // Matching flashcard doesn't exist, so we add the new one to the list
                 {
                     allFlashcards.Add(flashcard);
                 }
             }
-
-            SaveFlashcards(allFlashcards);
+            SaveFlashcards(allFlashcards); // Save merged flashcards to JSON file
         }
-
-        // Helper method to import already created Flashcard objects
-        public static void ImportFlashcards(List<Flashcard> flashcardsToImport)
+        // Resets progress stats for input flashcards
+        public static List<Flashcard> ResetAllFlashcardStats(List<Flashcard> flashcards)
         {
-            var allFlashcards = Load();
-            allFlashcards.AddRange(flashcardsToImport);
-            SaveFlashcards(allFlashcards);
+            foreach (var flashcard in flashcards)
+            {
+                flashcard.Seen = 0;
+                flashcard.Errors = 0;
+                flashcard.FirstSeen = null;
+                flashcard.LastSeen = null;
+                flashcard.Important = false;
+            }
+            return flashcards;
         }
 
         // Resets progress stats for all currently stored flashcards
@@ -242,18 +250,13 @@ namespace IBrary.Managers
             SaveFlashcards(AllFlashcards);
         }
 
-        // Resets progress stats for input flashcards
-        public static List<Flashcard> ResetAllFlashcardStats(List<Flashcard> flashcards)
+        
+        // Helper method to import already created Flashcard objects
+        public static void ImportFlashcards(List<Flashcard> flashcardsToImport)
         {
-            foreach (var flashcard in flashcards)
-            {
-                flashcard.Seen = 0;
-                flashcard.Errors = 0;
-                flashcard.FirstSeen = null;
-                flashcard.LastSeen = null;
-                flashcard.important = false;
-            }
-            return flashcards;
+            var allFlashcards = Load();
+            allFlashcards.AddRange(flashcardsToImport);
+            SaveFlashcards(allFlashcards);
         }
 
         //QUIZLET FLASHCARDS METHODS
