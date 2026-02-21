@@ -124,7 +124,7 @@
     <Compile Include="Managers\TopicManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Flashcard.cs" />
-    <Compile Include="Models\MinimalButton.cs">
+    <Compile Include="UI\MinimalButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Subject.cs" />
@@ -135,100 +135,100 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\UserSettings.cs" />
-    <Compile Include="UserControls\AddOrEditFlashcardUserControl.cs">
+    <Compile Include="UI\AddOrEditFlashcardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\AddOrEditFlashcardUserControl.Designer.cs">
+    <Compile Include="UI\AddOrEditFlashcardUserControl.Designer.cs">
       <DependentUpon>AddOrEditFlashcardUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\AddSubjectUserControl.cs">
+    <Compile Include="UI\AddSubjectUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\AddSubjectUserControl.Designer.cs">
+    <Compile Include="UI\AddSubjectUserControl.Designer.cs">
       <DependentUpon>AddSubjectUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\AddTopicUserControl.cs">
+    <Compile Include="UI\AddTopicUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\AddTopicUserControl.Designer.cs">
+    <Compile Include="UI\AddTopicUserControl.Designer.cs">
       <DependentUpon>AddTopicUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BlockedUsersUserControl.cs">
+    <Compile Include="UI\BlockedUsersUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\BlockedUsersUserControl.Designer.cs">
+    <Compile Include="UI\BlockedUsersUserControl.Designer.cs">
       <DependentUpon>BlockedUsersUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DashboardUserControl.cs">
+    <Compile Include="UI\DashboardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\DashboardUserControl.Designer.cs">
+    <Compile Include="UI\DashboardUserControl.Designer.cs">
       <DependentUpon>DashboardUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\FlashcardUserControl.cs">
+    <Compile Include="UI\FlashcardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\FlashcardUserControl.Designer.cs">
+    <Compile Include="UI\FlashcardUserControl.Designer.cs">
       <DependentUpon>FlashcardUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ImportFromQuizletUserControl.cs">
+    <Compile Include="UI\ImportFromQuizletUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\ImportFromQuizletUserControl.Designer.cs">
+    <Compile Include="UI\ImportFromQuizletUserControl.Designer.cs">
       <DependentUpon>ImportFromQuizletUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\LoginUserControl.cs">
+    <Compile Include="UI\LoginUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\LoginUserControl.Designer.cs">
+    <Compile Include="UI\LoginUserControl.Designer.cs">
       <DependentUpon>LoginUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ManageNetworkSyncUserControl.cs">
+    <Compile Include="UI\ManageNetworkSyncUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\ManageNetworkSyncUserControl.Designer.cs">
+    <Compile Include="UI\ManageNetworkSyncUserControl.Designer.cs">
       <DependentUpon>ManageNetworkSyncUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MySubjectsUserControl.cs">
+    <Compile Include="UI\MySubjectsUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\MySubjectsUserControl.Designer.cs">
+    <Compile Include="UI\MySubjectsUserControl.Designer.cs">
       <DependentUpon>MySubjectsUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\AddContentUserControl.cs">
+    <Compile Include="UI\AddContentUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\AddContentUserControl.Designer.cs">
+    <Compile Include="UI\AddContentUserControl.Designer.cs">
       <DependentUpon>AddContentUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PriorityCalculationsUserControl.cs">
+    <Compile Include="UI\PriorityCalculationsUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\PriorityCalculationsUserControl.Designer.cs">
+    <Compile Include="UI\PriorityCalculationsUserControl.Designer.cs">
       <DependentUpon>PriorityCalculationsUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\QuizletFlashcardsViewUserControl.cs">
+    <Compile Include="UI\QuizletFlashcardsViewUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\QuizletFlashcardsViewUserControl.Designer.cs">
+    <Compile Include="UI\QuizletFlashcardsViewUserControl.Designer.cs">
       <DependentUpon>QuizletFlashcardsViewUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\SettingsUserControl.cs">
+    <Compile Include="UI\SettingsUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\SettingsUserControl.Designer.cs">
+    <Compile Include="UI\SettingsUserControl.Designer.cs">
       <DependentUpon>SettingsUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TopicDashboardUserControl.cs">
+    <Compile Include="UI\TopicDashboardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\TopicDashboardUserControl.Designer.cs">
+    <Compile Include="UI\TopicDashboardUserControl.Designer.cs">
       <DependentUpon>TopicDashboardUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\UserViewUserControl.cs">
+    <Compile Include="UI\UserViewUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\UserViewUserControl.Designer.cs">
+    <Compile Include="UI\UserViewUserControl.Designer.cs">
       <DependentUpon>UserViewUserControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
@@ -245,7 +245,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\AddContentUserControl.resx">
+    <EmbeddedResource Include="UI\AddContentUserControl.resx">
       <DependentUpon>AddContentUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="Data\flashcards.json">
