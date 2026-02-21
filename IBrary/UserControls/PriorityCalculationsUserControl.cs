@@ -37,7 +37,7 @@ namespace IBrary.UserControls
         {
             _backIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.arrow
                     : Properties.Resources.backWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -55,7 +55,7 @@ namespace IBrary.UserControls
             {
                 Text = "Priority Calculations",
                 Font = new Font("Arial", 16, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(70, 20),
                 AutoSize = true
             };
@@ -102,7 +102,7 @@ namespace IBrary.UserControls
             {
                 Text = text,
                 Font = new Font("Arial", 12),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(20, yPos),
                 AutoSize = true
             };
@@ -122,7 +122,7 @@ namespace IBrary.UserControls
                     Text = priorityLevels[i],
                     Location = new Point(i * (ButtonWidth + ButtonSpacing), 10),
                     Size = new Size(ButtonWidth, ButtonHeight),
-                    BackColor = GetCurrentWeight(settingKey) == weightValues[i] ? SettingsManager.ButtonColor : SettingsManager.FlashcardColor,
+                    BackColor = GetCurrentWeight(settingKey) == weightValues[i] ? App.Settings.ButtonColor : App.Settings.FlashcardColor,
                     Tag = (settingKey, weightValues[i])
                 };
 
@@ -142,24 +142,24 @@ namespace IBrary.UserControls
                 switch (settingKey)
                 {
                     case "ErrorRateWeight":
-                        SettingsManager.CurrentSettings.ErrorRateWeight = weight;
+                        App.Settings.CurrentSettings.ErrorRateWeight = weight;
                         break;
                     case "TimeFactorWeight":
-                        SettingsManager.CurrentSettings.TimeFactorWeight = weight;
+                        App.Settings.CurrentSettings.TimeFactorWeight = weight;
                         break;
                     case "StarTagWeight":
-                        SettingsManager.CurrentSettings.ImportantTagWeight = weight;
+                        App.Settings.CurrentSettings.ImportantTagWeight = weight;
                         break;
                 }
 
-                SettingsManager.Save();
+                App.Settings.Save();
 
                 // Reset all buttons in this panel to base color
                 var parentPanel = button.Parent as Panel;
                 ResetButtonColors(parentPanel);
 
                 // Set clicked button to bright color
-                button.BackColor = SettingsManager.ButtonColor;
+                button.BackColor = App.Settings.ButtonColor;
             }
         }
 
@@ -169,7 +169,7 @@ namespace IBrary.UserControls
             {
                 if (control is MinimalButton btn)
                 {
-                    btn.BackColor = SettingsManager.FlashcardColor;
+                    btn.BackColor = App.Settings.FlashcardColor;
                 }
             }
         }
@@ -186,7 +186,7 @@ namespace IBrary.UserControls
                     var (key, weight) = setting;
                     if (weight == currentWeight)
                     {
-                        btn.BackColor = SettingsManager.ButtonColor;
+                        btn.BackColor = App.Settings.ButtonColor;
                     }
                 }
             }
@@ -197,11 +197,11 @@ namespace IBrary.UserControls
             switch (settingKey)
             {
                 case "ErrorRateWeight":
-                    return SettingsManager.CurrentSettings.ErrorRateWeight;
+                    return App.Settings.CurrentSettings.ErrorRateWeight;
                 case "TimeFactorWeight":
-                    return SettingsManager.CurrentSettings.TimeFactorWeight;
+                    return App.Settings.CurrentSettings.TimeFactorWeight;
                 case "StarTagWeight":
-                    return SettingsManager.CurrentSettings.ImportantTagWeight;
+                    return App.Settings.CurrentSettings.ImportantTagWeight;
                 default:
                     return 5; // Default to medium
             }

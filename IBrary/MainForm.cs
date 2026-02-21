@@ -46,7 +46,7 @@ namespace IBrary
             }
             this.Refresh();
 
-            SettingsManager.Load(); // Load settings from the file
+            App.Settings.Load(); // Load settings from the file
 
             InitializeUI();
             this.WindowState = FormWindowState.Maximized;
@@ -64,9 +64,9 @@ namespace IBrary
             syncTimer?.Stop();
             syncService?.StopListening();
 
-            SettingsManager.Save(); // Save settings to the file
-            FlashcardManager.Save(); // Save flashcards to the file
-            TopicManager.Save(); // Save topics to the file
+            App.Settings.Save(); // Save settings to the file
+            App.Flashcards.Save(); // Save flashcards to the file
+            App.Topics.Save(); // Save topics to the file
         }
         private void OnThemeChanged()
         {
@@ -75,7 +75,7 @@ namespace IBrary
         }
         private void SetupTitleBar()
         {
-            if (SettingsManager.CurrentSettings.Theme == "Dark")
+            if (App.Settings.CurrentSettings.Theme == "Dark")
             {
                 var preference = Convert.ToInt32(true);
                 DwmSetWindowAttribute(this.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref preference, sizeof(int));
@@ -91,8 +91,8 @@ namespace IBrary
         private void InitializeUI()
         {
             this.MinimumSize = new Size(600, 400); // Set a minimum size for the form
-            menuPanel.BackColor = SettingsManager.MenuColor; // Dark background color for the menu panel
-            contentPanel.BackColor = SettingsManager.BackgroundColor; // Light background color for the content panel
+            menuPanel.BackColor = App.Settings.MenuColor; // Dark background color for the menu panel
+            contentPanel.BackColor = App.Settings.BackgroundColor; // Light background color for the content panel
             flashcardIcon = new PictureBox
             {
                 Image = Properties.Resources.brainWhite, // Replace with your image resource
@@ -143,7 +143,7 @@ namespace IBrary
         {
             SwitchUserControl(new FlashcardUserControl());
 
-            SettingsManager.InitializeDefaultFiles();
+            App.Settings.InitializeDefaultFiles();
 
             // START AUTOMATIC NETWORK SYNC
             syncService = new IBrary.Network.NetworkSyncService();
@@ -186,7 +186,7 @@ namespace IBrary
 
         private void addIcon_Click(object sender, EventArgs e)
         {
-            if (SettingsManager.CurrentSettings.Username != null && SettingsManager.CurrentSettings.Username != "")
+            if (App.Settings.CurrentSettings.Username != null && App.Settings.CurrentSettings.Username != "")
             {
                 SwitchUserControl(new AddContentUserControl());
             }

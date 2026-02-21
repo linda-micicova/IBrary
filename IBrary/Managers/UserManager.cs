@@ -1,11 +1,12 @@
-﻿using System;
-using System.Text;
-using System.Security.Cryptography;
+﻿using IBrary;
 using IBrary.Managers;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Managers
 {
-    static class UserManager
+    class UserManager
     {
         private static readonly byte[] secretKey = Encoding.UTF8.GetBytes("09.25.24.2024/25"); // 16 bytes key for AES-128
 
@@ -65,7 +66,7 @@ namespace Managers
         }*/
         public static bool IsAdmin()
         {
-            return SettingsManager.CurrentSettings.Username.Contains("admin");
+            return App.Settings.CurrentSettings.Username.Contains("admin");
         }
     }
 }

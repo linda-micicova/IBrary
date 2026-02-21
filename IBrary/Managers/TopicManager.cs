@@ -14,24 +14,24 @@ using System.Windows.Forms;
 
 namespace IBrary.Managers
 {
-    public static class TopicManager
+    public class TopicManager
     {
-        public static readonly string topicsPath = Path.Combine(
+        public readonly string topicsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",
         "topics.json");
 
         // list of all currently stored topics
-        public static List<Topic> AllTopics { get; private set; } = new List<Topic>();
+        public List<Topic> AllTopics { get; private set; } = new List<Topic>();
 
         // LOAD TOPICS FROM MEMORY
-        public static List<Topic> Load()
+        public List<Topic> Load()
         {
             AllTopics = LoadTopicsFromJson(topicsPath);
             return AllTopics;
         }
 
-        public static List<Topic> LoadTopicsFromJson(string path)
+        public List<Topic> LoadTopicsFromJson(string path)
         {
             if (!File.Exists(path))
                 return new List<Topic>();
@@ -52,7 +52,7 @@ namespace IBrary.Managers
         }
 
         // Save any modifications of currently loaded subjects
-        public static void Save()
+        public void Save()
         {
             try
             {
@@ -75,7 +75,7 @@ namespace IBrary.Managers
         // MODIFY TOPICS
 
         // Create new topic
-        public static void AddTopic(Topic topic)
+        public void AddTopic(Topic topic)
         {
             if (!AllTopics.Any(t => t.TopicId == topic.TopicId))
             {
@@ -86,7 +86,7 @@ namespace IBrary.Managers
 
         // Delete topic
 
-        public static void RemoveTopic(Topic topic)
+        public void RemoveTopic(Topic topic)
         {
             if (UserManager.IsAdmin() && AllTopics.Any(t => t.TopicId == topic.TopicId))
             {
@@ -97,7 +97,7 @@ namespace IBrary.Managers
         }
 
         // Merge topics
-        public static void MergeTopics(List<Topic> topicsToMerge)
+        public void MergeTopics(List<Topic> topicsToMerge)
         {
             foreach (Topic topic in topicsToMerge)
             {

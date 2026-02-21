@@ -76,7 +76,7 @@ namespace IBrary.UserControls
         private void InitializeUI()
         {
 
-            flashcardPanel = new Panel { BackColor = SettingsManager.FlashcardColor };
+            flashcardPanel = new Panel { BackColor = App.Settings.FlashcardColor };
             flashcardPanel.Click += FlashcardPanel_Click;
             flashcardPanel.Cursor = Cursors.Hand;
 
@@ -84,8 +84,8 @@ namespace IBrary.UserControls
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Cursor = Cursors.Hand,
             };
 
@@ -93,8 +93,8 @@ namespace IBrary.UserControls
             {
                 Font = new Font("Arial", 12, FontStyle.Regular),
                 CheckOnClick = true,
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Cursor = Cursors.Hand,
             };
 
@@ -103,7 +103,7 @@ namespace IBrary.UserControls
             {
                 Text = "Your flashcard text goes here",
                 Font = new Font("Arial", 15, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,  // Fill the entire flashcardPanel
                 AutoSize = false,      // Disable auto-sizing to allow manual control
@@ -123,7 +123,7 @@ namespace IBrary.UserControls
             {
                 Text = "Username",
                 Font = new Font("Arial", 6, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
             starPictureBox = new PictureBox
@@ -151,7 +151,7 @@ namespace IBrary.UserControls
                         flashcardToUpdate.Important = currentFlashcards[currentIndex].Important;
 
                         // Save ALL flashcards
-                        FlashcardManager.SaveFlashcards(allFlashcards);
+                        App.Flashcards.SaveFlashcards(allFlashcards);
                     }
                 }
             };
@@ -160,8 +160,8 @@ namespace IBrary.UserControls
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 10),
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Size = new Size(200, 25)
             };
 
@@ -193,9 +193,9 @@ namespace IBrary.UserControls
             this.Controls.Add(orderingComboBox);
 
             //Load my subjects
-            SettingsManager.Load();
-            this.allSubjects = SettingsManager.MySubjects;
-            this.allTopics = TopicManager.Load();
+            App.Settings.Load();
+            this.allSubjects = App.Settings.MySubjects;
+            this.allTopics = App.Topics.Load();
 
             // Create "All Subjects" option
             var allSubjectsOption = new Subject
@@ -209,7 +209,7 @@ namespace IBrary.UserControls
 
             // Add "All Subjects" to the beginning of the list
             var subjectsList = new List<Subject> { allSubjectsOption };
-            subjectsList.AddRange(SettingsManager.MySubjects);
+            subjectsList.AddRange(App.Settings.MySubjects);
 
             // Populate the subjectComboBox
             subjectComboBox.DataSource = subjectsList;
@@ -227,17 +227,17 @@ namespace IBrary.UserControls
             // Mark as initialized BEFORE restoring
             isInitialized = true;
 
-            if (SettingsManager.CurrentSettings.LastSelectedSubjectId != null)
+            if (App.Settings.CurrentSettings.LastSelectedSubjectId != null)
             {
                 var comboBoxSubjects = (List<Subject>)subjectComboBox.DataSource;
-                var index = comboBoxSubjects.FindIndex(s => s.SubjectId == SettingsManager.CurrentSettings.LastSelectedSubjectId);
+                var index = comboBoxSubjects.FindIndex(s => s.SubjectId == App.Settings.CurrentSettings.LastSelectedSubjectId);
 
                 if (index >= 0 && index < subjectComboBox.Items.Count)
                 {
                     subjectComboBox.SelectedIndex = index;
 
                     // If we just selected ALL_SUBJECTS, manually trigger the logic
-                    if (SettingsManager.CurrentSettings.LastSelectedSubjectId == "ALL_SUBJECTS")
+                    if (App.Settings.CurrentSettings.LastSelectedSubjectId == "ALL_SUBJECTS")
                     {
                         subjectComboBox_SelectedIndexChanged(null, null);
                     }
@@ -363,13 +363,13 @@ namespace IBrary.UserControls
 
         private void LoadFlashcards()
         {
-            allFlashcards = FlashcardManager.Load();
+            allFlashcards = App.Flashcards.Load();
             var selectedTopicIds = selectedTopics.Select(t => t.TopicId).ToHashSet();
 
             var allowedLevels = new HashSet<Level> { Level.SL, Level.HL };
             if (selectedSubject != null && selectedSubject.SubjectId != "ALL_SUBJECTS")
             {
-                var userLevel = SettingsManager.CurrentSettings.MySubjectLevels.TryGetValue(selectedSubject.SubjectId, out var level) ? level : Level.HL;
+                var userLevel = App.Settings.CurrentSettings.MySubjectLevels.TryGetValue(selectedSubject.SubjectId, out var level) ? level : Level.HL;
                 allowedLevels = (userLevel == Level.HL) ? new HashSet<Level> { Level.SL, Level.HL } : new HashSet<Level> { Level.SL };
             }
 
@@ -418,13 +418,13 @@ namespace IBrary.UserControls
             if (selectedSubject?.SubjectId == "ALL_SUBJECTS")
             {
                 // Find which subject this flashcard belongs to
-                var flashcardSubject = SettingsManager.MySubjects.FirstOrDefault(s => s.Flashcards.Contains(f.FlashcardId));
+                var flashcardSubject = App.Settings.MySubjects.FirstOrDefault(s => s.Flashcards.Contains(f.FlashcardId));
                 belongsToMySubjects = flashcardSubject != null;
 
                 if (belongsToMySubjects)
                 {
                     // Check the user's level for THIS specific subject
-                    var userLevelForThisSubject = SettingsManager.CurrentSettings.MySubjectLevels.TryGetValue(flashcardSubject.SubjectId, out var level) ? level : Level.HL;
+                    var userLevelForThisSubject = App.Settings.CurrentSettings.MySubjectLevels.TryGetValue(flashcardSubject.SubjectId, out var level) ? level : Level.HL;
                     var allowedLevelsForThisSubject = (userLevelForThisSubject == Level.HL)
                         ? new HashSet<Level> { Level.SL, Level.HL }
                         : new HashSet<Level> { Level.SL };
@@ -498,7 +498,7 @@ namespace IBrary.UserControls
                     continue;
                 }
 
-                var version = currentFlashcard.GetDisplayVersion(SettingsManager.CurrentSettings.BlockedUsers ?? new List<string>());
+                var version = currentFlashcard.GetDisplayVersion(App.Settings.CurrentSettings.BlockedUsers ?? new List<string>());
 
                 if (version != null)
                     return version;
@@ -577,7 +577,7 @@ namespace IBrary.UserControls
             if (selectedSubject == null || selectedSubject.SubjectId == "ALL_SUBJECTS")
             {
                 // Show ALL topics logic...
-                var allTopicsFromMySubjects = SettingsManager.MySubjects
+                var allTopicsFromMySubjects = App.Settings.MySubjects
                     .SelectMany(s => s.Topics)
                     .Distinct()
                     .Select(topicId => allTopics.FirstOrDefault(t => t.TopicId == topicId))
@@ -597,7 +597,7 @@ namespace IBrary.UserControls
             topicCheckedListBox.DisplayMember = "TopicName";
 
             // DEBUG: Check what we're trying to restore
-            var savedTopicIds = new HashSet<string>(SettingsManager.CurrentSettings.LastSelectedTopicIds);
+            var savedTopicIds = new HashSet<string>(App.Settings.CurrentSettings.LastSelectedTopicIds);
 
             // Clear visual selections
             for (int i = 0; i < topicCheckedListBox.Items.Count; i++)
@@ -617,8 +617,8 @@ namespace IBrary.UserControls
             // Save and refresh
             if (isInitialized)
             {
-                SettingsManager.CurrentSettings.LastSelectedSubjectId = selectedSubject.SubjectId;
-                SettingsManager.Save();
+                App.Settings.CurrentSettings.LastSelectedSubjectId = selectedSubject.SubjectId;
+                App.Settings.Save();
             }
 
             RefreshFlashcards();
@@ -652,11 +652,11 @@ namespace IBrary.UserControls
             this.BeginInvoke((MethodInvoker)(() =>
             {
                 // Save topic selection
-                SettingsManager.CurrentSettings.LastSelectedTopicIds = topicCheckedListBox.CheckedItems
+                App.Settings.CurrentSettings.LastSelectedTopicIds = topicCheckedListBox.CheckedItems
                     .Cast<Topic>()
                     .Select(t => t.TopicId)
                     .ToList();
-                SettingsManager.Save();
+                App.Settings.Save();
 
                 RefreshFlashcards(); 
             }));
@@ -666,13 +666,13 @@ namespace IBrary.UserControls
             if (currentIndex < currentFlashcards.Count)
             {
                 var currentFlashcardId = currentFlashcards[currentIndex].FlashcardId;
-                var allFlashcards = FlashcardManager.Load();
+                var allFlashcards = App.Flashcards.Load();
                 var flashcardToUpdate = allFlashcards.FirstOrDefault(f => f.FlashcardId == currentFlashcardId);
 
                 if (flashcardToUpdate != null)
                 {
                     flashcardToUpdate.RegisterStudyResult(DateTime.Today, true);
-                    FlashcardManager.SaveFlashcards(allFlashcards);
+                    App.Flashcards.SaveFlashcards(allFlashcards);
                     currentFlashcards[currentIndex].RegisterStudyResult(DateTime.Today, true);
                 }
                 currentIndex++;
@@ -698,7 +698,7 @@ namespace IBrary.UserControls
                 var currentFlashcardId = currentFlashcards[currentIndex].FlashcardId;
 
                 // 2. Load ALL flashcards
-                var allFlashcards = FlashcardManager.Load();
+                var allFlashcards = App.Flashcards.Load();
 
                 // 3. Find the same flashcard in the complete list
                 var flashcardToUpdate = allFlashcards.FirstOrDefault(f => f.FlashcardId == currentFlashcardId);
@@ -709,7 +709,7 @@ namespace IBrary.UserControls
                     flashcardToUpdate.RegisterStudyResult(DateTime.Today, false);
 
                     // 5. Save ALL flashcards
-                    FlashcardManager.SaveFlashcards(allFlashcards);
+                    App.Flashcards.SaveFlashcards(allFlashcards);
 
                     // 6. Update our working copy too
                     currentFlashcards[currentIndex].RegisterStudyResult(DateTime.Today, false);
@@ -819,13 +819,13 @@ namespace IBrary.UserControls
         }
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if(SettingsManager.CurrentSettings.Username != null)
+            if(App.Settings.CurrentSettings.Username != null)
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this flashcard?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    FlashcardManager.DeleteFlashcard(currentFlashcards[currentIndex].FlashcardId, SettingsManager.CurrentSettings.Username);
-                    currentFlashcards = FlashcardManager.GetFlashcardsOrderedByPriority(FlashcardManager.Load());
+                    FlashcardManager.DeleteFlashcard(currentFlashcards[currentIndex].FlashcardId, App.Settings.CurrentSettings.Username);
+                    currentFlashcards = FlashcardManager.GetFlashcardsOrderedByPriority(App.Flashcards.Load());
                     RefreshFlashcards();
                 }
             }

@@ -133,7 +133,7 @@ namespace IBrary.UserControls
                 }
             }
 
-            subjectComboBox.SelectedItem = SettingsManager.MySubjects.FirstOrDefault(s => flashcard.Topics.Any(sid => s.Topics.Contains(sid)));
+            subjectComboBox.SelectedItem = App.Settings.MySubjects.FirstOrDefault(s => flashcard.Topics.Any(sid => s.Topics.Contains(sid)));
             topicCheckedListBox.Items.Cast<Topic>().ToList().ForEach(t =>
             {
                 if (flashcard.Topics.Contains(t.TopicId))
@@ -148,7 +148,7 @@ namespace IBrary.UserControls
             {
                 Text = "Question:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -156,7 +156,7 @@ namespace IBrary.UserControls
             {
                 Text = "Answer:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -164,7 +164,7 @@ namespace IBrary.UserControls
             {
                 Text = "Subject:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -172,7 +172,7 @@ namespace IBrary.UserControls
             {
                 Text = "Topics:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -180,7 +180,7 @@ namespace IBrary.UserControls
             {
                 Text = "Level:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -188,15 +188,15 @@ namespace IBrary.UserControls
             questionRichTextBox = new RichTextBox
             {
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor
             };
 
             answerRichTextBox = new RichTextBox
             {
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor,
             };
 
             // Combo boxes and lists
@@ -204,16 +204,16 @@ namespace IBrary.UserControls
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor
             };
 
             topicCheckedListBox = new CheckedListBox
             {
                 Font = new Font("Arial", 10, FontStyle.Regular),
                 CheckOnClick = true,
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor,
                 IntegralHeight = false
             };
 
@@ -221,12 +221,12 @@ namespace IBrary.UserControls
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor
             };
 
             // Load data
-            subjectComboBox.DataSource = SettingsManager.MySubjects;
+            subjectComboBox.DataSource = App.Settings.MySubjects;
             subjectComboBox.DisplayMember = "SubjectName";
             subjectComboBox.SelectedIndexChanged += SubjectComboBox_SelectedIndexChanged;
 
@@ -247,20 +247,20 @@ namespace IBrary.UserControls
             // Small picture boxes next to text fields
             questionPictureBox = new PictureBox
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle,
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Size = new Size(60, 60),
-                Image = SettingsManager.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite
+                Image = App.Settings.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite
             };
 
             answerPictureBox = new PictureBox
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle,
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Size = new Size(60, 60),
-                Image = SettingsManager.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite
+                Image = App.Settings.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite
             };
 
             questionImageButton = new MinimalButton
@@ -334,7 +334,7 @@ namespace IBrary.UserControls
             if (selectedSubject == null) return;
 
 
-            var allTopics = TopicManager.Load();
+            var allTopics = App.Topics.Load();
             var topicIdSet = new HashSet<string>(selectedSubject.Topics);
             var filteredTopics = allTopics.Where(t => topicIdSet.Contains(t.TopicId)).ToList();
 
@@ -408,7 +408,7 @@ namespace IBrary.UserControls
                 var version = new CardVersion(
                     questionRichTextBox.Text,
                     answerRichTextBox.Text,
-                    SettingsManager.CurrentSettings.Username,
+                    App.Settings.CurrentSettings.Username,
                     questionImageFilename,  // CHANGED: was questionImagePath
                     answerImageFilename     // CHANGED: was answerImagePath
                 );
@@ -432,8 +432,8 @@ namespace IBrary.UserControls
                 );
 
                 // Save flashcard
-                FlashcardManager.AddFlashcard(flashcard);
-                SubjectManager.AddFlashcardToSubject(flashcard, selectedSubject);
+                App.Flashcards.AddFlashcard(flashcard);
+                App.Subjects.AddFlashcardToSubject(flashcard, selectedSubject);
 
                 // Clear form or go back
                 ClearForm();
@@ -500,8 +500,8 @@ namespace IBrary.UserControls
             }
             questionImagePath = null;
             answerImagePath = null;
-            questionPictureBox.Image = SettingsManager.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite;
-            answerPictureBox.Image = SettingsManager.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite;
+            questionPictureBox.Image = App.Settings.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite;
+            answerPictureBox.Image = App.Settings.CurrentSettings.Theme == "Light" ? Resources.uploadBlack : Resources.uploadWhite;
         }
 
         // Reusable method to generate unique filenames

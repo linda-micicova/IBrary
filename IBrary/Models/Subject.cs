@@ -1,5 +1,6 @@
 ﻿using IBrary.Managers;
 using IBrary.Models;
+using IBrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace IBrary.Models
         {
             get
             {
-                return FlashcardManager.Load()
+                return App.Flashcards.Load()
                     .Where(f => Flashcards.Contains(f.FlashcardId))
                     .ToList();
             }

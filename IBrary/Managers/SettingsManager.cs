@@ -14,30 +14,30 @@ using System.Windows.Forms;
 
 namespace IBrary.Managers
 {
-    internal static class SettingsManager
+    public class SettingsManager
     {
         // json file path
         /*private static readonly string settingsPath = Path.Combine(
         Application.StartupPath,
         "Data", "settings.json");*/
-        private static readonly string settingsPath = Path.Combine(
+        private readonly string settingsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",
         "settings.json");
 
-        public static UserSettings CurrentSettings { get; set; } = new UserSettings();
-        public static List<Subject> MySubjects { get; private set; } = new List<Subject>();
+        public UserSettings CurrentSettings { get; set; } = new UserSettings();
+        public List<Subject> MySubjects { get; private set; } = new List<Subject>();
 
-        public static Color FlashcardColor;
-        public static Color BackgroundColor;
-        public static Color ButtonColor;
-        public static Color MenuColor;
-        public static Color TextColor;
+        public Color FlashcardColor;
+        public Color BackgroundColor;
+        public Color ButtonColor;
+        public Color MenuColor;
+        public Color TextColor;
 
         // LOAD SETTINGS FROM MEMORY
-        public static UserSettings Load()
+        public UserSettings Load()
         {
-            List<Subject> allSubjects = SubjectManager.Load(); // Ensure subjects are loaded before accessing
+            List<Subject> allSubjects = App.Subjects.Load(); // Ensure subjects are loaded before accessing
             if (File.Exists(settingsPath))
             {
                 try
@@ -116,7 +116,7 @@ namespace IBrary.Managers
             return CurrentSettings;
         }
 
-        public static void Save()
+        public void Save()
         {
             try
             {
@@ -133,7 +133,7 @@ namespace IBrary.Managers
             }
         }
 
-        public static void Save(UserSettings settings)
+        public void Save(UserSettings settings)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace IBrary.Managers
             }
         }
 
-        public static void InitializeDefaultFiles()
+        public void InitializeDefaultFiles()
         {
             string dataFolder = Path.Combine(Application.StartupPath, "Data");
 
@@ -169,7 +169,7 @@ namespace IBrary.Managers
             CreateFileIfMissing(Path.Combine(dataFolder, "flashcards.json"), "[]");
         }
 
-        private static void CreateFileIfMissing(string filePath, string defaultContent)
+        private void CreateFileIfMissing(string filePath, string defaultContent)
         {
             if (!File.Exists(filePath))
             {
@@ -177,7 +177,7 @@ namespace IBrary.Managers
             }
         }
 
-        public static void UnblockUser(string username)
+        public void UnblockUser(string username)
         {
             if (CurrentSettings.BlockedUsers.Contains(username))
             {
@@ -187,13 +187,13 @@ namespace IBrary.Managers
         }
 
         // Updated LogOut method
-        public static void LogOut()
+        public void LogOut()
         {
             CurrentSettings.Username = null; // This will clear the hash too
             Save();
         }
 
-        public static void UpdateMySubjects(List<string> subjects)
+        public void UpdateMySubjects(List<string> subjects)
         {
             CurrentSettings.MySubjectIds = subjects;
             Save();
@@ -201,7 +201,7 @@ namespace IBrary.Managers
         }
 
         // Update subject level
-        public static void UpdateSubjectLevel(string subjectId, Level level)
+        public void UpdateSubjectLevel(string subjectId, Level level)
         {
             if (CurrentSettings.MySubjectLevels == null)
             {
@@ -213,7 +213,7 @@ namespace IBrary.Managers
         }
 
         // Get subject level
-        public static Level GetSubjectLevel(string subjectId)
+        public Level GetSubjectLevel(string subjectId)
         {
             if (CurrentSettings.MySubjectLevels == null)
             {
@@ -226,7 +226,7 @@ namespace IBrary.Managers
         }
 
         //Theme settings
-        public static void ChangeTheme()
+        public void ChangeTheme()
         {
             if (CurrentSettings.Theme == "Dark")
             {
@@ -242,7 +242,7 @@ namespace IBrary.Managers
         }
 
         // Color codes for themes
-        private static void LightTheme()
+        private void LightTheme()
         {
             FlashcardColor = Color.FromArgb(210, 200, 190);    // Darker, less pink
             BackgroundColor = Color.FromArgb(240, 235, 230);   // Less pink background  
@@ -250,7 +250,7 @@ namespace IBrary.Managers
             MenuColor = Color.FromArgb(45, 50, 55);           // Professional blue-gray
             TextColor = Color.FromArgb(40, 40, 40);           // Dark gray text
         }
-        private static void DarkTheme()
+        private void DarkTheme()
         {
             FlashcardColor = Color.FromArgb(28, 26, 24);     // Warm dark for cards
             BackgroundColor = Color.FromArgb(48, 45, 42);   // Warm medium gray

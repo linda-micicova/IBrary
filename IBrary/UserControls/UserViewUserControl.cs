@@ -31,22 +31,22 @@ namespace IBrary.UserControls
 
         private void InitializeUI()
         {
-            this.BackColor = SettingsManager.BackgroundColor;
+            this.BackColor = App.Settings.BackgroundColor;
 
             // Search section
             var searchLabel = new Label
             {
                 Text = "Search User:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
             usernameSearchBox = new TextBox
             {
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
             usernameSearchBox.KeyPress += (s, e) => { if (e.KeyChar == (char)Keys.Enter) SearchUser(); };
@@ -69,7 +69,7 @@ namespace IBrary.UserControls
             // Stats panel
             userStatsPanel = new Panel
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.None,
                 Visible = false
             };
@@ -77,7 +77,7 @@ namespace IBrary.UserControls
             statsLabel = new Label
             {
                 Font = new Font("Arial", 10, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = false,
                 TextAlign = ContentAlignment.TopLeft,
                 Dock = DockStyle.Fill,
@@ -90,7 +90,7 @@ namespace IBrary.UserControls
             {
                 AutoScroll = true,
                 BorderStyle = BorderStyle.None,
-                BackColor = SettingsManager.BackgroundColor,
+                BackColor = App.Settings.BackgroundColor,
                 Visible = false
             };
 
@@ -137,7 +137,7 @@ namespace IBrary.UserControls
             }
 
             // Check if user exists in any flashcard
-            var allCards = FlashcardManager.Load();
+            var allCards = App.Flashcards.Load();
             var userExists = allCards.Any(f => f.Versions.Any(v => v.Editor.Equals(username, StringComparison.OrdinalIgnoreCase)));
 
             if (!userExists)
@@ -167,7 +167,7 @@ namespace IBrary.UserControls
             DisplayUserFlashcards(username);
 
             // Show block button
-            var isBlocked = SettingsManager.CurrentSettings.BlockedUsers.Contains(username);
+            var isBlocked = App.Settings.CurrentSettings.BlockedUsers.Contains(username);
             blockUserButton.Text = isBlocked ? "Unblock User" : "Block User";
             blockUserButton.Visible = true;
         }
@@ -183,7 +183,7 @@ namespace IBrary.UserControls
 
         private void DisplayUserStats(string username)
         {
-            var allCards = FlashcardManager.Load();
+            var allCards = App.Flashcards.Load();
             var userCards = allCards.Where(f => f.Versions.Any(v => v.Editor.Equals(username, StringComparison.OrdinalIgnoreCase))).ToList();
 
             var created = userCards.Count(f => f.Versions.FirstOrDefault()?.Editor.Equals(username, StringComparison.OrdinalIgnoreCase) == true);
@@ -191,7 +191,7 @@ namespace IBrary.UserControls
             var deleted = userCards.Count(f => f.Versions.LastOrDefault()?.Deleted == true &&
                                               f.Versions.LastOrDefault()?.Editor.Equals(username, StringComparison.OrdinalIgnoreCase) == true);
 
-            var isBlocked = SettingsManager.CurrentSettings.BlockedUsers.Contains(username);
+            var isBlocked = App.Settings.CurrentSettings.BlockedUsers.Contains(username);
             var blockStatus = isBlocked ? " (BLOCKED)" : "";
 
             statsLabel.Text = $"User: {username}{blockStatus}\n\n" +
@@ -205,7 +205,7 @@ namespace IBrary.UserControls
         {
             flashcardsPanel.Controls.Clear();
 
-            var allCards = FlashcardManager.Load()
+            var allCards = App.Flashcards.Load()
                 .Where(f => f.Versions.Any(v => v.Editor.Equals(username, StringComparison.OrdinalIgnoreCase)))
                 .Take(20) // Limit to 20 for performance
                 .ToList();
@@ -226,7 +226,7 @@ namespace IBrary.UserControls
                 {
                     Size = new Size(cardWidth, cardHeight),
                     Location = new Point(x, y),
-                    BackColor = SettingsManager.FlashcardColor,
+                    BackColor = App.Settings.FlashcardColor,
                     BorderStyle = BorderStyle.None,
                     Cursor = Cursors.Hand
                 };
@@ -236,7 +236,7 @@ namespace IBrary.UserControls
                 {
                     Text = version.Question.Length > 150 ? version.Question.Substring(0, 150) + "..." : version.Question,
                     Font = new Font("Arial", 9, FontStyle.Regular),
-                    ForeColor = SettingsManager.TextColor,
+                    ForeColor = App.Settings.TextColor,
                     Location = new Point(5, 5),
                     Size = new Size(cardWidth - 10, cardHeight - 25),
                     TextAlign = ContentAlignment.TopLeft
@@ -288,17 +288,17 @@ namespace IBrary.UserControls
         {
             if (string.IsNullOrEmpty(currentUsername)) return;
 
-            var isBlocked = SettingsManager.CurrentSettings.BlockedUsers.Contains(currentUsername);
+            var isBlocked = App.Settings.CurrentSettings.BlockedUsers.Contains(currentUsername);
 
             if (isBlocked)
             {
-                SettingsManager.UnblockUser(currentUsername);
+                App.Settings.UnblockUser(currentUsername);
                 MessageBox.Show($"User '{currentUsername}' has been unblocked.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                SettingsManager.CurrentSettings.BlockedUsers.Add(currentUsername);
-                SettingsManager.Save();
+                App.Settings.CurrentSettings.BlockedUsers.Add(currentUsername);
+                App.Settings.Save();
                 MessageBox.Show($"User '{currentUsername}' has been blocked.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 

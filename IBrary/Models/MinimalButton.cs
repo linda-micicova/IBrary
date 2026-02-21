@@ -16,8 +16,8 @@ namespace IBrary.Models
         {
             this.FlatStyle = FlatStyle.Flat;
             this.FlatAppearance.BorderSize = 0;
-            this.BackColor = SettingsManager.ButtonColor; // Light gray
-            this.ForeColor = SettingsManager.TextColor;    // Dark gray
+            this.BackColor = App.Settings.ButtonColor; // Light gray
+            this.ForeColor = App.Settings.TextColor;    // Dark gray
             this.Font = new Font("Segoe UI", 9f, FontStyle.Regular);
             this.Padding = new Padding(10, 5, 10, 5);
             this.Cursor = Cursors.Hand;
@@ -33,7 +33,7 @@ namespace IBrary.Models
             this.BackColor = Color.FromArgb(0, 122, 204); // Blue
             this.ForeColor = Color.White;
             this.MouseEnter += (s, e) => this.BackColor = Color.FromArgb(0, 96, 180);
-            this.MouseLeave += (s, e) => this.BackColor = SettingsManager.ButtonColor;
+            this.MouseLeave += (s, e) => this.BackColor = App.Settings.ButtonColor;
         }
     }
 }

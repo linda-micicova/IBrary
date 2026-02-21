@@ -15,24 +15,24 @@ using System.Windows.Forms;
 
 namespace IBrary.Managers
 {
-    public static class SubjectManager
+    public class SubjectManager
     {
-        public static readonly string subjectsPath = Path.Combine(
+        public readonly string subjectsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",
         "subjects.json");
 
         // list of all currently stored subjects
-        public static List<Subject> AllSubjects { get; private set; } = new List<Subject>();
+        public List<Subject> AllSubjects { get; private set; } = new List<Subject>();
 
         // LOAD SUBJECTS FROM MEMORY
-        public static List<Subject> Load()
+        public List<Subject> Load()
         {
 
             AllSubjects = LoadSubjectsFromJson(subjectsPath);
             return AllSubjects;
         }
-        public static List<Subject> LoadSubjectsFromJson(string path)
+        public List<Subject> LoadSubjectsFromJson(string path)
         {
             if (!File.Exists(path))
                 return new List<Subject>();
@@ -50,7 +50,7 @@ namespace IBrary.Managers
         }
 
         // Save any modifications of currently loaded subjects
-        public static void Save()
+        public void Save()
         {
             try
             {
@@ -66,7 +66,7 @@ namespace IBrary.Managers
         // MODIFY SUBJECTS
 
         // Link subject to new flashcard
-        public static void AddFlashcardToSubject(Flashcard flashcard, Subject subject)
+        public void AddFlashcardToSubject(Flashcard flashcard, Subject subject)
         {
             if (AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
             {
@@ -80,7 +80,7 @@ namespace IBrary.Managers
         }
 
         // Add new subject
-        public static void AddSubject(Subject subject)
+        public void AddSubject(Subject subject)
         {
             if (!AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
             {
@@ -90,7 +90,7 @@ namespace IBrary.Managers
         }
 
         // Delete subject
-        public static void RemoveSubject(Subject subject)
+        public void RemoveSubject(Subject subject)
         {
             if (UserManager.IsAdmin() && AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
             {
@@ -101,7 +101,7 @@ namespace IBrary.Managers
         }
 
         // Merge subjects 
-        public static void MergeSubjects(List<Subject> subjects)
+        public void MergeSubjects(List<Subject> subjects)
         {
             var existingSubjects = Load();
             foreach (var subject in subjects)

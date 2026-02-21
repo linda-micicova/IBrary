@@ -37,7 +37,7 @@ namespace IBrary.UserControls
         {
             BackIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.arrow
                     : Properties.Resources.backWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -54,7 +54,7 @@ namespace IBrary.UserControls
             {
                 Text = "My Subjects",
                 Font = new Font("Arial", 16, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(70, 20),
                 AutoSize = true
             };
@@ -68,7 +68,7 @@ namespace IBrary.UserControls
                 Location = new Point(20, 70),
                 Size = new Size(400, 500),
                 AutoScroll = true,
-                BackColor = SettingsManager.BackgroundColor
+                BackColor = App.Settings.BackgroundColor
             };
             this.Controls.Add(subjectsPanel);
         }
@@ -83,14 +83,14 @@ namespace IBrary.UserControls
             int rowHeight = 40;
 
             // Add all subjects
-            foreach (var subject in SubjectManager.AllSubjects)
+            foreach (var subject in App.Subjects.AllSubjects)
             {
                 // Subject name label
                 var nameLabel = new Label
                 {
                     Text = subject.SubjectName,
                     Font = new Font("Segoe UI", 14, FontStyle.Regular),
-                    ForeColor = SettingsManager.TextColor,
+                    ForeColor = App.Settings.TextColor,
                     Location = new Point(10, yPosition + 5),
                     AutoSize = true
                 };
@@ -102,8 +102,8 @@ namespace IBrary.UserControls
                     Size = new Size(70, 30),
                     Location = new Point(300, yPosition),
                     DropDownStyle = ComboBoxStyle.DropDownList,
-                    BackColor = SettingsManager.BackgroundColor,
-                    ForeColor = SettingsManager.TextColor,
+                    BackColor = App.Settings.BackgroundColor,
+                    ForeColor = App.Settings.TextColor,
                     Font = new Font("Segoe UI", 12)
                 };
 
@@ -112,10 +112,10 @@ namespace IBrary.UserControls
                 levelCombo.Items.Add("HL");
 
                 // Set default or saved level
-                if (SettingsManager.MySubjects.Any(s => s.SubjectId == subject.SubjectId))
+                if (App.Settings.MySubjects.Any(s => s.SubjectId == subject.SubjectId))
                 {
-                    var savedLevel = SettingsManager.CurrentSettings.MySubjectLevels.ContainsKey(subject.SubjectId)
-                        ? SettingsManager.CurrentSettings.MySubjectLevels[subject.SubjectId]
+                    var savedLevel = App.Settings.CurrentSettings.MySubjectLevels.ContainsKey(subject.SubjectId)
+                        ? App.Settings.CurrentSettings.MySubjectLevels[subject.SubjectId]
                         : Level.HL;
                     levelCombo.SelectedItem = savedLevel.ToString();
                 }
@@ -139,7 +139,7 @@ namespace IBrary.UserControls
         private void SaveLevelSelection()
         {
             UpdateSelectedSubjects();
-            SettingsManager.UpdateMySubjects(SelectedSubjects);
+            App.Settings.UpdateMySubjects(SelectedSubjects);
 
             foreach (var kvp in levelComboBoxes)
             {
@@ -149,18 +149,18 @@ namespace IBrary.UserControls
                 if (combo.SelectedItem?.ToString() != "-" &&
                     Enum.TryParse<Level>(combo.SelectedItem?.ToString(), out var level))
                 {
-                    SettingsManager.CurrentSettings.MySubjectLevels[subjectId] = level;
+                    App.Settings.CurrentSettings.MySubjectLevels[subjectId] = level;
                 }
                 else if (combo.SelectedItem?.ToString() == "-")
                 {
                     // Remove from levels if set to "-"
-                    if (SettingsManager.CurrentSettings.MySubjectLevels.ContainsKey(subjectId))
+                    if (App.Settings.CurrentSettings.MySubjectLevels.ContainsKey(subjectId))
                     {
-                        SettingsManager.CurrentSettings.MySubjectLevels.Remove(subjectId);
+                        App.Settings.CurrentSettings.MySubjectLevels.Remove(subjectId);
                     }
                 }
             }
-            SettingsManager.Save();
+            App.Settings.Save();
         }
 
         private void AttachEventHandlers()
@@ -168,7 +168,7 @@ namespace IBrary.UserControls
             BackIcon.Click += (s, e) =>
             {
                 UpdateSelectedSubjects();
-                SettingsManager.UpdateMySubjects(SelectedSubjects);
+                App.Settings.UpdateMySubjects(SelectedSubjects);
                 SaveLevelSelection();
                 Navigator.GoToSettings();
             };

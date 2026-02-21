@@ -35,7 +35,7 @@ namespace IBrary.UserControls
         {
             previewFlashcards = flashcards;
             selectedSubject = subject;
-            availableTopics = TopicManager.Load()
+            availableTopics = App.Topics.Load()
                 .Where(t => subject.Topics.Contains(t.TopicId))
                 .ToList();
 
@@ -54,7 +54,7 @@ namespace IBrary.UserControls
         {
             _backIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.arrow
                     : Properties.Resources.backWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -72,7 +72,7 @@ namespace IBrary.UserControls
             {
                 Text = $"Preview Import - {selectedSubject.SubjectName}",
                 Font = new Font("Arial", 16, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(70, 20),
                 AutoSize = true
             };
@@ -96,7 +96,7 @@ namespace IBrary.UserControls
                 Location = new Point(20, 70),
                 Size = new Size(this.Width - 40, this.Height - 90),
                 AutoScroll = true,
-                BackColor = SettingsManager.BackgroundColor
+                BackColor = App.Settings.BackgroundColor
             };
 
             flashcardsContainer = new Panel
@@ -132,7 +132,7 @@ namespace IBrary.UserControls
             {
                 Location = new Point(10, yPosition),
                 Size = new Size(scrollPanel.Width - 40, 200),
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -144,7 +144,7 @@ namespace IBrary.UserControls
                 {
                     Text = $"Q: {version.Question ?? "No question"}",
                     Font = new Font("Arial", 12, FontStyle.Bold),
-                    ForeColor = SettingsManager.TextColor,
+                    ForeColor = App.Settings.TextColor,
                     Location = new Point(10, 10),
                     Size = new Size(panel.Width - 20, 30),
                     AutoEllipsis = true
@@ -154,7 +154,7 @@ namespace IBrary.UserControls
                 {
                     Text = $"A: {version.Answer ?? "No answer"}",
                     Font = new Font("Arial", 10),
-                    ForeColor = SettingsManager.TextColor,
+                    ForeColor = App.Settings.TextColor,
                     Location = new Point(10, 45),
                     Size = new Size(panel.Width - 20, 25),
                     AutoEllipsis = true
@@ -169,7 +169,7 @@ namespace IBrary.UserControls
             {
                 Text = "Select Topics:",
                 Font = new Font("Arial", 10, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(10, 80),
                 AutoSize = true
             };
@@ -178,8 +178,8 @@ namespace IBrary.UserControls
             {
                 Font = new Font("Arial", 9),
                 CheckOnClick = true,
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(10, 105),
                 Size = new Size(panel.Width - 20, 85),
                 Tag = flashcard.FlashcardId // Store flashcard ID for reference

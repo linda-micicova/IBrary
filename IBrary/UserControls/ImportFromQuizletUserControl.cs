@@ -54,7 +54,7 @@ namespace IBrary.UserControls
         {
             backIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.arrow
                     : Properties.Resources.backWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -73,7 +73,7 @@ namespace IBrary.UserControls
             {
                 Text = "Select Subject:",
                 Font = new Font("Arial", 12),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(20, 70),
                 AutoSize = true
             };
@@ -82,8 +82,8 @@ namespace IBrary.UserControls
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 12),
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(20, 100),
                 Size = new Size(200, 30)
             };
@@ -93,7 +93,7 @@ namespace IBrary.UserControls
             {
                 Text = "Select Topics:",
                 Font = new Font("Arial", 12),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(250, 70),
                 AutoSize = true
             };
@@ -102,8 +102,8 @@ namespace IBrary.UserControls
             {
                 Font = new Font("Arial", 12),
                 CheckOnClick = true,
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(250, 100),
                 Size = new Size(200, 150)
             };
@@ -121,7 +121,7 @@ namespace IBrary.UserControls
             {
                 Text = "No file selected",
                 Font = new Font("Arial", 10),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(20, 330),
                 AutoSize = true
             };
@@ -145,7 +145,7 @@ namespace IBrary.UserControls
             };
             moreInfoIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.info
                     : Properties.Resources.infoWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -176,8 +176,8 @@ namespace IBrary.UserControls
 
         private void LoadData()
         {
-            allSubjects = SettingsManager.MySubjects;
-            allTopics = TopicManager.Load();
+            allSubjects = App.Settings.MySubjects;
+            allTopics = App.Topics.Load();
 
             // Populate subject combobox
             subjectComboBox.DataSource = allSubjects;
@@ -376,7 +376,7 @@ namespace IBrary.UserControls
             loadedFlashcards = null;
             selectedFilePath = null;
             fileSelectedLabel.Text = "No file selected";
-            fileSelectedLabel.ForeColor = SettingsManager.TextColor;
+            fileSelectedLabel.ForeColor = App.Settings.TextColor;
 
             // Clear topic selections
             for (int i = 0; i < topicCheckedListBox.Items.Count; i++)

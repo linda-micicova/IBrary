@@ -38,7 +38,7 @@ namespace IBrary.UserControls
             {
                 Text = "My Subjects Dashboard",
                 Font = new Font("Arial", 16, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(20, 20),
                 AutoSize = true
             };
@@ -61,18 +61,18 @@ namespace IBrary.UserControls
 
         private void LoadSubjects()
         {
-            foreach (var subject in SettingsManager.MySubjects)
+            foreach (var subject in App.Settings.MySubjects)
             {
                 Panel subjectPanel = new Panel
                 {
                     Width = (this.Width - 90) / 2,
                     Height = 80,
-                    BackColor = SettingsManager.FlashcardColor,
+                    BackColor = App.Settings.FlashcardColor,
                     Margin = new Padding(left: this.Width / 100, top: this.Width / 100, right: 0, bottom: 0)
                 };
 
                 // Get the user's level for this subject, defaulting to HL if not found
-                if (!SettingsManager.CurrentSettings.MySubjectLevels.TryGetValue(subject.SubjectId, out Level userLevel))
+                if (!App.Settings.CurrentSettings.MySubjectLevels.TryGetValue(subject.SubjectId, out Level userLevel))
                 {
                     userLevel = Models.Level.HL;
                 }
@@ -90,7 +90,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 10, FontStyle.Bold),
                     Location = new Point(10, 10),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 Label accuracyLabel = new Label
@@ -101,7 +101,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 8),
                     Location = new Point(10, 30),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 Label totalLabel = new Label
@@ -110,7 +110,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 8),
                     Location = new Point(10, 45),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 subjectPanel.Controls.Add(nameLabel);

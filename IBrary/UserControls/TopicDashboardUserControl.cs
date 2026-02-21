@@ -32,8 +32,8 @@ namespace IBrary.UserControls
 
         private void LoadData()
         {
-            allTopics = TopicManager.Load();
-            allFlashcards = FlashcardManager.Load();
+            allTopics = App.Topics.Load();
+            allFlashcards = App.Flashcards.Load();
         }
 
         private void InitializeUI()
@@ -47,7 +47,7 @@ namespace IBrary.UserControls
         {
             _backIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.arrow
                     : Properties.Resources.backWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -65,7 +65,7 @@ namespace IBrary.UserControls
             {
                 Text = $"{selectedSubject.SubjectName} - Topics",
                 Font = new Font("Arial", 16, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(70, 20),
                 AutoSize = true
             };
@@ -94,7 +94,7 @@ namespace IBrary.UserControls
                 {
                     Width = 200,
                     Height = 120,
-                    BackColor = SettingsManager.FlashcardColor,
+                    BackColor = App.Settings.FlashcardColor,
                     Margin = new Padding(10)
                 };
 
@@ -124,7 +124,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 10, FontStyle.Bold),
                     Location = new Point(10, 10),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 Label accuracyLabel = new Label
@@ -135,7 +135,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 8),
                     Location = new Point(10, 35),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 Label flashcardCountLabel = new Label
@@ -144,7 +144,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 8),
                     Location = new Point(10, 55),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 Label studiedLabel = new Label
@@ -153,7 +153,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 8),
                     Location = new Point(10, 75),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 Label totalAnswersLabel = new Label
@@ -162,7 +162,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 8),
                     Location = new Point(10, 95),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
 
                 topicPanel.Controls.Add(nameLabel);

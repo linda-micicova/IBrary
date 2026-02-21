@@ -37,7 +37,7 @@ namespace IBrary.UserControls
         {
             BackIcon = new PictureBox
             {
-                Image = SettingsManager.CurrentSettings.Theme == "Light"
+                Image = App.Settings.CurrentSettings.Theme == "Light"
                     ? Properties.Resources.arrow
                     : Properties.Resources.backWhite,
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -60,7 +60,7 @@ namespace IBrary.UserControls
             {
                 Text = "Blocked Users",
                 Font = new Font("Arial", 16, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 Location = new Point(70, 20),
                 AutoSize = true
             };
@@ -83,7 +83,7 @@ namespace IBrary.UserControls
 
         private void LoadBlockedUsers()
         {
-            foreach (var username in SettingsManager.CurrentSettings.BlockedUsers)
+            foreach (var username in App.Settings.CurrentSettings.BlockedUsers)
             {
                 Panel blockedPanel = new Panel
                 {
@@ -104,7 +104,7 @@ namespace IBrary.UserControls
                     Font = new Font("Segoe UI", 10, FontStyle.Bold),
                     Location = new Point(10, 10),
                     AutoSize = true,
-                    ForeColor = SettingsManager.TextColor
+                    ForeColor = App.Settings.TextColor
                 };
                 nameLabel.Cursor = Cursors.Hand;
 
@@ -175,7 +175,7 @@ namespace IBrary.UserControls
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    SettingsManager.UnblockUser(username);
+                    App.Settings.UnblockUser(username);
                     MessageBox.Show($"{username} has been unblocked.");
                 }
             }

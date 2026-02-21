@@ -62,12 +62,12 @@ namespace IBrary.Models
 
             // Overall priority, weight set in settings
             double flashcardPriority =
-                errorRate * SettingsManager.CurrentSettings.ErrorRateWeight
-                + timeFactor * SettingsManager.CurrentSettings.TimeFactorWeight
-                + starFactor * SettingsManager.CurrentSettings.ImportantTagWeight;
+                errorRate * App.Settings.CurrentSettings.ErrorRateWeight
+                + timeFactor * App.Settings.CurrentSettings.TimeFactorWeight
+                + starFactor * App.Settings.CurrentSettings.ImportantTagWeight;
 
             double topicPriority = 0;
-            var allTopics = TopicManager.AllTopics; 
+            var allTopics = App.Topics.AllTopics; 
             foreach (var topicId in Topics)
             {
                 var topic = allTopics.FirstOrDefault(t => t.TopicId == topicId); // Find topic by ID
@@ -77,8 +77,8 @@ namespace IBrary.Models
                     double topicSinceLastSeen = topic.LatestSeen.HasValue ?
                         Math.Min(Math.Log(1 + (DateTime.Today - topic.LatestSeen.Value).TotalDays) / maxDays, 1) : 0;
 
-                    topicPriority += topic.AverageErrorRate * SettingsManager.CurrentSettings.ErrorRateWeight
-                        + topicSinceLastSeen * SettingsManager.CurrentSettings.TimeFactorWeight;
+                    topicPriority += topic.AverageErrorRate * App.Settings.CurrentSettings.ErrorRateWeight
+                        + topicSinceLastSeen * App.Settings.CurrentSettings.TimeFactorWeight;
                 }
             }
             return flashcardPriority + topicPriority;
@@ -87,29 +87,29 @@ namespace IBrary.Models
         public Flashcard(string question, string answer)
         {
             this.FlashcardId = GenerateId();
-            this.Versions = new List<CardVersion> { new CardVersion(question, answer, SettingsManager.CurrentSettings.Username) };
+            this.Versions = new List<CardVersion> { new CardVersion(question, answer, App.Settings.CurrentSettings.Username) };
         }
         public Flashcard(string question, string answer, Level level, List<string> topicIDs)
         {
             this.FlashcardId = GenerateId();
-            this.Versions = new List<CardVersion> { new CardVersion(question, answer, SettingsManager.CurrentSettings.Username) };
+            this.Versions = new List<CardVersion> { new CardVersion(question, answer, App.Settings.CurrentSettings.Username) };
             this.Level = level;
             this.Topics = topicIDs;
         }
         public Flashcard(string question, string answer, Level level, List<string> topicIDs, string questionImagePath, string answerImagePath)
         {
             this.FlashcardId = GenerateId();
-            this.Versions = new List<CardVersion> { new CardVersion(question, answer, SettingsManager.CurrentSettings.Username, questionImagePath, answerImagePath) };
+            this.Versions = new List<CardVersion> { new CardVersion(question, answer, App.Settings.CurrentSettings.Username, questionImagePath, answerImagePath) };
             this.Level = level;
             this.Topics = topicIDs;
         }
         public void ModifyFlashcard(string question, string answer)
         {
-            Versions.Add(new CardVersion(question, answer, SettingsManager.CurrentSettings.Username));
+            Versions.Add(new CardVersion(question, answer, App.Settings.CurrentSettings.Username));
         }
         public void DeleteFlashcard()
         {
-            Versions.Add(new CardVersion(SettingsManager.CurrentSettings.Username, true));
+            Versions.Add(new CardVersion(App.Settings.CurrentSettings.Username, true));
         }
 
         public void RegisterStudyResult(DateTime date, bool incorrect)
@@ -135,7 +135,7 @@ namespace IBrary.Models
             do
             {
                 id = Guid.NewGuid().ToString();
-            } while (FlashcardManager.AllFlashcards.Any(f => f.FlashcardId == id));
+            } while (App.Flashcards.AllFlashcards.Any(f => f.FlashcardId == id));
             return id;
         }
     }

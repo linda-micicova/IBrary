@@ -19,7 +19,7 @@ namespace IBrary.Models
         {
             get
             {
-                var flashcardsInTopic = FlashcardManager.Load().Where(f => f.Topics.Contains(TopicId)).ToList();
+                var flashcardsInTopic = App.Flashcards.Load().Where(f => f.Topics.Contains(TopicId)).ToList();
                 return flashcardsInTopic;
             }
         }

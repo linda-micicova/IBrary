@@ -39,7 +39,7 @@ namespace IBrary.UserControls
                 Text = "Enter Access Key:",
                 AutoSize = true,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
             };
 
             // Key TextBox
@@ -75,8 +75,8 @@ namespace IBrary.UserControls
             try
             {
                 string username = UserManager.GetUsernameFromKey(key); // Attempt to get the username from the key
-                SettingsManager.CurrentSettings.Username = username; // Set the username in settings
-                SettingsManager.Save(); // Save the username in JSON file
+                App.Settings.CurrentSettings.Username = username; // Set the username in settings
+                App.Settings.Save(); // Save the username in JSON file
                 SettingsRequested?.Invoke(this, EventArgs.Empty); // Navigate to settings after successful login
             }
             catch (FormatException) // The key is not in Base64 format

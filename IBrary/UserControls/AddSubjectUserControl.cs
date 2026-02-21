@@ -36,7 +36,7 @@ namespace IBrary.UserControls
             {
                 Text = "Subject Name:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -45,14 +45,14 @@ namespace IBrary.UserControls
             subjectNameTextBox = new TextBox
             {
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
 
             // Load all topics
-            var allTopics = TopicManager.Load();
+            var allTopics = App.Topics.Load();
 
             // Button
             saveButton = new MinimalButton
@@ -77,7 +77,7 @@ namespace IBrary.UserControls
                 return;
             }
 
-            SubjectManager.Load();
+            App.Subjects.Load();
 
             var newSubject = new Subject
             {
@@ -86,7 +86,7 @@ namespace IBrary.UserControls
                 Flashcards = new List<string>()
             };
 
-            SubjectManager.AddSubject(newSubject);
+            App.Subjects.AddSubject(newSubject);
 
             MessageBox.Show(
                 $"Subject '{newSubject.SubjectName}' created successfully!\n\nYou can add it to your subjects in Settings.",

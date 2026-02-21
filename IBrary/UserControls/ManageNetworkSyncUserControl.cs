@@ -58,7 +58,7 @@ namespace IBrary.UserControls
 
         private void InitializeUI()
         {
-            this.BackColor = SettingsManager.BackgroundColor;
+            this.BackColor = App.Settings.BackgroundColor;
 
             CreateStatusPanel();
             CreateDevicePanel();
@@ -73,7 +73,7 @@ namespace IBrary.UserControls
         {
             statusPanel = new Panel
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -90,7 +90,7 @@ namespace IBrary.UserControls
             {
                 Text = $"Local IP: {GetLocalIPAddress()}",
                 Font = new Font("Arial", 10),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true,
                 Location = new Point(10, 35)
             };
@@ -123,7 +123,7 @@ namespace IBrary.UserControls
         {
             devicePanel = new Panel
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -131,7 +131,7 @@ namespace IBrary.UserControls
             {
                 Text = "Discovered Devices:",
                 Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true,
                 Location = new Point(10, 10)
             };
@@ -140,15 +140,15 @@ namespace IBrary.UserControls
             {
                 Text = "Count: 0",
                 Font = new Font("Arial", 10),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true,
                 Location = new Point(150, 10)
             };
 
             deviceListBox = new ListBox
             {
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Font = new Font("Consolas", 10),
                 Location = new Point(10, 35)
             };
@@ -180,7 +180,7 @@ namespace IBrary.UserControls
         {
             messagePanel = new Panel
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -188,7 +188,7 @@ namespace IBrary.UserControls
             {
                 Text = "Send Message:",
                 Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true,
                 Location = new Point(10, 10)
             };
@@ -197,15 +197,15 @@ namespace IBrary.UserControls
             {
                 Text = "No device selected",
                 Font = new Font("Arial", 10),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true,
                 Location = new Point(10, 35)
             };
 
             messageTextBox = new TextBox
             {
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Font = new Font("Arial", 10),
                 Multiline = true,
                 Text = "Hello from IBrary!",
@@ -231,7 +231,7 @@ namespace IBrary.UserControls
         {
             logPanel = new Panel
             {
-                BackColor = SettingsManager.FlashcardColor,
+                BackColor = App.Settings.FlashcardColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -239,15 +239,15 @@ namespace IBrary.UserControls
             {
                 Text = "Activity Log:",
                 Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true,
                 Location = new Point(10, 10)
             };
 
             logTextBox = new TextBox
             {
-                BackColor = SettingsManager.BackgroundColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.BackgroundColor,
+                ForeColor = App.Settings.TextColor,
                 Font = new Font("Consolas", 9),
                 Multiline = true,
                 ReadOnly = true,
@@ -362,7 +362,7 @@ namespace IBrary.UserControls
                 {
                     Type = "USER_MESSAGE",
                     Sender = Environment.MachineName,
-                    Username = SettingsManager.CurrentSettings.Username ?? "Anonymous",
+                    Username = App.Settings.CurrentSettings.Username ?? "Anonymous",
                     Message = messageTextBox.Text,
                     Timestamp = DateTime.Now
                 };

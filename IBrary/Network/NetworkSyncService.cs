@@ -591,15 +591,15 @@ namespace IBrary.Network
             switch (fileName)
             {
                 case "flashcards.json":
-                    var currentCount = FlashcardManager.Load().Count;
+                    var currentCount = App.Flashcards.Load().Count;
                     //MessageBox.Show($"Current flashcards before merge: {currentCount}");
 
-                    List<Flashcard> flashcards = FlashcardManager.LoadFlashcardsFromJson(fullPath);
+                    List<Flashcard> flashcards = App.Flashcards.LoadFlashcardsFromJson(fullPath);
                     //MessageBox.Show($"Incoming flashcards: {flashcards.Count}");
 
                     FlashcardManager.MergeFlashcards(flashcards, false);
 
-                    var afterCount = FlashcardManager.Load().Count;
+                    var afterCount = App.Flashcards.Load().Count;
                     //MessageBox.Show($"Flashcards after merge: {afterCount}");
 
                     // Notify UI to refresh
@@ -607,14 +607,14 @@ namespace IBrary.Network
                     break;
 
                 case "topics.json":
-                    List<Topic> topics = TopicManager.LoadTopicsFromJson(fullPath);
-                    TopicManager.MergeTopics(topics);
+                    List<Topic> topics = App.Topics.LoadTopicsFromJson(fullPath);
+                    App.Topics.MergeTopics(topics);
                     //MessageBox.Show($"Merged {topics.Count} topics");
                     break;
 
                 case "subjects.json":
-                    List<Subject> subjects = SubjectManager.LoadSubjectsFromJson(fullPath);
-                    SubjectManager.MergeSubjects(subjects);
+                    List<Subject> subjects = App.Subjects.LoadSubjectsFromJson(fullPath);
+                    App.Subjects.MergeSubjects(subjects);
                     //MessageBox.Show($"Merged {subjects.Count} subjects");
                     break;
 

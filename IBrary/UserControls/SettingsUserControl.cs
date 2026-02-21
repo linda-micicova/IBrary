@@ -50,12 +50,12 @@ namespace IBrary.UserControls
         private void LoadLoginPanel()
         {
             LoginPanel?.Controls.Clear(); // Dispose of the old panel if it exists
-            SettingsManager.Load(); // Ensure settings are loaded before accessing
+            App.Settings.Load(); // Ensure settings are loaded before accessing
             
             ProfilePictureBox = new PictureBox
             {
                 Size = new Size(20, 20),
-                Image = SettingsManager.CurrentSettings.Theme == "Light" ? Properties.Resources.userBlack : Properties.Resources.userWhite, // Use a default image if none is set
+                Image = App.Settings.CurrentSettings.Theme == "Light" ? Properties.Resources.userBlack : Properties.Resources.userWhite, // Use a default image if none is set
                 SizeMode = PictureBoxSizeMode.Zoom,
             };
             LogInOutButton = new MinimalButton
@@ -63,12 +63,12 @@ namespace IBrary.UserControls
                 Size = new Size(100, 30)
             };
 
-            UsernameLabel.ForeColor = SettingsManager.TextColor;
+            UsernameLabel.ForeColor = App.Settings.TextColor;
 
-            if (SettingsManager.CurrentSettings.Username != null &&
-                    !string.IsNullOrWhiteSpace(SettingsManager.CurrentSettings.Username))
+            if (App.Settings.CurrentSettings.Username != null &&
+                    !string.IsNullOrWhiteSpace(App.Settings.CurrentSettings.Username))
             {
-                UsernameLabel.Text = SettingsManager.CurrentSettings.Username;
+                UsernameLabel.Text = App.Settings.CurrentSettings.Username;
                 LogInOutButton.Text = "Log Out";
 
                 LogInOutButton.Click += (s, e) =>
@@ -81,7 +81,7 @@ namespace IBrary.UserControls
 
                     if (dialogResult == DialogResult.Yes)
                     {
-                        SettingsManager.LogOut();
+                        App.Settings.LogOut();
                     }
                     LoadLoginPanel();
                     UpdateSizes();
@@ -101,7 +101,7 @@ namespace IBrary.UserControls
         private void InitializeUI()
         {
             // Set the background color of the user control
-            this.BackColor = SettingsManager.BackgroundColor;
+            this.BackColor = App.Settings.BackgroundColor;
 
             LoginPanel = new Panel
             {
@@ -191,7 +191,7 @@ namespace IBrary.UserControls
 
             ThemeButton.Click += (s, e) =>
             {
-                SettingsManager.ChangeTheme();
+                App.Settings.ChangeTheme();
                 Navigator.RefreshCurrentScreen(); // This will call OnThemeChanged in MainForm
             };
 
@@ -265,7 +265,7 @@ namespace IBrary.UserControls
             if (topicsData != null)
             {
                 var topics = JsonConvert.DeserializeObject<List<Topic>>(topicsData.ToString());
-                TopicManager.MergeTopics(topics); // or your save method
+                App.Topics.MergeTopics(topics); // or your save method
             }
         }
 
@@ -274,7 +274,7 @@ namespace IBrary.UserControls
             if (subjectsData != null)
             {
                 var subjects = JsonConvert.DeserializeObject<List<Subject>>(subjectsData.ToString());
-                SubjectManager.MergeSubjects(subjects); // or your save method
+                App.Subjects.MergeSubjects(subjects); // or your save method
             }
         }
 
@@ -287,14 +287,14 @@ namespace IBrary.UserControls
                     var importedSettings = JsonConvert.DeserializeObject<UserSettings>(settingsData.ToString());
 
                     // Check if the imported username matches the current logged-in user
-                    if (importedSettings.Username == SettingsManager.CurrentSettings.Username)
+                    if (importedSettings.Username == App.Settings.CurrentSettings.Username)
                     {
-                        SettingsManager.Save(importedSettings);
+                        App.Settings.Save(importedSettings);
                         MessageBox.Show("Settings imported successfully!");
                     }
                     else
                     {
-                        string currentUser = SettingsManager.CurrentSettings.Username ?? "guest";
+                        string currentUser = App.Settings.CurrentSettings.Username ?? "guest";
                         MessageBox.Show($"Settings not imported - they belong to user '{importedSettings.Username}' but you are logged in as '{currentUser}'.");
                     }
                 }
@@ -337,7 +337,7 @@ namespace IBrary.UserControls
                             MessageBoxIcon.Question) == DialogResult.Yes;
 
                         // Get flashcards with or without stats
-                        var flashcards = FlashcardManager.Load();
+                        var flashcards = App.Flashcards.Load();
                         if (!includeStatsAndSettings)
                         {
                             flashcards = FlashcardManager.ResetAllFlashcardStats(flashcards);
@@ -347,9 +347,9 @@ namespace IBrary.UserControls
                         var exportData = new
                         {
                             Flashcards = flashcards,
-                            Topics = TopicManager.Load(),
-                            Subjects = SubjectManager.Load(),
-                            Settings = includeStatsAndSettings ? SettingsManager.Load() : null,
+                            Topics = App.Topics.Load(),
+                            Subjects = App.Subjects.Load(),
+                            Settings = includeStatsAndSettings ? App.Settings.Load() : null,
                             ExportDate = DateTime.Now,
                             Version = "1.0",
                             IncludesStats = includeStatsAndSettings,

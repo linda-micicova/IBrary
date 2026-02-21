@@ -1,5 +1,6 @@
 ﻿using Managers;
 using IBrary.Models;
+using IBrary;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,25 +13,25 @@ using System.Windows.Forms;
 
 namespace IBrary.Managers
 {
-    public static class FlashcardManager
+    public class FlashcardManager
     {
-        public static readonly string flashcardsPath = Path.Combine(
+        public readonly string flashcardsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",
         "flashcards.json");
 
         //list of all currently stored flashcards
-        public static List<Flashcard> AllFlashcards { get; private set; } = new List<Flashcard>();
+        public List<Flashcard> AllFlashcards { get; private set; } = new List<Flashcard>();
 
         // LOAD FLASHCARDS FROM MEMORY
-        public static List<Flashcard> Load()
+        public List<Flashcard> Load()
         {
             AllFlashcards = LoadFlashcardsFromJson(flashcardsPath);
             return AllFlashcards;
         }
 
         // Loads flashcards from specified json file path 
-        public static List<Flashcard> LoadFlashcardsFromJson(string path)
+        public List<Flashcard> LoadFlashcardsFromJson(string path)
         {
             if (!File.Exists(path)) // File doesn't exist, return empty list
                 return new List<Flashcard>();
@@ -54,7 +55,7 @@ namespace IBrary.Managers
                 return new List<Flashcard>();
             }
         }
-        public static void Save()
+        public void Save()
         {
             try
             {
@@ -75,7 +76,7 @@ namespace IBrary.Managers
         }
 
         // Save input flashcards
-        public static void SaveFlashcards(List<Flashcard> flashcards)
+        public void SaveFlashcards(List<Flashcard> flashcards)
         {
             try
             {
@@ -100,7 +101,7 @@ namespace IBrary.Managers
 
         // Add a new flashcard
 
-        public static void AddFlashcard(Flashcard newCard)
+        public void AddFlashcard(Flashcard newCard)
         {
             if (newCard == null) throw new ArgumentNullException(nameof(newCard));
 
@@ -110,7 +111,7 @@ namespace IBrary.Managers
         }
 
         // Edit an existing flashcard by adding a new version
-        public static void EditFlashcard(string flashcardId, string question, string answer, string editor)
+        public void EditFlashcard(string flashcardId, string question, string answer, string editor)
         {
             var flashcards = Load();
 
@@ -127,7 +128,7 @@ namespace IBrary.Managers
 
         public static void EditFlashcard(string flashcardId, CardVersion version)
         {
-            var flashcards = Load();
+            var flashcards = App.Flashcards.Load();
 
             int index = flashcards.FindIndex(f => f.FlashcardId == flashcardId);
             if (index != -1)
@@ -136,14 +137,14 @@ namespace IBrary.Managers
                 flashcards[index].Versions.Add(version);
 
                 // Save changes
-                SaveFlashcards(flashcards);
+                App.Flashcards.SaveFlashcards(flashcards);
             }
         }
 
         // Delete a flashcard (flag as deleted or remove completely based on user role)
         public static void DeleteFlashcard(string flashcardId, string editor)
         {
-            var flashcards = Load();
+            var flashcards = App.Flashcards.Load();
 
             int index = flashcards.FindIndex(f => f.FlashcardId == flashcardId);
             if (index != -1)
@@ -160,7 +161,7 @@ namespace IBrary.Managers
                 }
 
                 // Save changes
-                SaveFlashcards(flashcards);
+                App.Flashcards.SaveFlashcards(flashcards);
             }
         }
 
@@ -175,13 +176,13 @@ namespace IBrary.Managers
         // Uses current user's username to decide whether to preserve stats or not
         public static void MergeFlashcards(List<Flashcard> flashcardsToMerge, string username)
         {
-            MergeFlashcards(flashcardsToMerge, username == SettingsManager.CurrentSettings.Username);
+            MergeFlashcards(flashcardsToMerge, username == App.Settings.CurrentSettings.Username);
         }
 
         // Merges with currently stored flashcards
         public static void MergeFlashcards(List<Flashcard> flashcardsToMerge, bool preserveStats = false)
         {
-            var allFlashcards = Load(); // Load current flashcards to merge with
+            var allFlashcards = App.Flashcards.Load(); // Load current flashcards to merge with
 
             // Stats should reset if the file is imported by a different user
             if (!preserveStats) 
@@ -221,7 +222,7 @@ namespace IBrary.Managers
                     allFlashcards.Add(flashcard);
                 }
             }
-            SaveFlashcards(allFlashcards); // Save merged flashcards to JSON file
+            App.Flashcards.SaveFlashcards(allFlashcards); // Save merged flashcards to JSON file
         }
         // Resets progress stats for input flashcards
         public static List<Flashcard> ResetAllFlashcardStats(List<Flashcard> flashcards)
@@ -240,23 +241,23 @@ namespace IBrary.Managers
         // Resets progress stats for all currently stored flashcards
         public static void ResetAllFlashcardStats()
         {
-            foreach (var flashcard in AllFlashcards)
+            foreach (var flashcard in App.Flashcards.AllFlashcards)
             {
                 flashcard.Seen = 0;
                 flashcard.Errors = 0;
                 flashcard.FirstSeen = null;
                 flashcard.LastSeen = null;
             }
-            SaveFlashcards(AllFlashcards);
+            App.Flashcards.SaveFlashcards(App.Flashcards.AllFlashcards);
         }
 
         
         // Helper method to import already created Flashcard objects
         public static void ImportFlashcards(List<Flashcard> flashcardsToImport)
         {
-            var allFlashcards = Load();
+            var allFlashcards = App.Flashcards.Load();
             allFlashcards.AddRange(flashcardsToImport);
-            SaveFlashcards(allFlashcards);
+            App.Flashcards.SaveFlashcards(allFlashcards);
         }
 
         //QUIZLET FLASHCARDS METHODS
@@ -287,7 +288,7 @@ namespace IBrary.Managers
         {
             bool importSuccessful = false;
             List<QuizletFlashcard> flashcardsToImport = LoadQuizletFlashcardsFromJson(path);
-            var allFlashcards = Load();
+            var allFlashcards = App.Flashcards.Load();
             foreach (QuizletFlashcard flashcard in flashcardsToImport)
             {
                 if (flashcard.term != null || flashcard.definition != null)
@@ -297,7 +298,7 @@ namespace IBrary.Managers
                 }
             }
 
-            SaveFlashcards(allFlashcards);
+            App.Flashcards.SaveFlashcards(allFlashcards);
             return importSuccessful;
         }
 

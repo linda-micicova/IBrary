@@ -30,14 +30,14 @@ namespace IBrary.UserControls
 
         private void InitializeUI()
         {
-            this.BackColor = SettingsManager.BackgroundColor;
+            this.BackColor = App.Settings.BackgroundColor;
 
             // Labels
             topicNameLabel = new Label
             {
                 Text = "Topic Name:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -45,7 +45,7 @@ namespace IBrary.UserControls
             {
                 Text = "Level:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -53,7 +53,7 @@ namespace IBrary.UserControls
             {
                 Text = "Subject:",
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                ForeColor = SettingsManager.TextColor,
+                ForeColor = App.Settings.TextColor,
                 AutoSize = true
             };
 
@@ -61,8 +61,8 @@ namespace IBrary.UserControls
             topicNameTextBox = new TextBox
             {
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor,
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -70,21 +70,21 @@ namespace IBrary.UserControls
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor
             };
 
             subjectComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                BackColor = SettingsManager.FlashcardColor,
-                ForeColor = SettingsManager.TextColor
+                BackColor = App.Settings.FlashcardColor,
+                ForeColor = App.Settings.TextColor
             };
 
             // Load data
             levelComboBox.DataSource = Enum.GetValues(typeof(Level));
-            subjectComboBox.DataSource = SettingsManager.MySubjects;
+            subjectComboBox.DataSource = App.Settings.MySubjects;
             subjectComboBox.DisplayMember = "SubjectName";
 
             // Button
@@ -129,7 +129,7 @@ namespace IBrary.UserControls
             }
 
             // Check if topic already exists
-            var existingTopics = TopicManager.Load();
+            var existingTopics = App.Topics.Load();
             if (existingTopics.Any(t => t.TopicName.Equals(topicNameTextBox.Text.Trim(), StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("A topic with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -148,11 +148,11 @@ namespace IBrary.UserControls
             var selectedSubject = (Subject)subjectComboBox.SelectedItem;
 
             // Save topic to manager
-            TopicManager.AddTopic(newTopic);
+            App.Topics.AddTopic(newTopic);
 
             // Add topic to selected subject in memory
             selectedSubject.Topics.Add(newTopic.TopicId);
-            SubjectManager.Save(); // Save the updated subject
+            App.Subjects.Save(); // Save the updated subject
 
             MessageBox.Show($"Topic '{newTopic.TopicName}' created and added to '{selectedSubject.SubjectName}' successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
