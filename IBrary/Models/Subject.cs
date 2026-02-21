@@ -79,22 +79,6 @@ namespace IBrary.Models
             Topics.Add(topic.TopicId);
             return topic;
         }
-        /*public Topic FindOrAddTopic(string name)
-        {
-            foreach (string topicId in Topics)
-            {
-                Topic topic = TopicManager.Instance.GetTopicById(topicId);
-                if (topic != null && topic.TopicName == name)
-                {
-                    return topic;
-                }
-            }
-
-            // Not found: create new topic and add it
-            Topic newTopic = new Topic(name);
-            AddTopic(newTopic);
-            return newTopic;
-        }*/
         public Flashcard AddFlashcard(Flashcard flashcard)
         {
             Flashcards.Add(flashcard.FlashcardId);

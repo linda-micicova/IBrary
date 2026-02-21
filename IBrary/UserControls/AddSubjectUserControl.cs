@@ -94,88 +94,8 @@ namespace IBrary.UserControls
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
-            // Ask user if they want to add to their subjects
-            /*var result = MessageBox.Show(
-            $"Do you want to add '{newSubject.SubjectName}' to your subjects?\n\nYes = HL\nNo = SL\nCancel = Don't add",
-            "Add to Your Subjects",
-            MessageBoxButtons.YesNoCancel,
-            MessageBoxIcon.Question);
-
-            var currentMySubjects = SettingsManager.MySubjects.Select(s => s.SubjectId).ToList();
-
-            if (result == DialogResult.Yes) // Yes, HL
-            {
-                if (!currentMySubjects.Contains(newSubject.SubjectId))
-                {
-                    currentMySubjects.Add(newSubject.SubjectId);
-                    SettingsManager.UpdateMySubjects(currentMySubjects);
-                }
-                MessageBox.Show($"Subject '{newSubject.SubjectName}' created and added to your subjects as HL!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (result == DialogResult.No) // Yes, SL
-            {
-                if (!currentMySubjects.Contains(newSubject.SubjectId))
-                {
-                    currentMySubjects.Add(newSubject.SubjectId);
-                    SettingsManager.UpdateMySubjects(currentMySubjects);
-                }
-                MessageBox.Show($"Subject '{newSubject.SubjectName}' created and added to your subjects as SL!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else // Cancel - No
-            {
-                MessageBox.Show($"Subject '{newSubject.SubjectName}' created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }*/
-
             ClearForm();
         }
-        
-        /*private void SaveButton_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(subjectNameTextBox.Text))
-            {
-                MessageBox.Show("Please enter a subject name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            SubjectManager.Load();
-
-            var newSubject = new Subject
-            {
-                SubjectId = Guid.NewGuid().ToString(),
-                SubjectName = subjectNameTextBox.Text.Trim(),
-                Flashcards = new List<string>()
-            };
-
-            SubjectManager.AddSubject(newSubject);
-
-            MessageBox.Show($"Subject '{newSubject.SubjectName}' created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            ClearForm();
-        }*/
-        /*private void SaveButton_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(subjectNameTextBox.Text))
-            {
-                MessageBox.Show("Please enter a subject name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Create new subject
-            var newSubject = new Subject
-            {
-                SubjectId = Guid.NewGuid().ToString(),
-                SubjectName = subjectNameTextBox.Text.Trim(),
-                Flashcards = new List<string>() // Empty initially
-            };
-
-            // Save to manager
-            SubjectManager.AddSubject(newSubject);
-
-            MessageBox.Show($"Subject '{newSubject.SubjectName}' created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Clear form
-            ClearForm();
-        }*/
 
         private void ClearForm()
         {
