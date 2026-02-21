@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Security.Cryptography;
 
 
-namespace IBrary.App_settings
+namespace IBrary.Models
 {
     public class UserSettings
     {
