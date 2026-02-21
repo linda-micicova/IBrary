@@ -23,22 +23,18 @@ namespace IBrary.Models
     }
     public class Flashcard
     {
-        public string FlashcardId { get; set; }
-        public Level Level { get; set; }
-        public List<CardVersion> Versions { get; set; } = new List<CardVersion>();
+        public string FlashcardId { get; set; } // Unique identifier
+        public Level Level { get; set; } // HL or SL
+        public List<CardVersion> Versions { get; set; } = new List<CardVersion>(); // History of edits
         public List<string> Topics { get; set; } = new List<string>(); // List of Topic IDs
-        public DateTime? FirstSeen { get; set; }
-        public DateTime? LastSeen { get; set; }
-        public int Seen { get; set; } = 0;
-        public int Errors { get; set; } = 0;
-        public bool Important { get; set; } = false;
-
-        [JsonIgnore]
-        public double ErrorRate => Seen == 0 ? 0 : (double)Errors / Seen;
-        [JsonIgnore]
-        public double Accuracy => 1 - ErrorRate;
-
-        [JsonIgnore]
+        public DateTime? FirstSeen { get; set; } // First time studied, null if never studied
+        public DateTime? LastSeen { get; set; } // Last time studied, null if never studied
+        public int Seen { get; set; } = 0; // Total times studied
+        public int Errors { get; set; } = 0; // Total times answered incorrectly
+        public bool Important { get; set; } = false; // Star rating flag
+        [JsonIgnore] // Not stored in JSON, derived from Seen and Errors
+        public double ErrorRate => Seen == 0 ? 0 : (double) Errors / Seen;
+        [JsonIgnore] // Not stored in JSON, depends on current date and settings
         public double Priority => CalculatePriority();
 
         // Calculate priority order for flashcard review
@@ -67,7 +63,8 @@ namespace IBrary.Models
                 + starFactor * App.Settings.CurrentSettings.ImportantTagWeight;
 
             double topicPriority = 0;
-            var allTopics = App.Topics.AllTopics; 
+            var allTopics = App.Topics.AllTopics;
+            int validTopicCount = 0;
             foreach (var topicId in Topics)
             {
                 var topic = allTopics.FirstOrDefault(t => t.TopicId == topicId); // Find topic by ID
@@ -79,8 +76,11 @@ namespace IBrary.Models
 
                     topicPriority += topic.AverageErrorRate * App.Settings.CurrentSettings.ErrorRateWeight
                         + topicSinceLastSeen * App.Settings.CurrentSettings.TimeFactorWeight;
+                    validTopicCount++;
                 }
             }
+            if (validTopicCount > 0)
+                topicPriority /= validTopicCount;
             return flashcardPriority + topicPriority;
         }
         public Flashcard() { }
