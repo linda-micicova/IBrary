@@ -19,7 +19,6 @@ namespace IBrary.UserControls
         private ComboBox levelComboBox;
         private MinimalButton saveButton;
 
-        //toto moc nejde
         private readonly string imageStoragePath = Path.Combine(Application.StartupPath, "FlashcardImages");
 
         private PictureBox questionPictureBox;
@@ -63,36 +62,6 @@ namespace IBrary.UserControls
 
             SetupEdittingMode();
         }
-
-        /*private void SetupEdittingMode()
-        {
-            editting = true;
-
-            // Completely disable selectors
-            subjectComboBox.Enabled = false;
-            topicCheckedListBox.Enabled = false;
-            levelComboBox.Enabled = false;
-
-            // Populate tex fields and selectors
-            questionRichTextBox.Text = cardVersion.Question;
-            answerRichTextBox.Text = cardVersion.Answer;
-            if (!string.IsNullOrEmpty(cardVersion.QuestionImagePath) && File.Exists(cardVersion.QuestionImagePath))
-            {
-                questionImagePath = cardVersion.QuestionImagePath;
-                questionPictureBox.Image = Image.FromFile(questionImagePath);
-            }
-            if (!string.IsNullOrEmpty(cardVersion.AnswerImagePath) && File.Exists(cardVersion.AnswerImagePath))
-            {
-                answerImagePath = cardVersion.AnswerImagePath;
-                answerPictureBox.Image = Image.FromFile(answerImagePath);
-            }
-            subjectComboBox.SelectedItem = SettingsManager.MySubjects.FirstOrDefault(s => flashcard.Topics.Any(sid => s.Topics.Contains(sid)));
-            topicCheckedListBox.Items.Cast<Topic>().ToList().ForEach(t =>
-            {
-                if (flashcard.Topics.Contains(t.TopicId))
-                    topicCheckedListBox.SetItemChecked(topicCheckedListBox.Items.IndexOf(t), true);
-            });
-        }*/
         private void SetupEdittingMode()
         {
             editting = true;
@@ -284,7 +253,6 @@ namespace IBrary.UserControls
                 Size = new Size(120, 35)
             };
             answerImageButton.Click += AnswerImageButton_Click;
-            //KONIEC
 
             // Add all controls
             this.Controls.Add(questionLabel);
@@ -337,36 +305,6 @@ namespace IBrary.UserControls
                 }
             }
         }
-        //old version
-        /*private void QuestionImageButton_Click(object sender, EventArgs e)
-        {
-            using (var openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string uniqueFileName = GenerateUniqueFileName(openFileDialog.FileName);
-                    questionImagePath = Path.Combine(imageStoragePath, uniqueFileName);
-                    File.Copy(openFileDialog.FileName, questionImagePath);
-                    questionPictureBox.Image = Image.FromFile(questionImagePath);
-                }
-            }
-        }
-
-        private void AnswerImageButton_Click(object sender, EventArgs e)
-        {
-            using (var openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string uniqueFileName = GenerateUniqueFileName(openFileDialog.FileName);
-                    answerImagePath = Path.Combine(imageStoragePath, uniqueFileName);
-                    File.Copy(openFileDialog.FileName, answerImagePath);
-                    answerPictureBox.Image = Image.FromFile(answerImagePath);
-                }
-            }
-        }*/
 
         private void SubjectComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -382,53 +320,6 @@ namespace IBrary.UserControls
             topicCheckedListBox.DisplayMember = "TopicName";
         }
 
-        /*private void SaveButton_Click(object sender, EventArgs e)
-        {
-            if(!ValidateInput()) return;
-
-            var selectedSubject = (Subject)subjectComboBox.SelectedItem;
-            var selectedTopicIds = topicCheckedListBox.CheckedItems
-                .Cast<Topic>()
-                .Select(t => t.TopicId)
-                .ToList();
-
-            if (editting)
-            {
-                var version = new CardVersion(
-                    questionRichTextBox.Text,
-                    answerRichTextBox.Text,
-                    SettingsManager.CurrentSettings.Username,
-                    questionImagePath,
-                    answerImagePath
-                );
-
-
-                // Save flashcard
-                FlashcardManager.EditFlashcard(flashcard.FlashcardId, version);
-
-                // Clear form or go back
-                Navigator.GoToFlashcards();
-            }
-            else
-            {
-                // Create flashcard
-                var flashcard = new Flashcard(
-                    questionRichTextBox.Text,
-                    answerRichTextBox.Text,
-                    (Level)levelComboBox.SelectedItem,
-                    selectedTopicIds
-                );
-
-                // Save flashcard
-                FlashcardManager.AddFlashcard(flashcard);
-                SubjectManager.AddFlashcardToSubject(flashcard, selectedSubject);
-
-                // Clear form or go back
-                ClearForm();
-            }
-            MessageBox.Show("Flashcard saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        }*/
         private void SaveButton_Click(object sender, EventArgs e)
         {
             if (!ValidateInput()) return;
@@ -439,7 +330,6 @@ namespace IBrary.UserControls
                 .Select(t => t.TopicId)
                 .ToList();
 
-            // CHANGE: Extract only filenames from full paths
             string questionImageFilename = questionImagePath != null ? Path.GetFileName(questionImagePath) : null;
             string answerImageFilename = answerImagePath != null ? Path.GetFileName(answerImagePath) : null;
 
@@ -449,9 +339,9 @@ namespace IBrary.UserControls
                     questionRichTextBox.Text,
                     answerRichTextBox.Text,
                     App.Settings.CurrentSettings.Username,
-                    questionImageFilename,  // CHANGED: was questionImagePath
-                    answerImageFilename,     // CHANGED: was answerImagePath
-                    questionImageBase64,  // ← add
+                    questionImageFilename,  
+                    answerImageFilename,    
+                    questionImageBase64, 
                     answerImageBase64
                     );
 
@@ -469,8 +359,8 @@ namespace IBrary.UserControls
                     answerRichTextBox.Text,
                     (Level)levelComboBox.SelectedItem,
                     selectedTopicIds,
-                    questionImageFilename,  // ADD THIS
-                    answerImageFilename     // ADD THIS
+                    questionImageFilename,  
+                    answerImageFilename   
                 );
 
                 // Save flashcard
@@ -480,26 +370,6 @@ namespace IBrary.UserControls
                 // Clear form or go back
                 ClearForm();
             }
-            /*else
-            {
-                // Create flashcard
-                var flashcard = new Flashcard(
-                    questionRichTextBox.Text,
-                    answerRichTextBox.Text,
-                    (Level)levelComboBox.SelectedItem,
-                    selectedTopicIds
-                );
-
-                // IMPORTANT: Check if your Flashcard constructor also takes image paths
-                // If it does, pass questionImageFilename and answerImageFilename instead
-
-                // Save flashcard
-                FlashcardManager.AddFlashcard(flashcard);
-                SubjectManager.AddFlashcardToSubject(flashcard, selectedSubject);
-
-                // Clear form or go back
-                ClearForm();
-            }*/
             MessageBox.Show("Flashcard saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
