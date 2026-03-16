@@ -45,7 +45,6 @@ namespace IBrary.UserControls
 
         private Label usernameLabel;
         private PictureBox starPictureBox;
-        private MinimalButton blockButton;
         private MinimalButton editButton;
         private MinimalButton deleteButton;
         private PictureBox flashcardPictureBox = null;
@@ -289,10 +288,6 @@ namespace IBrary.UserControls
             if (!isInitialized) return;
 
             RefreshFlashcards();
-        }
-        private void StarPictureBox_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void usernameLabel_Click(object sender, EventArgs e)
@@ -542,11 +537,6 @@ namespace IBrary.UserControls
                 try { ImageFlashcard(version.QuestionImagePath, version.QuestionImageBase64); }
                 catch { NoImageFlashcard(); }
             }
-            else if (version.QuestionImagePath != null)
-            {
-                try { ImageFlashcard(version.QuestionImagePath); }
-                catch { NoImageFlashcard(); }
-            }
             else
                 NoImageFlashcard();
         }
@@ -792,6 +782,10 @@ namespace IBrary.UserControls
             RightMargin = 10 + this.Size.Width / 10;
             BottomMargin = 10 + this.Size.Height / 10;
 
+            float buttonFontSize = 9f;
+            int buttonWidth = Math.Max(100, TextRenderer.MeasureText("Incorrect", new Font("Arial", buttonFontSize)).Width + 20);
+            int buttonHeight = Math.Max(35, this.Height / 25);
+
             if (flashcardPanel != null)
             {
                 flashcardPanel.Size = new Size(
@@ -799,15 +793,23 @@ namespace IBrary.UserControls
                     this.Height - TopMargin - BottomMargin
                 );
                 flashcardPanel.Location = new Point(LeftMargin, TopMargin);
-                if (editButton != null)
-                    editButton.Location = new Point(flashcardPanel.Width - editButton.Width - 10, 10);
-                if (deleteButton != null && editButton != null)
-                    deleteButton.Location = new Point(flashcardPanel.Width - deleteButton.Width - 10, editButton.Bottom + 10);
-                if (starPictureBox != null)
-                {
-                    starPictureBox.Size = new Size(flashcardPanel.Width / 20, flashcardPanel.Height / 20);
-                    starPictureBox.Location = new Point(flashcardPanel.Height / 15 - starPictureBox.Height, flashcardPanel.Height - flashcardPanel.Height / 15);
-                }
+            }
+            if (editButton != null)
+            {
+                editButton.Size = new Size(buttonWidth, buttonHeight);
+                editButton.Font = new Font("Arial", buttonFontSize);
+                editButton.Location = new Point(flashcardPanel.Width - editButton.Width - 10, 10);
+            }
+            if (deleteButton != null && editButton != null)
+            {
+                deleteButton.Size = new Size(buttonWidth, buttonHeight);
+                deleteButton.Font = new Font("Arial", buttonFontSize);
+                deleteButton.Location = new Point(flashcardPanel.Width - deleteButton.Width - 10, editButton.Bottom + 10);
+            }
+            if (starPictureBox != null)
+            {
+                starPictureBox.Size = new Size(flashcardPanel.Width / 20, flashcardPanel.Height / 20);
+                starPictureBox.Location = new Point(flashcardPanel.Height / 15 - starPictureBox.Height, flashcardPanel.Height - flashcardPanel.Height / 15);
             }
             if (usernameLabel != null)
             {
@@ -816,6 +818,8 @@ namespace IBrary.UserControls
             }
             if (SkipButton != null)
             {
+                SkipButton.Size = new Size(buttonWidth, buttonHeight);
+                SkipButton.Font = new Font("Arial", buttonFontSize);
                 SkipButton.Location = new Point(
                     (int)(this.Width / 2 - SkipButton.Width / 2),
                     flashcardPanel.Bottom + this.Height / 30
@@ -823,11 +827,15 @@ namespace IBrary.UserControls
             }
             if (CorrectButton != null)
             {
+                CorrectButton.Size = new Size(buttonWidth, buttonHeight);
+                CorrectButton.Font = new Font("Arial", buttonFontSize);
                 CorrectButton.Location = new Point(SkipButton.Right + this.Width / 50, flashcardPanel.Bottom + this.Height / 30);
             }
             if (IncorrectButton != null)
             {
-                IncorrectButton.Location = new Point(SkipButton.Left - 100 - this.Width / 50, flashcardPanel.Bottom + this.Height / 30);
+                IncorrectButton.Size = new Size(buttonWidth, buttonHeight);
+                IncorrectButton.Font = new Font("Arial", buttonFontSize);
+                IncorrectButton.Location = new Point(SkipButton.Left - buttonWidth - this.Width / 50, flashcardPanel.Bottom + this.Height / 30);
             }
             if (subjectComboBox != null)
             {

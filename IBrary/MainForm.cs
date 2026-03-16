@@ -191,16 +191,16 @@ namespace IBrary
                 return;
             }
 
-            MessageBox.Show("OnFlashcardsSynced called"); // ← add temporarily
+            //MessageBox.Show("OnFlashcardsSynced called");
 
             if (contentPanel.Controls.Count > 0 && contentPanel.Controls[0] is FlashcardUserControl flashcardUC)
             {
-                MessageBox.Show("Found FlashcardUserControl, refreshing"); // ← add
+                //MessageBox.Show("Found FlashcardUserControl, refreshing"); 
                 flashcardUC.ForceRefresh();
             }
             else
             {
-                MessageBox.Show("FlashcardUserControl not found in contentPanel"); // ← add
+                //MessageBox.Show("FlashcardUserControl not found in contentPanel");
             }
         }
 

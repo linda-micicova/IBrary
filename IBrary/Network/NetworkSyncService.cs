@@ -350,13 +350,13 @@ namespace IBrary.Network
                     Timestamp = DateTime.Now
                 };
 
-                MessageBox.Show($"Sending {Path.GetFileName(filePath)} to {targetIP}, size: {jsonContent.Length} chars"); 
+                //MessageBox.Show($"Sending {Path.GetFileName(filePath)} to {targetIP}, size: {jsonContent.Length} chars"); 
                 SendJsonToDevice(targetIP, fileData);
-                MessageBox.Show($"SendJsonToDevice completed for {targetIP}"); 
+                //MessageBox.Show($"SendJsonToDevice completed for {targetIP}"); 
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error sending JSON file: {ex.Message}"); 
+                //MessageBox.Show($"Error sending JSON file: {ex.Message}"); 
             }
         }
 
@@ -543,7 +543,7 @@ namespace IBrary.Network
 
                 // Trigger event for received JSON
                 JsonDataReceived?.Invoke(jsonString);
-                MessageBox.Show($"TCP received, length: {jsonString.Length}, starts with: {jsonString.Substring(0, Math.Min(50, jsonString.Length))}");
+                //MessageBox.Show($"TCP received, length: {jsonString.Length}, starts with: {jsonString.Substring(0, Math.Min(50, jsonString.Length))}");
                 // Handle specific message types
                 HandleReceivedJson(jsonString, senderIP);
             }
@@ -631,7 +631,7 @@ namespace IBrary.Network
                 string fileName = fileObj.FileName;
                 string content = fileObj.Content;
                 string receivedHash = fileObj.ContentHash;
-                MessageBox.Show($"Received file: {fileName}, size: {content.Length} chars");
+                //MessageBox.Show($"Received file: {fileName}, size: {content.Length} chars");
 
                 /*string computedHash = ComputeSHA256Hash(content);
                 if (computedHash != receivedHash)
@@ -643,25 +643,25 @@ namespace IBrary.Network
                 try
                 {
                     computedHash = ComputeSHA256Hash(content);
-                    MessageBox.Show("Hash computed OK");
+                    //MessageBox.Show("Hash computed OK");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Hash computation failed: {ex.Message}");
+                    //MessageBox.Show($"Hash computation failed: {ex.Message}");
                     return;
                 }
 
-                MessageBox.Show("Hash verified OK");
+                //MessageBox.Show("Hash verified OK");
                 SaveReceivedFile(fileName, content);
-                MessageBox.Show("SaveReceivedFile completed");
+                //MessageBox.Show("SaveReceivedFile completed");
 
                 TriggerMergeProcess(fileName);
-                MessageBox.Show("TriggerMergeProcess completed");
+                //MessageBox.Show("TriggerMergeProcess completed");
                 localFileHashes[fileName] = computedHash;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error handling received file: {ex.Message}");
+                //MessageBox.Show($"Error handling received file: {ex.Message}");
             }
         }
 
