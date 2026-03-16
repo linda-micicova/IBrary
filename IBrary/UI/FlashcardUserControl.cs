@@ -73,6 +73,7 @@ namespace IBrary.UserControls
             this.Resize += Flashcards_Resize;
 
         }
+
         private void InitializeUI()
         {
 
@@ -280,6 +281,7 @@ namespace IBrary.UserControls
 
             //Display flashcard
             ShowCurrentQuestion();
+            
 
         }
         private void OrderingComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -313,7 +315,14 @@ namespace IBrary.UserControls
                 flashcardLabel.Text = currentFlashcardVersion.Answer;
                 isShowingQuestion = false;
 
-                if (currentFlashcardVersion.AnswerImagePath != null)
+                if (currentFlashcardVersion.AnswerImagePath != null || currentFlashcardVersion.AnswerImageBase64 != null)
+                {
+                    try { ImageFlashcard(currentFlashcardVersion.AnswerImagePath, currentFlashcardVersion.AnswerImageBase64); }
+                    catch { NoImageFlashcard(); }
+                }
+                else NoImageFlashcard();
+
+                /*if (currentFlashcardVersion.AnswerImagePath != null)
                 {
                     try
                     {
@@ -324,7 +333,7 @@ namespace IBrary.UserControls
                         NoImageFlashcard();
                     }
                 }
-                else NoImageFlashcard();
+                else NoImageFlashcard();*/
             }
             else
             {
@@ -332,7 +341,14 @@ namespace IBrary.UserControls
                 flashcardLabel.Text = currentFlashcardVersion.Question;
                 isShowingQuestion = true;
 
-                if (currentFlashcardVersion.QuestionImagePath != null)
+                if (currentFlashcardVersion.QuestionImagePath != null || currentFlashcardVersion.QuestionImageBase64 != null)
+                {
+                    try { ImageFlashcard(currentFlashcardVersion.QuestionImagePath, currentFlashcardVersion.QuestionImageBase64); }
+                    catch { NoImageFlashcard(); }
+                }
+                else NoImageFlashcard();
+
+                /*if (currentFlashcardVersion.QuestionImagePath != null)
                 {
                     try
                     {
@@ -343,7 +359,7 @@ namespace IBrary.UserControls
                         NoImageFlashcard();
                     }
                 }
-                else NoImageFlashcard();
+                else NoImageFlashcard();*/
             }
         }
 
@@ -521,7 +537,12 @@ namespace IBrary.UserControls
             ;
 
             // Handle images
-            if (version.QuestionImagePath != null)
+            if (version.QuestionImagePath != null || version.QuestionImageBase64 != null)
+            {
+                try { ImageFlashcard(version.QuestionImagePath, version.QuestionImageBase64); }
+                catch { NoImageFlashcard(); }
+            }
+            else if (version.QuestionImagePath != null)
             {
                 try { ImageFlashcard(version.QuestionImagePath); }
                 catch { NoImageFlashcard(); }
@@ -541,7 +562,7 @@ namespace IBrary.UserControls
             flashcardPictureBox.Image = null;
             flashcardLabel.Dock = DockStyle.Fill;
         }
-        private void ImageFlashcard(string imagePath)
+        /*private void ImageFlashcard(string imagePath)
         {
             try
             {
@@ -567,6 +588,46 @@ namespace IBrary.UserControls
                 UpdateSizes();
             }
             catch (Exception ex)
+            {
+                NoImageFlashcard();
+            }
+        }*/
+        private void ImageFlashcard(string imagePath, string base64 = null)
+        {
+            try
+            {
+                // Try Base64 first — works on any PC regardless of file system
+                if (!string.IsNullOrEmpty(base64))
+                {
+                    flashcardPictureBox.Visible = true;
+                    byte[] bytes = Convert.FromBase64String(base64);
+                    flashcardPictureBox.Image = Image.FromStream(new MemoryStream(bytes));
+                    flashcardLabel.Dock = DockStyle.None;
+                    UpdateSizes();
+                    return;
+                }
+
+                // Fall back to file path for old flashcards without Base64
+                if (!string.IsNullOrEmpty(imagePath))
+                {
+                    string fullPath = Path.IsPathRooted(imagePath)
+                        ? Path.Combine(Path.Combine(Application.StartupPath, "FlashcardImages"), Path.GetFileName(imagePath))
+                        : Path.Combine(Application.StartupPath, "FlashcardImages", imagePath);
+
+                    if (File.Exists(fullPath))
+                    {
+                        flashcardPictureBox.Visible = true;
+                        flashcardPictureBox.Image = Image.FromFile(fullPath);
+                        flashcardLabel.Dock = DockStyle.None;
+                        flashcardPanel.PerformLayout();
+                        UpdateSizes();
+                        return;
+                    }
+                }
+
+                NoImageFlashcard();
+            }
+            catch
             {
                 NoImageFlashcard();
             }
@@ -738,17 +799,21 @@ namespace IBrary.UserControls
                     this.Height - TopMargin - BottomMargin
                 );
                 flashcardPanel.Location = new Point(LeftMargin, TopMargin);
-                editButton.Location = new Point(flashcardPanel.Width - editButton.Width - 10, 10);
-                deleteButton.Location = new Point(flashcardPanel.Width - deleteButton.Width - 10, editButton.Bottom + 10);
-                starPictureBox.Size = new Size(flashcardPanel.Width / 20, flashcardPanel.Height / 20);
-                starPictureBox.Location = new Point(flashcardPanel.Height / 15 - starPictureBox.Height, flashcardPanel.Height - flashcardPanel.Height / 15);
+                if (editButton != null)
+                    editButton.Location = new Point(flashcardPanel.Width - editButton.Width - 10, 10);
+                if (deleteButton != null && editButton != null)
+                    deleteButton.Location = new Point(flashcardPanel.Width - deleteButton.Width - 10, editButton.Bottom + 10);
+                if (starPictureBox != null)
+                {
+                    starPictureBox.Size = new Size(flashcardPanel.Width / 20, flashcardPanel.Height / 20);
+                    starPictureBox.Location = new Point(flashcardPanel.Height / 15 - starPictureBox.Height, flashcardPanel.Height - flashcardPanel.Height / 15);
+                }
             }
             if (usernameLabel != null)
             {
                 usernameLabel.Location = new Point(10, 10);
                 AdjustFontSizeToFit(usernameLabel);
             }
-
             if (SkipButton != null)
             {
                 SkipButton.Location = new Point(
@@ -774,29 +839,24 @@ namespace IBrary.UserControls
                 topicCheckedListBox.Location = new Point(subjectComboBox.Right + this.Width / 20, subjectComboBox.Top);
                 topicCheckedListBox.Size = new Size(180 + this.Width / 20, this.Height / 7);
             }
-
-            // Position the ordering controls
-            /*if (orderingLabel != null)
-            {
-                subjectComboBox.Location = new Point(LeftMargin, subjectComboBox.Bottom + 15);
-                subjectComboBox.Size = new Size(150, this.Height / 4);
-            }*/
             if (orderingComboBox != null)
             {
                 orderingComboBox.Location = new Point(LeftMargin, subjectComboBox.Bottom + Math.Min(this.Height / 20, 10));
                 orderingComboBox.Size = new Size(150, this.Height / 4);
             }
-            
             if (flashcardPictureBox != null && flashcardLabel != null)
             {
-                flashcardPictureBox.Size = new Size(flashcardPanel.Width / 2, flashcardPanel.Height / 2);
-                flashcardPictureBox.Location = new Point(flashcardPanel.Width / 2 - flashcardPictureBox.Width / 2, flashcardPanel.Height/2 - flashcardPictureBox.Height/2 - flashcardLabel.Height/2 ); //referovanie na flashcardlabel.height je trochu blbost as its not set yet
-                
-                flashcardLabel.Location = new Point(10, flashcardPictureBox.Bottom + 10);
-                flashcardLabel.Size = new Size(flashcardPanel.Width - 20, flashcardPanel.Height - flashcardPictureBox.Height - 40);
-                AdjustFontSizeToFit(flashcardLabel);
+                if (flashcardPictureBox.Visible)
+                {
+                    flashcardPictureBox.Size = new Size(flashcardPanel.Width / 2, flashcardPanel.Height / 2);
+                    flashcardPictureBox.Location = new Point(
+                        flashcardPanel.Width / 2 - flashcardPictureBox.Width / 2,
+                        flashcardPanel.Height / 2 - flashcardPictureBox.Height / 2 - flashcardLabel.Height / 2);
+                    flashcardLabel.Location = new Point(10, flashcardPictureBox.Bottom + 10);
+                    flashcardLabel.Size = new Size(flashcardPanel.Width - 20, flashcardPanel.Height - flashcardPictureBox.Height - 40);
+                    AdjustFontSizeToFit(flashcardLabel);
+                }
             }
-            
         }
         private void AdjustFontSizeToFit(Label label)
         {

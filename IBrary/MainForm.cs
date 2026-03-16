@@ -168,7 +168,7 @@ namespace IBrary
             syncTimer.Start();
         }
 
-        private void OnFlashcardsSynced()
+        /*private void OnFlashcardsSynced()
         {
             if (this.InvokeRequired)
             {
@@ -182,6 +182,26 @@ namespace IBrary
                 flashcardUC.ForceRefresh();
             }
 
+        }*/
+        private void OnFlashcardsSynced()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(OnFlashcardsSynced));
+                return;
+            }
+
+            MessageBox.Show("OnFlashcardsSynced called"); // ← add temporarily
+
+            if (contentPanel.Controls.Count > 0 && contentPanel.Controls[0] is FlashcardUserControl flashcardUC)
+            {
+                MessageBox.Show("Found FlashcardUserControl, refreshing"); // ← add
+                flashcardUC.ForceRefresh();
+            }
+            else
+            {
+                MessageBox.Show("FlashcardUserControl not found in contentPanel"); // ← add
+            }
         }
 
         private void addIcon_Click(object sender, EventArgs e)

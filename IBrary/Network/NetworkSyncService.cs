@@ -138,7 +138,7 @@ namespace IBrary.Network
         // Update local file hashes for the three core files
         public void UpdateLocalFileHashes()
         {
-            MessageBox.Show($"Data folder: {dataFolder}");  
+            //MessageBox.Show($"Data folder: {dataFolder}");  
 
             string[] coreFiles = { "flashcards.json", "topics.json", "subjects.json" };
 
@@ -655,10 +655,9 @@ namespace IBrary.Network
                 SaveReceivedFile(fileName, content);
                 MessageBox.Show("SaveReceivedFile completed");
 
-                localFileHashes[fileName] = computedHash;
-
                 TriggerMergeProcess(fileName);
                 MessageBox.Show("TriggerMergeProcess completed");
+                localFileHashes[fileName] = computedHash;
             }
             catch (Exception ex)
             {
@@ -703,7 +702,7 @@ namespace IBrary.Network
                 //MessageBox.Show($"Error saving received file: {ex.Message}");
             }
         }*/
-        private void SaveReceivedFile(string fileName, string content)
+        /*private void SaveReceivedFile(string fileName, string content)
         {
             try
             {
@@ -718,9 +717,23 @@ namespace IBrary.Network
             {
                 MessageBox.Show($"Error saving received file: {ex.Message}"); // uncomment
             }
+        }*/
+        private void SaveReceivedFile(string fileName, string content)
+        {
+            try
+            {
+                Directory.CreateDirectory(dataFolder);
+                string filePath = Path.Combine(dataFolder, "temp_" + fileName);
+                File.WriteAllText(filePath, content);
+                //MessageBox.Show($"Saved received file to temp: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show($"Error saving received file: {ex.Message}");
+            }
         }
 
-        private void TriggerMergeProcess(string fileName)
+        /*private void TriggerMergeProcess(string fileName)
         {
             //MessageBox.Show($"Triggering merge process for {fileName}");
             string fullPath = Path.Combine(dataFolder, fileName);
@@ -752,6 +765,45 @@ namespace IBrary.Network
                 case "subjects.json":
                     List<Subject> subjects = App.Subjects.LoadSubjectsFromJson(fullPath);
                     App.Subjects.MergeSubjects(subjects);
+                    //MessageBox.Show($"Merged {subjects.Count} subjects");
+                    break;
+
+                default:
+                    //MessageBox.Show($"No merge function defined for {fileName}");
+                    break;
+            }
+        }*/
+        private void TriggerMergeProcess(string fileName)
+        {
+            //MessageBox.Show($"Triggering merge process for {fileName}");
+            string tempPath = Path.Combine(dataFolder, "temp_" + fileName);
+            if (!File.Exists(tempPath)) return;
+
+            switch (fileName)
+            {
+                case "flashcards.json":
+                    var currentCount = App.Flashcards.Load().Count;
+                    //MessageBox.Show($"Current flashcards before merge: {currentCount}");
+                    List<Flashcard> flashcards = App.Flashcards.LoadFlashcardsFromJson(tempPath);
+                    //MessageBox.Show($"Incoming flashcards: {flashcards.Count}");
+                    App.Flashcards.MergeFlashcards(flashcards, false);
+                    //File.Delete(tempPath);
+                    var afterCount = App.Flashcards.Load().Count;
+                    //MessageBox.Show($"Flashcards after merge: {afterCount}");
+                    FlashcardsSynced?.Invoke();
+                    break;
+
+                case "topics.json":
+                    List<Topic> topics = App.Topics.LoadTopicsFromJson(tempPath);
+                    App.Topics.MergeTopics(topics);
+                    //File.Delete(tempPath);
+                    //MessageBox.Show($"Merged {topics.Count} topics");
+                    break;
+
+                case "subjects.json":
+                    List<Subject> subjects = App.Subjects.LoadSubjectsFromJson(tempPath);
+                    App.Subjects.MergeSubjects(subjects);
+                    //File.Delete(tempPath);
                     //MessageBox.Show($"Merged {subjects.Count} subjects");
                     break;
 

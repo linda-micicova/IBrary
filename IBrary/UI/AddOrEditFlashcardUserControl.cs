@@ -28,6 +28,8 @@ namespace IBrary.UserControls
         private MinimalButton answerImageButton;
         private string questionImagePath = null;
         private string answerImagePath = null;
+        private string questionImageBase64 = null; 
+        private string answerImageBase64 = null;
 
         private Label questionLabel;
         private Label answerLabel;
@@ -94,24 +96,25 @@ namespace IBrary.UserControls
         private void SetupEdittingMode()
         {
             editting = true;
-
-            // Completely disable selectors
             subjectComboBox.Enabled = false;
             topicCheckedListBox.Enabled = false;
             levelComboBox.Enabled = false;
 
-            // Populate text fields and selectors
             questionRichTextBox.Text = cardVersion.Question;
             answerRichTextBox.Text = cardVersion.Answer;
 
-            // CHANGED: Handle both absolute paths (old) and relative filenames (new)
-            if (!string.IsNullOrEmpty(cardVersion.QuestionImagePath))
+            // Load question image - Base64 first, fall back to file path
+            if (!string.IsNullOrEmpty(cardVersion.QuestionImageBase64))
             {
-                // If it's an absolute path, extract filename and build new path
+                questionImageBase64 = cardVersion.QuestionImageBase64;
+                byte[] bytes = Convert.FromBase64String(questionImageBase64);
+                questionPictureBox.Image = Image.FromStream(new MemoryStream(bytes));
+            }
+            else if (!string.IsNullOrEmpty(cardVersion.QuestionImagePath))
+            {
                 string imagePath = Path.IsPathRooted(cardVersion.QuestionImagePath)
                     ? Path.Combine(imageStoragePath, Path.GetFileName(cardVersion.QuestionImagePath))
                     : Path.Combine(imageStoragePath, cardVersion.QuestionImagePath);
-
                 if (File.Exists(imagePath))
                 {
                     questionImagePath = imagePath;
@@ -119,13 +122,18 @@ namespace IBrary.UserControls
                 }
             }
 
-            if (!string.IsNullOrEmpty(cardVersion.AnswerImagePath))
+            // Load answer image - Base64 first, fall back to file path
+            if (!string.IsNullOrEmpty(cardVersion.AnswerImageBase64))
             {
-                // If it's an absolute path, extract filename and build new path
+                answerImageBase64 = cardVersion.AnswerImageBase64;
+                byte[] bytes = Convert.FromBase64String(answerImageBase64);
+                answerPictureBox.Image = Image.FromStream(new MemoryStream(bytes));
+            }
+            else if (!string.IsNullOrEmpty(cardVersion.AnswerImagePath))
+            {
                 string imagePath = Path.IsPathRooted(cardVersion.AnswerImagePath)
                     ? Path.Combine(imageStoragePath, Path.GetFileName(cardVersion.AnswerImagePath))
                     : Path.Combine(imageStoragePath, cardVersion.AnswerImagePath);
-
                 if (File.Exists(imagePath))
                 {
                     answerImagePath = imagePath;
@@ -308,6 +316,38 @@ namespace IBrary.UserControls
                     string uniqueFileName = GenerateUniqueFileName(openFileDialog.FileName);
                     questionImagePath = Path.Combine(imageStoragePath, uniqueFileName);
                     File.Copy(openFileDialog.FileName, questionImagePath);
+                    questionImageBase64 = Convert.ToBase64String(File.ReadAllBytes(questionImagePath)); // ← add
+                    questionPictureBox.Image = Image.FromFile(questionImagePath);
+                }
+            }
+        }
+
+        private void AnswerImageButton_Click(object sender, EventArgs e)
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string uniqueFileName = GenerateUniqueFileName(openFileDialog.FileName);
+                    answerImagePath = Path.Combine(imageStoragePath, uniqueFileName);
+                    File.Copy(openFileDialog.FileName, answerImagePath);
+                    answerImageBase64 = Convert.ToBase64String(File.ReadAllBytes(answerImagePath)); // ← add
+                    answerPictureBox.Image = Image.FromFile(answerImagePath);
+                }
+            }
+        }
+        //old version
+        /*private void QuestionImageButton_Click(object sender, EventArgs e)
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string uniqueFileName = GenerateUniqueFileName(openFileDialog.FileName);
+                    questionImagePath = Path.Combine(imageStoragePath, uniqueFileName);
+                    File.Copy(openFileDialog.FileName, questionImagePath);
                     questionPictureBox.Image = Image.FromFile(questionImagePath);
                 }
             }
@@ -326,7 +366,7 @@ namespace IBrary.UserControls
                     answerPictureBox.Image = Image.FromFile(answerImagePath);
                 }
             }
-        }
+        }*/
 
         private void SubjectComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -410,8 +450,10 @@ namespace IBrary.UserControls
                     answerRichTextBox.Text,
                     App.Settings.CurrentSettings.Username,
                     questionImageFilename,  // CHANGED: was questionImagePath
-                    answerImageFilename     // CHANGED: was answerImagePath
-                );
+                    answerImageFilename,     // CHANGED: was answerImagePath
+                    questionImageBase64,  // ← add
+                    answerImageBase64
+                    );
 
                 // Save flashcard
                 App.Flashcards.EditFlashcard(flashcard.FlashcardId, version);
