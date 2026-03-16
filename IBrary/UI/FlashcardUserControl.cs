@@ -838,7 +838,15 @@ namespace IBrary.UserControls
 
         private void editButton_Click(object sender, EventArgs e)
         {
-            Navigator.EditFlashcard(currentFlashcards[currentIndex], currentFlashcardVersion);
+            if (App.Settings.CurrentSettings.Username != null)
+            {
+                Navigator.EditFlashcard(currentFlashcards[currentIndex], currentFlashcardVersion);
+
+            }
+            else
+            {
+                MessageBox.Show("You must be logged in to edit a flashcard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         public void ForceRefresh()
         {

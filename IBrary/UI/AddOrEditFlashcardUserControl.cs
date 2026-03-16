@@ -430,41 +430,48 @@ namespace IBrary.UserControls
         {
             var margin = 20;
             var controlSpacing = 10;
-            var labelHeight = 25;
 
-            // Left column - Question and Answer
+            // Left column - Question and Answer (narrower)
+            int leftColWidth = this.Width / 3 - margin;
+
             questionLabel.Location = new Point(margin, margin);
             questionRichTextBox.Location = new Point(margin, questionLabel.Bottom + 5);
-            questionRichTextBox.Size = new Size(this.Width / 2 - margin - 10, (int)(this.Height / 2.5 - margin));
+            questionRichTextBox.Size = new Size(leftColWidth, (int)(this.Height / 2.5 - margin));
 
             answerLabel.Location = new Point(margin, questionRichTextBox.Bottom + controlSpacing);
             answerRichTextBox.Location = new Point(margin, answerLabel.Bottom + 5);
-            answerRichTextBox.Size = new Size(this.Width / 2 - margin - 10, (int)(this.Height / 2.5 - margin - 60));
+            answerRichTextBox.Size = new Size(leftColWidth, (int)(this.Height / 2.5 - margin - 60));
 
-            questionPictureBox.Size = new Size(answerRichTextBox.Width /3, (this.Height - answerRichTextBox.Bottom) /2);
-            answerPictureBox.Size = new Size(answerRichTextBox.Width / 3, (this.Height - answerRichTextBox.Bottom) / 2);
+            questionPictureBox.Size = new Size(leftColWidth / 2 - 5, (this.Height - answerRichTextBox.Bottom) / 2);
+            answerPictureBox.Size = new Size(leftColWidth / 2 - 5, (this.Height - answerRichTextBox.Bottom) / 2);
 
             questionPictureBox.Location = new Point(margin, answerRichTextBox.Bottom + margin);
-            questionImageButton.Location = new Point(margin, questionPictureBox.Bottom + margin/2);
-            answerPictureBox.Location = new Point(questionPictureBox.Right + margin, answerRichTextBox.Bottom + margin);
-            answerImageButton.Location = new Point(answerPictureBox.Left, answerPictureBox.Bottom + margin/2);
+            questionImageButton.Location = new Point(margin, questionPictureBox.Bottom + margin / 2);
+            answerPictureBox.Location = new Point(questionPictureBox.Right + 10, answerRichTextBox.Bottom + margin);
+            answerImageButton.Location = new Point(answerPictureBox.Left, answerPictureBox.Bottom + margin / 2);
 
-            // Right column - Subject, Topics, Level
-            var rightColumnX = this.Width / 2 + 10;
+            // Middle column - Topics
+            int midColX = margin + leftColWidth + margin;
+            int midColWidth = this.Width / 3 - margin;
 
-            subjectLabel.Location = new Point(rightColumnX, margin);
-            subjectComboBox.Location = new Point(rightColumnX, subjectLabel.Bottom + 5);
-            subjectComboBox.Size = new Size(this.Width / 2 - margin - 20, 30);
+            topicsLabel.Location = new Point(midColX, margin);
+            topicCheckedListBox.Location = new Point(midColX, topicsLabel.Bottom + 5);
+            topicCheckedListBox.Size = new Size(midColWidth, this.Height - topicsLabel.Bottom - margin * 2);
 
-            levelLabel.Location = new Point(rightColumnX, subjectComboBox.Bottom + controlSpacing);
-            levelComboBox.Location = new Point(rightColumnX, levelLabel.Bottom + 5);
-            levelComboBox.Size = new Size(this.Width / 2 - margin - 20, 30);
+            // Right column - Subject, Level, Save
+            int rightColX = midColX + midColWidth + margin;
+            int rightColWidth = this.Width - rightColX - margin;
 
-            topicsLabel.Location = new Point(rightColumnX, levelComboBox.Bottom + controlSpacing);
-            topicCheckedListBox.Location = new Point(rightColumnX, topicsLabel.Bottom + 5);
-            topicCheckedListBox.Size = new Size(this.Width / 2 - margin - 20, this.Height - topicsLabel.Bottom - 100);
+            subjectLabel.Location = new Point(rightColX, margin);
+            subjectComboBox.Location = new Point(rightColX, subjectLabel.Bottom + 5);
+            subjectComboBox.Size = new Size(rightColWidth, 30);
 
-            saveButton.Location = new Point(this.Width - saveButton.Width - margin, this.Height - saveButton.Height - margin);
+            levelLabel.Location = new Point(rightColX, subjectComboBox.Bottom + controlSpacing);
+            levelComboBox.Location = new Point(rightColX, levelLabel.Bottom + 5);
+            levelComboBox.Size = new Size(rightColWidth, 30);
+
+            saveButton.Location = new Point(rightColX, levelComboBox.Bottom + controlSpacing);
+            saveButton.Size = new Size(rightColWidth, 35);
         }
     }
 }
