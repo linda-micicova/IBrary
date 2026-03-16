@@ -24,10 +24,10 @@ namespace IBrary.Models
             }
         }
         [JsonPropertyName("username")]
-        public string username { get; private set; }
+        public string username { get; set; }
 
         [JsonPropertyName("user_verification")]
-        public string UserHash { get; private set; }
+        public string UserHash { get; set; }
 
         public List<string> MySubjectIds { get; set; } = new List<string>();
         public Dictionary<string, Level> MySubjectLevels { get; set; } = new Dictionary<string, Level>();
