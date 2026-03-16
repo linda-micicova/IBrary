@@ -64,10 +64,10 @@ namespace Managers
                 }
             }
         }*/
-        public static bool IsAdmin()
+        /*public static bool IsAdmin()
         {
             return App.Settings.CurrentSettings.Username.Contains("admin");
-        }
+        }*/
     }
 }
 

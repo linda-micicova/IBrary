@@ -89,7 +89,7 @@ namespace IBrary.Managers
         }
 
         // Delete subject
-        public void RemoveSubject(Subject subject)
+        /*public void RemoveSubject(Subject subject)
         {
             if (UserManager.IsAdmin() && AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
             {
@@ -97,7 +97,7 @@ namespace IBrary.Managers
                 Save();
             }
 
-        }
+        }*/
 
         // Merge subjects 
         public void MergeSubjects(List<Subject> subjects)

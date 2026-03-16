@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace IBrary.UserControls
 {
-    public partial class AddOrEditFlashcardUserControl : UserControl
+    public partial class AddOrEditFlashcardUC : UserControl
     {
         private RichTextBox questionRichTextBox;
         private RichTextBox answerRichTextBox;
@@ -41,7 +41,7 @@ namespace IBrary.UserControls
 
         public event Action<UserControl> RequestUserControlSwitch;
 
-        public AddOrEditFlashcardUserControl()
+        public AddOrEditFlashcardUC()
         {
             InitializeComponent();
             Directory.CreateDirectory(imageStoragePath);
@@ -49,7 +49,7 @@ namespace IBrary.UserControls
             this.Resize += AddFlashcard_Resize;
         }
 
-        public AddOrEditFlashcardUserControl(Flashcard flashcard, CardVersion cardVersion)
+        public AddOrEditFlashcardUC(Flashcard flashcard, CardVersion cardVersion)
         {
             InitializeComponent();
             Directory.CreateDirectory(imageStoragePath);
@@ -414,7 +414,7 @@ namespace IBrary.UserControls
                 );
 
                 // Save flashcard
-                App.Flashcards.EditFlashcard(flashcard.FlashcardId, version);
+                FlashcardManager.EditFlashcard(flashcard.FlashcardId, version);
 
                 // Clear form or go back
                 Navigator.GoToFlashcards();

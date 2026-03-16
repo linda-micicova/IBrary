@@ -85,15 +85,15 @@ namespace IBrary.Managers
 
         // Delete topic
 
-        public void RemoveTopic(Topic topic)
+        /*public void RemoveTopic(Topic topic)
         {
-            if (UserManager.IsAdmin() && AllTopics.Any(t => t.TopicId == topic.TopicId))
+            if (AllTopics.Any(t => t.TopicId == topic.TopicId))
             {
                 AllTopics.Remove(topic);
                 Save();
             }
 
-        }
+        }*/
 
         // Merge topics
         public void MergeTopics(List<Topic> topicsToMerge)

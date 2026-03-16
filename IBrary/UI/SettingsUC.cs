@@ -17,7 +17,7 @@ using System.Xml;
 
 namespace IBrary.UserControls
 {
-    public partial class SettingsUserControl : UserControl
+    public partial class SettingsUC : UserControl
     {
         private Panel LoginPanel;
         private Panel SettingsPanel;
@@ -40,7 +40,7 @@ namespace IBrary.UserControls
         public event EventHandler PriorityCalculationsRequested;
         public event EventHandler ChangeThemeRequested;
         public event EventHandler BlockedUsersRequested;
-        public SettingsUserControl()
+        public SettingsUC()
         {
             InitializeComponent();
             InitializeUI();
@@ -166,7 +166,7 @@ namespace IBrary.UserControls
 
                 if (result == DialogResult.Yes)
                 {
-                    App.Flashcards.ResetAllFlashcardStats();
+                    FlashcardManager.ResetAllFlashcardStats();
                 }
             };
             /*SyncButton = new MinimalButton
@@ -255,7 +255,7 @@ namespace IBrary.UserControls
                     username = settingsData.Username.ToString();
                 }
 
-                App.Flashcards.MergeFlashcards(flashcards, username);
+                FlashcardManager.MergeFlashcards(flashcards, username);
             }
         }
 
@@ -339,7 +339,7 @@ namespace IBrary.UserControls
                         var flashcards = App.Flashcards.Load();
                         if (!includeStatsAndSettings)
                         {
-                            flashcards = App.Flashcards.ResetAllFlashcardStats(flashcards);
+                            flashcards = FlashcardManager.ResetAllFlashcardStats(flashcards);
                         }
 
                         // Create export data object
@@ -401,7 +401,7 @@ namespace IBrary.UserControls
             ExportButton.Location = new Point(SettingsPanel.Width / 20, ImportQuizletButton.Bottom + 10);
             ThemeButton.Location = new Point(SettingsPanel.Width / 20, ExportButton.Bottom + 10);
             ResetFlashcardStatsButton.Location = new Point(SettingsPanel.Width / 20, ThemeButton.Bottom + 10);
-            // SyncButton.Location = new Point(SettingsPanel.Width / 20, ResetFlashcardStatsButton.Bottom + 10);
+            //SyncButton.Location = new Point(SettingsPanel.Width / 20, ResetFlashcardStatsButton.Bottom + 10);
 
             foreach (Control control in SettingsPanel.Controls)
             {

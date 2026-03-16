@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace IBrary.UserControls
 {
-    public partial class QuizletFlashcardsViewUserControl : UserControl
+    public partial class QuizletFlashcardsViewUC : UserControl
     {
         // UI Elements
         private PictureBox _backIcon;
@@ -25,7 +25,7 @@ namespace IBrary.UserControls
 
         public event EventHandler ImportConfirmed;
 
-        public QuizletFlashcardsViewUserControl()
+        public QuizletFlashcardsViewUC()
         {
             InitializeComponent();
             flashcardTopicAssignments = new Dictionary<string, List<string>>();
@@ -264,7 +264,7 @@ namespace IBrary.UserControls
                     .ToList();
 
                 // Save flashcards using new method
-                App.Flashcards.ImportFlashcards(flashcardsToImport);
+                FlashcardManager.ImportFlashcards(flashcardsToImport);
 
                 MessageBox.Show($"Successfully imported {flashcardsToImport.Count} flashcard(s)!");
 

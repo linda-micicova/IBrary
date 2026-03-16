@@ -16,7 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace IBrary.UserControls
 {
-    public partial class ImportFromQuizletUserControl : UserControl
+    public partial class ImportFromQuizletUC : UserControl
     {
         // UI Elements
         private PictureBox backIcon;
@@ -35,7 +35,7 @@ namespace IBrary.UserControls
         private List<Flashcard> loadedFlashcards; // Store loaded flashcards
         private string selectedFilePath;
 
-        public ImportFromQuizletUserControl()
+        public ImportFromQuizletUC()
         {
             InitializeComponent();
             InitializeUI();
@@ -225,7 +225,7 @@ namespace IBrary.UserControls
                     try
                     {
                         // Load flashcards from file but don't save them yet
-                        loadedFlashcards = App.Flashcards.LoadFromQuizletFile(ofd.FileName);
+                        loadedFlashcards = FlashcardManager.LoadFromQuizletFile(ofd.FileName);
                         selectedFilePath = ofd.FileName;
 
                         if (loadedFlashcards != null && loadedFlashcards.Count > 0)
@@ -275,7 +275,7 @@ namespace IBrary.UserControls
                 }
 
                 // Save flashcards using new method
-                App.Flashcards.ImportFlashcards(loadedFlashcards);
+                FlashcardManager.ImportFlashcards(loadedFlashcards);
 
                 MessageBox.Show($"Successfully imported {loadedFlashcards.Count} flashcard(s) to {selectedSubject.SubjectName}!");
 

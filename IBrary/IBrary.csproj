@@ -13,7 +13,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\lindu\Documents\zip ibrary\</PublishUrl>
+    <PublishUrl>E:\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>39</ApplicationRevision>
+    <ApplicationRevision>53</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -124,13 +124,13 @@
     <Compile Include="Managers\TopicManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Models\Flashcard.cs" />
+    <Compile Include="Models\Version.cs" />
+    <Compile Include="Navigator.cs" />
     <Compile Include="UI\MinimalButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Topic.cs" />
-    <Compile Include="Models\Version.cs" />
-    <Compile Include="Navigator.cs" />
     <Compile Include="Network\NetworkSyncService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -249,16 +249,16 @@
       <DependentUpon>AddContentUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="Data\flashcards.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\subjects.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\topics.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="IBrary_TemporaryKey.pfx" />
     <None Include="packages.config" />

@@ -4,9 +4,7 @@ using IBrary.Network;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Windows.Forms;
 
 
@@ -15,7 +13,7 @@ namespace IBrary.UserControls
     // NOT ACTUALLYY USED, ONLY TO DEBUG NETWORKSYNCSERVICE
     // Start Listening button tries to use the same port as the service that runs
     // on the background, so this only works if MainForm doesn't start the service.
-    public partial class ManageNetworkSyncUserControl : UserControl
+    public partial class ManageNetworkSyncUC : UserControl
     {
         private NetworkSyncService networkService;
 
@@ -24,7 +22,6 @@ namespace IBrary.UserControls
         private Panel devicePanel;
         private Panel messagePanel;
         private Panel logPanel;
-        private Panel syncPanel;
 
         private Label statusLabel;
         private Label localIPLabel;
@@ -45,7 +42,7 @@ namespace IBrary.UserControls
 
         private bool isServiceRunning = false;
 
-        public ManageNetworkSyncUserControl()
+        public ManageNetworkSyncUC()
         {
             InitializeComponent();
             InitializeNetworkService();
@@ -67,7 +64,6 @@ namespace IBrary.UserControls
             CreateDevicePanel();
             CreateMessagePanel();
             CreateLogPanel();
-            CreateSyncPanel();
 
             UpdateSizes();
             LogMessage("Network Sync Manager initialized");
@@ -271,100 +267,6 @@ namespace IBrary.UserControls
             });
 
             this.Controls.Add(logPanel);
-        }
-
-        private void CreateSyncPanel()
-        {
-            syncPanel = new Panel
-            {
-                BackColor = App.Settings.FlashcardColor,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            var syncLabel = new Label
-            {
-                Text = "Manual Sync:",
-                Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = App.Settings.TextColor,
-                AutoSize = true,
-                Location = new Point(10, 10)
-            };
-
-            var sendFlashcardsButton = new MinimalButton
-            {
-                Text = "Send Flashcards",
-                Size = new Size(130, 35),
-                Location = new Point(10, 40)
-            };
-            sendFlashcardsButton.Click += (s, e) => SendFileToSelected("flashcards.json");
-
-            var sendTopicsButton = new MinimalButton
-            {
-                Text = "Send Topics",
-                Size = new Size(130, 35),
-                Location = new Point(150, 40)
-            };
-            sendTopicsButton.Click += (s, e) => SendFileToSelected("topics.json");
-
-            var sendSubjectsButton = new MinimalButton
-            {
-                Text = "Send Subjects",
-                Size = new Size(130, 35),
-                Location = new Point(290, 40)
-            };
-            sendSubjectsButton.Click += (s, e) => SendFileToSelected("subjects.json");
-
-            var sendAllButton = new MinimalButton
-            {
-                Text = "Send All",
-                Size = new Size(130, 35),
-                Location = new Point(430, 40)
-            };
-            sendAllButton.Click += (s, e) =>
-            {
-                SendFileToSelected("flashcards.json");
-                SendFileToSelected("topics.json");
-                SendFileToSelected("subjects.json");
-            };
-
-            syncPanel.Controls.AddRange(new Control[] {
-                syncLabel, sendFlashcardsButton, sendTopicsButton, sendSubjectsButton, sendAllButton
-            });
-
-            this.Controls.Add(syncPanel);
-        }
-
-        private void SendFileToSelected(string fileName)
-        {
-            if (deviceListBox.SelectedItem == null)
-            {
-                LogMessage($"ERROR: No device selected to send {fileName}");
-                return;
-            }
-
-            try
-            {
-                string selectedItem = deviceListBox.SelectedItem.ToString();
-                string targetIPString = selectedItem.Split(' ')[0];
-                IPAddress targetIP = IPAddress.Parse(targetIPString);
-
-                string dataFolder = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "IBrary");
-                string filePath = Path.Combine(dataFolder, fileName);
-
-                if (!File.Exists(filePath))
-                {
-                    LogMessage($"ERROR: {fileName} not found at {filePath}");
-                    return;
-                }
-
-                networkService.SendJsonFile(targetIP, filePath);
-                LogMessage($"Sent {fileName} to {targetIP}");
-            }
-            catch (Exception ex)
-            {
-                LogMessage($"ERROR sending {fileName}: {ex.Message}");
-            }
         }
 
         private void StartStopButton_Click(object sender, EventArgs e)
@@ -614,7 +516,22 @@ namespace IBrary.UserControls
 
         private string GetLocalIPAddress()
         {
-            return networkService.GetLocalWifiIP().ToString();
+            try
+            {
+                var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+                foreach (var ip in host.AddressList)
+                {
+                    if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        return ip.ToString();
+                    }
+                }
+                return "127.0.0.1";
+            }
+            catch
+            {
+                return "Unknown";
+            }
         }
 
         private void NetworkSync_Resize(object sender, EventArgs e)
@@ -623,7 +540,7 @@ namespace IBrary.UserControls
         private void UpdateSizes()
         {
             int margin = 10;
-            int panelHeight = (this.Height - (6 * margin)) / 5;
+            int panelHeight = (this.Height - (5 * margin)) / 4;
 
             // Status Panel (top)
             statusPanel.Location = new Point(margin, margin);
@@ -646,17 +563,13 @@ namespace IBrary.UserControls
             messageTextBox.Size = new Size(messagePanel.Width - 20, messagePanel.Height - 120);
             sendMessageButton.Location = new Point(10, messagePanel.Height - 45);
 
-            // Log Panel
+            // Log Panel (bottom)
             logPanel.Location = new Point(margin, devicePanel.Bottom + margin);
             logPanel.Size = new Size(this.Width - (2 * margin), panelHeight);
 
             // Update log text box size
             logTextBox.Size = new Size(logPanel.Width - 20, logPanel.Height - 50);
             clearLogButton.Location = new Point(logPanel.Width - 90, 10);
-
-            // Sync Panel (bottom)
-            syncPanel.Location = new Point(margin, logPanel.Bottom + margin);
-            syncPanel.Size = new Size(this.Width - (2 * margin), panelHeight);
         }
 
         /*protected override void Dispose(bool disposing)

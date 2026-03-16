@@ -126,7 +126,7 @@ namespace IBrary.Managers
             }
         }
 
-        public static void EditFlashcard(string flashcardId, CardVersion version)
+        public void EditFlashcard(string flashcardId, CardVersion version)
         {
             var flashcards = App.Flashcards.Load();
 
@@ -142,23 +142,23 @@ namespace IBrary.Managers
         }
 
         // Delete a flashcard (flag as deleted or remove completely based on user role)
-        public static void DeleteFlashcard(string flashcardId, string editor)
+        public void DeleteFlashcard(string flashcardId, string editor)
         {
             var flashcards = App.Flashcards.Load();
 
             int index = flashcards.FindIndex(f => f.FlashcardId == flashcardId);
             if (index != -1)
             {
-                if (UserManager.IsAdmin())
+                /*if (UserManager.IsAdmin())
                 {
                     // Remove flashcard completely
                     flashcards.RemoveAt(index);
                 }
                 else
-                {
+                {*/
                     // Flag flashcard as deleted
                     flashcards[index].Versions.Add(new CardVersion(editor, true));
-                }
+                //}
 
                 // Save changes
                 App.Flashcards.SaveFlashcards(flashcards);
@@ -166,7 +166,7 @@ namespace IBrary.Managers
         }
 
         // Get flashcards ordered by priority (highest priority first)
-        public static List<Flashcard> GetFlashcardsOrderedByPriority(List<Flashcard> flashcardsToBeOrdered)
+        public List<Flashcard> GetFlashcardsOrderedByPriority(List<Flashcard> flashcardsToBeOrdered)
         {
             return flashcardsToBeOrdered.OrderByDescending(f => f.Priority).ToList();
         }
@@ -174,13 +174,13 @@ namespace IBrary.Managers
         // IMPORT AND MERGE FLASHCARDS METHODS
 
         // Uses current user's username to decide whether to preserve stats or not
-        public static void MergeFlashcards(List<Flashcard> flashcardsToMerge, string username)
+        public void MergeFlashcards(List<Flashcard> flashcardsToMerge, string username)
         {
             MergeFlashcards(flashcardsToMerge, username == App.Settings.CurrentSettings.Username);
         }
 
         // Merges with currently stored flashcards
-        public static void MergeFlashcards(List<Flashcard> flashcardsToMerge, bool preserveStats = false)
+        public void MergeFlashcards(List<Flashcard> flashcardsToMerge, bool preserveStats = false)
         {
             var allFlashcards = App.Flashcards.Load(); // Load current flashcards to merge with
 
@@ -225,7 +225,7 @@ namespace IBrary.Managers
             App.Flashcards.SaveFlashcards(allFlashcards); // Save merged flashcards to JSON file
         }
         // Resets progress stats for input flashcards
-        public static List<Flashcard> ResetAllFlashcardStats(List<Flashcard> flashcards)
+        public List<Flashcard> ResetAllFlashcardStats(List<Flashcard> flashcards)
         {
             foreach (var flashcard in flashcards)
             {
@@ -239,7 +239,7 @@ namespace IBrary.Managers
         }
 
         // Resets progress stats for all currently stored flashcards
-        public static void ResetAllFlashcardStats()
+        public void ResetAllFlashcardStats()
         {
             foreach (var flashcard in App.Flashcards.AllFlashcards)
             {
@@ -253,7 +253,7 @@ namespace IBrary.Managers
 
         
         // Helper method to import already created Flashcard objects
-        public static void ImportFlashcards(List<Flashcard> flashcardsToImport)
+        public void ImportFlashcards(List<Flashcard> flashcardsToImport)
         {
             var allFlashcards = App.Flashcards.Load();
             allFlashcards.AddRange(flashcardsToImport);
@@ -263,7 +263,7 @@ namespace IBrary.Managers
         //QUIZLET FLASHCARDS METHODS
 
         //Load quizlet flashcards from json file
-        private static List<QuizletFlashcard> LoadQuizletFlashcardsFromJson(string path)
+        private List<QuizletFlashcard> LoadQuizletFlashcardsFromJson(string path)
         {
             List<QuizletFlashcard> flashcards;
             try
@@ -284,7 +284,7 @@ namespace IBrary.Managers
         }
 
         //Import quizlet flashcards into the app (merge them with current ones)
-        public static bool ImportFromQuizlet(string path)
+        public bool ImportFromQuizlet(string path)
         {
             bool importSuccessful = false;
             List<QuizletFlashcard> flashcardsToImport = LoadQuizletFlashcardsFromJson(path);
@@ -303,7 +303,7 @@ namespace IBrary.Managers
         }
 
         // Only load flashcards without saving them
-        public static List<Flashcard> LoadFromQuizletFile(string path)
+        public List<Flashcard> LoadFromQuizletFile(string path)
         {
             var flashcards = new List<Flashcard>();
             List<QuizletFlashcard> flashcardsToImport = LoadQuizletFlashcardsFromJson(path);

@@ -206,8 +206,6 @@ namespace IBrary
         {
             SettingsUserControl settingsUserControl = new SettingsUserControl();
             SwitchUserControl(settingsUserControl);
-
-
         }
         private void flashcardIcon_Click(object sender, EventArgs e)
         {

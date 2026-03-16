@@ -385,7 +385,7 @@ namespace IBrary.UserControls
             switch (orderingType)
             {
                 case "priority":
-                    return App.Flashcards.GetFlashcardsOrderedByPriority(flashcards);
+                    return FlashcardManager.GetFlashcardsOrderedByPriority(flashcards);
 
                 case "error_rate":
                     return flashcards.OrderByDescending(f => f.Seen > 0 ? (double)f.Errors / f.Seen : 0).ToList();
@@ -405,7 +405,7 @@ namespace IBrary.UserControls
                     return flashcards.OrderBy(f => random.Next()).ToList();
 
                 default:
-                    return App.Flashcards.GetFlashcardsOrderedByPriority(flashcards);
+                    return FlashcardManager.GetFlashcardsOrderedByPriority(flashcards);
             }
         }
 
@@ -824,8 +824,8 @@ namespace IBrary.UserControls
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this flashcard?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    App.Flashcards.DeleteFlashcard(currentFlashcards[currentIndex].FlashcardId, App.Settings.CurrentSettings.Username);
-                    currentFlashcards = App.Flashcards.GetFlashcardsOrderedByPriority(App.Flashcards.Load());
+                    FlashcardManager.DeleteFlashcard(currentFlashcards[currentIndex].FlashcardId, App.Settings.CurrentSettings.Username);
+                    currentFlashcards = FlashcardManager.GetFlashcardsOrderedByPriority(App.Flashcards.Load());
                     RefreshFlashcards();
                 }
             }

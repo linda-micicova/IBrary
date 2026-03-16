@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
@@ -42,6 +43,32 @@ namespace IBrary.Network
         private List<IPAddress> discoveredDevices = new List<IPAddress>();
         private volatile bool isRunning = false;
 
+        // Gets the real local WiFi/LAN IP, skipping VirtualBox and other virtual adapters
+        public IPAddress GetLocalWifiIP()
+        {
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.OperationalStatus != OperationalStatus.Up) continue;
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Tunnel) continue;
+                if (ni.Description.Contains("VirtualBox") ||
+                    ni.Description.Contains("Virtual") ||
+                    ni.Description.Contains("Hyper-V") ||
+                    ni.Description.Contains("VMware") ||
+                    ni.Description.Contains("Loopback") || 
+                    ni.Description.Contains("Launcher")) continue; 
+
+                foreach (var addr in ni.GetIPProperties().UnicastAddresses)
+                {
+                    if (addr.Address.AddressFamily == AddressFamily.InterNetwork &&
+                        !IPAddress.IsLoopback(addr.Address) &&
+                        !addr.Address.ToString().StartsWith("169.254")) // skip local link
+                        return addr.Address;
+                }
+            }
+            return IPAddress.Loopback;
+        }
+
         public void StartListening()
         {
             if (isRunning)
@@ -59,10 +86,35 @@ namespace IBrary.Network
             // Initialize local file hashes
             UpdateLocalFileHashes();
         }
+        private bool IsNetworkAvailable()
+        {
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.OperationalStatus != OperationalStatus.Up) continue;
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Tunnel) continue;
+                if (ni.Description.Contains("VirtualBox") ||
+                    ni.Description.Contains("Virtual") ||
+                    ni.Description.Contains("Hyper-V") ||
+                    ni.Description.Contains("VMware") ||
+                    ni.Description.Contains("Loopback") ||
+                    ni.Description.Contains("Launcher")) continue;
+
+                if (ni.GetIPProperties().GatewayAddresses.Count > 0)
+                    return true;
+            }
+            return false;
+        }
 
         public void BroadcastPresence()
         {
             //MessageBox.Show("Broadcasting presence to discover other devices");
+            if (!IsNetworkAvailable())
+            {
+                //MessageBox.Show("No network available, skipping broadcast");
+                return;
+            }
+
             using (UdpClient sender = new UdpClient())
             {
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Broadcast, UdpPort);
@@ -86,6 +138,8 @@ namespace IBrary.Network
         // Update local file hashes for the three core files
         public void UpdateLocalFileHashes()
         {
+            MessageBox.Show($"Data folder: {dataFolder}");  
+
             string[] coreFiles = { "flashcards.json", "topics.json", "subjects.json" };
 
             localFileHashes.Clear();
@@ -256,7 +310,7 @@ namespace IBrary.Network
         }
 
         // Enhanced method to send JSON file with hash verification
-        public void SendJsonFile(IPAddress targetIP, string filePath)
+        /*public void SendJsonFile(IPAddress targetIP, string filePath)
         {
             try
             {
@@ -278,6 +332,31 @@ namespace IBrary.Network
             catch (Exception ex)
             {
                 //MessageBox.Show($"Error sending JSON file: {ex.Message}");
+            }
+        }*/
+        public void SendJsonFile(IPAddress targetIP, string filePath)
+        {
+            try
+            {
+                string jsonContent = File.ReadAllText(filePath);
+                string contentHash = ComputeSHA256Hash(jsonContent);
+
+                var fileData = new
+                {
+                    FileName = Path.GetFileName(filePath),
+                    Content = jsonContent,
+                    ContentHash = contentHash,
+                    Type = "JSON_FILE",
+                    Timestamp = DateTime.Now
+                };
+
+                MessageBox.Show($"Sending {Path.GetFileName(filePath)} to {targetIP}, size: {jsonContent.Length} chars"); 
+                SendJsonToDevice(targetIP, fileData);
+                MessageBox.Show($"SendJsonToDevice completed for {targetIP}"); 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error sending JSON file: {ex.Message}"); 
             }
         }
 
@@ -317,21 +396,21 @@ namespace IBrary.Network
             }
         }
 
-        // Helper method to check if an IP address is local
+        // Check if IP is local, using GetLocalWifiIP to avoid VirtualBox confusion
         private bool IsLocalIPAddress(IPAddress address)
         {
             try
             {
-                // Get all local IP addresses
-                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+                // Check against real WiFi IP first
+                IPAddress localWifiIP = GetLocalWifiIP();
+                if (localWifiIP.Equals(address)) return true;
 
-                // Check if the address matches any of our local IPs
+                // Check all local IPs as fallback
+                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
                 foreach (IPAddress localIP in localIPs)
                 {
                     if (localIP.Equals(address))
-                    {
                         return true;
-                    }
                 }
 
                 // Also check for localhost addresses
@@ -368,7 +447,8 @@ namespace IBrary.Network
                     DeviceName = Environment.MachineName,
                     AppVersion = "1.0",
                     Type = "DISCOVERY_RESPONSE",
-                    FileHashes = localFileHashes
+                    FileHashes = localFileHashes,
+                    SenderIP = GetLocalWifiIP().ToString() 
                 };
 
                 string jsonResponse = JsonConvert.SerializeObject(response);
@@ -463,7 +543,7 @@ namespace IBrary.Network
 
                 // Trigger event for received JSON
                 JsonDataReceived?.Invoke(jsonString);
-
+                MessageBox.Show($"TCP received, length: {jsonString.Length}, starts with: {jsonString.Substring(0, Math.Min(50, jsonString.Length))}");
                 // Handle specific message types
                 HandleReceivedJson(jsonString, senderIP);
             }
@@ -515,7 +595,7 @@ namespace IBrary.Network
             }
         }
 
-        private void HandleReceivedFile(dynamic fileObj)
+        /*private void HandleReceivedFile(dynamic fileObj)
         {
             try
             {
@@ -543,6 +623,47 @@ namespace IBrary.Network
             {
                 //MessageBox.Show($"Error handling received file: {ex.Message}");
             }
+        }*/
+        private void HandleReceivedFile(dynamic fileObj)
+        {
+            try
+            {
+                string fileName = fileObj.FileName;
+                string content = fileObj.Content;
+                string receivedHash = fileObj.ContentHash;
+                MessageBox.Show($"Received file: {fileName}, size: {content.Length} chars");
+
+                /*string computedHash = ComputeSHA256Hash(content);
+                if (computedHash != receivedHash)
+                {
+                    MessageBox.Show($"Hash mismatch for {fileName}! File may be corrupted.");
+                    return;
+                }*/
+                string computedHash;
+                try
+                {
+                    computedHash = ComputeSHA256Hash(content);
+                    MessageBox.Show("Hash computed OK");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hash computation failed: {ex.Message}");
+                    return;
+                }
+
+                MessageBox.Show("Hash verified OK");
+                SaveReceivedFile(fileName, content);
+                MessageBox.Show("SaveReceivedFile completed");
+
+                localFileHashes[fileName] = computedHash;
+
+                TriggerMergeProcess(fileName);
+                MessageBox.Show("TriggerMergeProcess completed");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error handling received file: {ex.Message}");
+            }
         }
 
         private void HandleDiscoveryResponse(dynamic responseObj, IPAddress senderIP)
@@ -567,7 +688,7 @@ namespace IBrary.Network
             }
         }
 
-        private void SaveReceivedFile(string fileName, string content)
+        /*private void SaveReceivedFile(string fileName, string content)
         {
             try
             {
@@ -580,6 +701,22 @@ namespace IBrary.Network
             catch (Exception ex)
             {
                 //MessageBox.Show($"Error saving received file: {ex.Message}");
+            }
+        }*/
+        private void SaveReceivedFile(string fileName, string content)
+        {
+            try
+            {
+                Directory.CreateDirectory(dataFolder);
+                string filePath = Path.Combine(dataFolder, fileName);
+                File.WriteAllText(filePath, content);
+
+                MessageBox.Show($"Saved received file: {filePath}"); // uncomment
+                System.Diagnostics.Process.Start("explorer.exe", dataFolder); // opens the folder
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving received file: {ex.Message}"); // uncomment
             }
         }
 
@@ -597,7 +734,7 @@ namespace IBrary.Network
                     List<Flashcard> flashcards = App.Flashcards.LoadFlashcardsFromJson(fullPath);
                     //MessageBox.Show($"Incoming flashcards: {flashcards.Count}");
 
-                    FlashcardManager.MergeFlashcards(flashcards, false);
+                    App.Flashcards.MergeFlashcards(flashcards, false);
 
                     var afterCount = App.Flashcards.Load().Count;
                     //MessageBox.Show($"Flashcards after merge: {afterCount}");
