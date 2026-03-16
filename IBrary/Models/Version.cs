@@ -2,7 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using IBrary.Models;
-using IBrary.Managers;
 
 namespace IBrary.Models
 {
@@ -29,33 +28,9 @@ namespace IBrary.Models
             this.Editor = Editor;
         }
 
-        //old version
-/*public CardVersion(string Question, string Answer, string Editor, string QuestionImagePath, string AnswerImagePath)
-{
-    this.Question = Question;
-    this.Answer = Answer;
-    this.Editor = Editor;
-    this.QuestionImagePath = QuestionImagePath;
-    this.AnswerImagePath = AnswerImagePath;
-}
-//Create version with images
-public CardVersion(string Question, string Answer, string Editor, string QuestionImagePath, string AnswerImagePath)
-{
-    this.Question = Question;
-    this.Answer = Answer;
-    this.Editor = Editor;
-    this.QuestionImagePath = QuestionImagePath;
-    this.AnswerImagePath = AnswerImagePath;
-
-    // Convert to Base64 for portability
-    if (QuestionImagePath != null && File.Exists(QuestionImagePath))
-        this.QuestionImageBase64 = Convert.ToBase64String(File.ReadAllBytes(QuestionImagePath));
-    if (AnswerImagePath != null && File.Exists(AnswerImagePath))
-        this.AnswerImageBase64 = Convert.ToBase64String(File.ReadAllBytes(AnswerImagePath));
-}*/
         public CardVersion(string Question, string Answer, string Editor,
-    string QuestionImagePath, string AnswerImagePath,
-    string QuestionImageBase64 = null, string AnswerImageBase64 = null)
+        string QuestionImagePath, string AnswerImagePath,
+        string QuestionImageBase64 = null, string AnswerImageBase64 = null)
         {
             this.Question = Question;
             this.Answer = Answer;
@@ -67,10 +42,10 @@ public CardVersion(string Question, string Answer, string Editor, string Questio
         }
         //Flag flashcard as deleted
         public CardVersion(string Editor, bool Deleted)
-{
-    this.Editor = Editor;
-    this.Deleted = Deleted;
-}
+        {
+            this.Editor = Editor;
+            this.Deleted = Deleted;
+           }
 
 }
 }

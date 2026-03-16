@@ -20,15 +20,14 @@ namespace IBrary.Models
             set
             {
                 username = value;
-                userHash = string.IsNullOrEmpty(value) ? null : GenerateUserHash(value); // Generates a hash when username is set, null for guests
+                UserHash = string.IsNullOrEmpty(value) ? null : GenerateUserHash(value); // Generates a hash when username is set, null for guests
             }
         }
-
         [JsonPropertyName("username")]
-        public string username { get; set; }
+        public string username { get; private set; }
 
         [JsonPropertyName("user_verification")]
-        public string userHash { get; set; }
+        public string UserHash { get; private set; }
 
         public List<string> MySubjectIds { get; set; } = new List<string>();
         public Dictionary<string, Level> MySubjectLevels { get; set; } = new Dictionary<string, Level>();
@@ -44,7 +43,7 @@ namespace IBrary.Models
         public bool IsUsernameValid()
         {
             if (string.IsNullOrEmpty(username)) return true; // No username set (guest mode) is always valid
-            return userHash == GenerateUserHash(username); // Compare stored hash with generated hash
+            return UserHash == GenerateUserHash(username); // Compare stored hash with generated hash
         }
 
         // Generates a hash based on the username and machine-specific information to prevent tampering

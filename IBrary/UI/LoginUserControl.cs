@@ -1,5 +1,4 @@
-﻿using Managers;
-using IBrary.Managers;
+﻿using IBrary.Managers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

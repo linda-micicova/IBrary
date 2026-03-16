@@ -114,7 +114,6 @@ namespace IBrary.UserControls
             flashcardPictureBox = new PictureBox
             {
                 Size = new Size(200, 200), // Adjust size as needed
-                //Location = new Point(flashcardPanel.Right / 2 + flashcardPanel.Left / 2 - 200, flashcardPanel.Top + 20), // Center horizontally
                 SizeMode = PictureBoxSizeMode.Zoom, // or PictureBoxSizeMode.StretchImage
                 Visible = false // Initially hidden, can be set to true when needed
             };
@@ -166,14 +165,14 @@ namespace IBrary.UserControls
             };
 
             var orderingOptions = new List<OrderingOption>
-{
-    new OrderingOption { Display = "Priority Algorithm", Value = "priority" },
-    new OrderingOption { Display = "High Error Rate First", Value = "error_rate" },
-    new OrderingOption { Display = "Not Seen / Old Cards", Value = "not_seen" },
-    new OrderingOption { Display = "Least Studied", Value = "seen_few" },
-    new OrderingOption { Display = "Starred Cards First", Value = "important" },
-    new OrderingOption { Display = "Random Order", Value = "random" }
-};
+            {
+                new OrderingOption { Display = "Priority Algorithm", Value = "priority" },
+                new OrderingOption { Display = "High Error Rate First", Value = "error_rate" },
+                new OrderingOption { Display = "Not Seen / Old Cards", Value = "not_seen" },
+                new OrderingOption { Display = "Least Studied", Value = "seen_few" },
+                new OrderingOption { Display = "Starred Cards First", Value = "important" },
+                new OrderingOption { Display = "Random Order", Value = "random" }
+            };
 
             orderingComboBox.DataSource = orderingOptions;
             orderingComboBox.DisplayMember = "Display";
@@ -224,7 +223,7 @@ namespace IBrary.UserControls
             subjectComboBox.SelectedIndexChanged += subjectComboBox_SelectedIndexChanged;
             topicCheckedListBox.ItemCheck += topicCheckedListBox_ItemCheck;
 
-            // Mark as initialized BEFORE restoring
+            // Mark as initialized before restoring
             isInitialized = true;
 
             if (App.Settings.CurrentSettings.LastSelectedSubjectId != null)
@@ -236,7 +235,6 @@ namespace IBrary.UserControls
                 {
                     subjectComboBox.SelectedIndex = index;
 
-                    // If we just selected ALL_SUBJECTS, manually trigger the logic
                     if (App.Settings.CurrentSettings.LastSelectedSubjectId == "ALL_SUBJECTS")
                     {
                         subjectComboBox_SelectedIndexChanged(null, null);
@@ -261,7 +259,7 @@ namespace IBrary.UserControls
             editButton.Click += editButton_Click;
 
             usernameLabel.Cursor = Cursors.Hand;
-            usernameLabel.Click += usernameLabel_Click; // Make the username label clickable
+            usernameLabel.Click += usernameLabel_Click; 
 
             flashcardPanel.Controls.Add(flashcardPictureBox);
             flashcardPanel.Controls.Add(usernameLabel);
@@ -316,19 +314,6 @@ namespace IBrary.UserControls
                     catch { NoImageFlashcard(); }
                 }
                 else NoImageFlashcard();
-
-                /*if (currentFlashcardVersion.AnswerImagePath != null)
-                {
-                    try
-                    {
-                        ImageFlashcard(currentFlashcardVersion.AnswerImagePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        NoImageFlashcard();
-                    }
-                }
-                else NoImageFlashcard();*/
             }
             else
             {
@@ -342,19 +327,6 @@ namespace IBrary.UserControls
                     catch { NoImageFlashcard(); }
                 }
                 else NoImageFlashcard();
-
-                /*if (currentFlashcardVersion.QuestionImagePath != null)
-                {
-                    try
-                    {
-                        ImageFlashcard(currentFlashcardVersion.QuestionImagePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        NoImageFlashcard();
-                    }
-                }
-                else NoImageFlashcard();*/
             }
         }
 
@@ -552,41 +524,12 @@ namespace IBrary.UserControls
             flashcardPictureBox.Image = null;
             flashcardLabel.Dock = DockStyle.Fill;
         }
-        /*private void ImageFlashcard(string imagePath)
-        {
-            try
-            {
-                flashcardPictureBox.Visible = true;
-
-                // Handle both absolute paths (old) and relative filenames (new)
-                string fullPath = Path.IsPathRooted(imagePath)
-                    ? Path.Combine(Path.Combine(Application.StartupPath, "FlashcardImages"), Path.GetFileName(imagePath))
-                    : Path.Combine(Application.StartupPath, "FlashcardImages", imagePath);
-
-                if (File.Exists(fullPath))
-                {
-                    flashcardPictureBox.Image = Image.FromFile(fullPath);
-                }
-                else
-                {
-                    NoImageFlashcard();
-                    return;
-                }
-
-                // Switch to manual positioning when there's an image
-                flashcardLabel.Dock = DockStyle.None;
-                UpdateSizes();
-            }
-            catch (Exception ex)
-            {
-                NoImageFlashcard();
-            }
-        }*/
+        
         private void ImageFlashcard(string imagePath, string base64 = null)
         {
             try
             {
-                // Try Base64 first — works on any PC regardless of file system
+                // Try Base64 first - new system
                 if (!string.IsNullOrEmpty(base64))
                 {
                     flashcardPictureBox.Visible = true;
@@ -627,7 +570,6 @@ namespace IBrary.UserControls
             var selectedSubject = subjectComboBox.SelectedItem as Subject;
             if (selectedSubject == null || selectedSubject.SubjectId == "ALL_SUBJECTS")
             {
-                // Show ALL topics logic...
                 var allTopicsFromMySubjects = App.Settings.MySubjects
                     .SelectMany(s => s.Topics)
                     .Distinct()
@@ -647,22 +589,13 @@ namespace IBrary.UserControls
 
             topicCheckedListBox.DisplayMember = "TopicName";
 
-            // DEBUG: Check what we're trying to restore
+            // Restore previously saved topics
             var savedTopicIds = new HashSet<string>(App.Settings.CurrentSettings.LastSelectedTopicIds);
 
             // Clear visual selections
             for (int i = 0; i < topicCheckedListBox.Items.Count; i++)
             {
                 topicCheckedListBox.SetItemChecked(i, false);
-            }
-
-            // DEBUG: Check what topics are available
-            var availableTopicIds = new List<string>();
-            for (int i = 0; i < topicCheckedListBox.Items.Count; i++)
-            {
-                var topic = topicCheckedListBox.Items[i] as Topic;
-                if (topic != null)
-                    availableTopicIds.Add(topic.TopicId);
             }
 
             // Save and refresh

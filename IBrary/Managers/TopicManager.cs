@@ -1,10 +1,8 @@
-﻿using Managers;
-using IBrary.Models;
+﻿using IBrary.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -67,7 +65,7 @@ namespace IBrary.Managers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error saving flashcards: {ex.Message}");
+                MessageBox.Show($"Error saving topics: {ex.Message}");
             }
         }
 
@@ -83,21 +81,10 @@ namespace IBrary.Managers
             }
         }
 
-        // Delete topic
-
-        /*public void RemoveTopic(Topic topic)
-        {
-            if (AllTopics.Any(t => t.TopicId == topic.TopicId))
-            {
-                AllTopics.Remove(topic);
-                Save();
-            }
-
-        }*/
-
         // Merge topics
         public void MergeTopics(List<Topic> topicsToMerge)
         {
+            Load();
             foreach (Topic topic in topicsToMerge)
             {
                 var existingTopic = AllTopics.FirstOrDefault(f => f.TopicId == topic.TopicId);

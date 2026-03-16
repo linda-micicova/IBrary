@@ -1,11 +1,9 @@
-﻿using Managers;
-using IBrary.Managers;
+﻿using IBrary.Managers;
 using IBrary.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -58,7 +56,7 @@ namespace IBrary.Managers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error saving settings: {ex.Message}");
+                MessageBox.Show($"Error saving settings: {ex.Message}");
             }
         }
 
@@ -67,6 +65,7 @@ namespace IBrary.Managers
         // Link subject to new flashcard
         public void AddFlashcardToSubject(Flashcard flashcard, Subject subject)
         {
+            Load();
             if (AllSubjects.Any(s => s.SubjectId == subject.SubjectId))
             {
                 var existingSubject = AllSubjects.First(s => s.SubjectId == subject.SubjectId);
@@ -108,6 +107,7 @@ namespace IBrary.Managers
                 if (!existingSubjects.Any(s => s.SubjectId == subject.SubjectId))
                 {
                     AllSubjects.Add(subject);
+                    existingSubjects.Add(subject);
                 }
 
                 // Include flashcard and topic IDs from both current and input lists

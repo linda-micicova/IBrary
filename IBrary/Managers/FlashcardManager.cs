@@ -1,5 +1,4 @@
-﻿using Managers;
-using IBrary.Models;
+﻿using IBrary.Models;
 using IBrary;
 using System;
 using System.Collections.Generic;
@@ -110,22 +109,6 @@ namespace IBrary.Managers
             SaveFlashcards(flashcards);
         }
 
-        // Edit an existing flashcard by adding a new version
-        public void EditFlashcard(string flashcardId, string question, string answer, string editor)
-        {
-            var flashcards = Load();
-
-            int index = flashcards.FindIndex(f => f.FlashcardId == flashcardId);
-            if (index != -1)
-            {
-                // Add version entry
-                flashcards[index].Versions.Add(new CardVersion(question, answer, editor));
-
-                // Save changes
-                SaveFlashcards(flashcards);
-            }
-        }
-
         public void EditFlashcard(string flashcardId, CardVersion version)
         {
             var flashcards = App.Flashcards.Load();
@@ -149,16 +132,7 @@ namespace IBrary.Managers
             int index = flashcards.FindIndex(f => f.FlashcardId == flashcardId);
             if (index != -1)
             {
-                /*if (UserManager.IsAdmin())
-                {
-                    // Remove flashcard completely
-                    flashcards.RemoveAt(index);
-                }
-                else
-                {*/
-                    // Flag flashcard as deleted
-                    flashcards[index].Versions.Add(new CardVersion(editor, true));
-                //}
+                flashcards[index].Versions.Add(new CardVersion(editor, true));
 
                 // Save changes
                 App.Flashcards.SaveFlashcards(flashcards);
@@ -269,7 +243,7 @@ namespace IBrary.Managers
             try
             {
                 if (!File.Exists(path))
-                    flashcards = new List<QuizletFlashcard>();
+                    return new List<QuizletFlashcard>();
 
                 string json = File.ReadAllText(path);
 
@@ -283,25 +257,6 @@ namespace IBrary.Managers
             return flashcards;
         }
 
-        //Import quizlet flashcards into the app (merge them with current ones)
-        public bool ImportFromQuizlet(string path)
-        {
-            bool importSuccessful = false;
-            List<QuizletFlashcard> flashcardsToImport = LoadQuizletFlashcardsFromJson(path);
-            var allFlashcards = App.Flashcards.Load();
-            foreach (QuizletFlashcard flashcard in flashcardsToImport)
-            {
-                if (flashcard.term != null || flashcard.definition != null)
-                {
-                    allFlashcards.Add(new Flashcard(flashcard.term, flashcard.definition));
-                    importSuccessful = true;
-                }
-            }
-
-            App.Flashcards.SaveFlashcards(allFlashcards);
-            return importSuccessful;
-        }
-
         // Only load flashcards without saving them
         public List<Flashcard> LoadFromQuizletFile(string path)
         {
@@ -310,9 +265,9 @@ namespace IBrary.Managers
 
             foreach (QuizletFlashcard flashcard in flashcardsToImport)
             {
-                if (flashcard.term != null || flashcard.definition != null)
+                if (flashcard.Term != null || flashcard.Definition != null)
                 {
-                    flashcards.Add(new Flashcard(flashcard.term, flashcard.definition));
+                    flashcards.Add(new Flashcard(flashcard.Term, flashcard.Definition));
                 }
             }
 

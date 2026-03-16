@@ -16,13 +16,11 @@ namespace IBrary.Managers
     public class SettingsManager
     {
         // json file path
-        /*private static readonly string settingsPath = Path.Combine(
-        Application.StartupPath,
-        "Data", "settings.json");*/
         private readonly string settingsPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "IBrary",
         "settings.json");
+
 
         public UserSettings CurrentSettings { get; set; } = new UserSettings();
         public List<Subject> MySubjects { get; private set; } = new List<Subject>();
@@ -151,18 +149,18 @@ namespace IBrary.Managers
 
         public void InitializeDefaultFiles()
         {
-            string dataFolder = Path.Combine(Application.StartupPath, "Data");
+            string dataFolder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "IBrary");
 
             Directory.CreateDirectory(dataFolder);
 
-            // Create settings.json if missing
             if (!File.Exists(settingsPath))
             {
                 var defaultSettings = new UserSettings();
                 Save(defaultSettings);
             }
 
-            // Create other files if missing
             CreateFileIfMissing(Path.Combine(dataFolder, "subjects.json"), "[]");
             CreateFileIfMissing(Path.Combine(dataFolder, "topics.json"), "[]");
             CreateFileIfMissing(Path.Combine(dataFolder, "flashcards.json"), "[]");
@@ -197,31 +195,6 @@ namespace IBrary.Managers
             CurrentSettings.MySubjectIds = subjects;
             Save();
             Load(); // Reload to refresh MySubjects list
-        }
-
-        // Update subject level
-        public void UpdateSubjectLevel(string subjectId, Level level)
-        {
-            if (CurrentSettings.MySubjectLevels == null)
-            {
-                CurrentSettings.MySubjectLevels = new Dictionary<string, Level>();
-            }
-
-            CurrentSettings.MySubjectLevels[subjectId] = level;
-            Save();
-        }
-
-        // Get subject level
-        public Level GetSubjectLevel(string subjectId)
-        {
-            if (CurrentSettings.MySubjectLevels == null)
-            {
-                CurrentSettings.MySubjectLevels = new Dictionary<string, Level>();
-            }
-
-            return CurrentSettings.MySubjectLevels.ContainsKey(subjectId)
-                ? CurrentSettings.MySubjectLevels[subjectId]
-                : Level.HL; // Default to HL
         }
 
         //Theme settings

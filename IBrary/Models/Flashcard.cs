@@ -17,8 +17,8 @@ namespace IBrary.Models
     //To be able to import Quizlet flashcards from Quizlet Exporter
     public class QuizletFlashcard
     {
-        public string term { get; set; }
-        public string definition { get; set; }
+        public string Term { get; set; }
+        public string Definition { get; set; }
         public QuizletFlashcard() { }
     }
     public class Flashcard
@@ -89,27 +89,12 @@ namespace IBrary.Models
             this.FlashcardId = GenerateId();
             this.Versions = new List<CardVersion> { new CardVersion(question, answer, App.Settings.CurrentSettings.Username) };
         }
-        public Flashcard(string question, string answer, Level level, List<string> topicIDs)
-        {
-            this.FlashcardId = GenerateId();
-            this.Versions = new List<CardVersion> { new CardVersion(question, answer, App.Settings.CurrentSettings.Username) };
-            this.Level = level;
-            this.Topics = topicIDs;
-        }
         public Flashcard(string question, string answer, Level level, List<string> topicIDs, string questionImagePath, string answerImagePath)
         {
             this.FlashcardId = GenerateId();
             this.Versions = new List<CardVersion> { new CardVersion(question, answer, App.Settings.CurrentSettings.Username, questionImagePath, answerImagePath) };
             this.Level = level;
             this.Topics = topicIDs;
-        }
-        public void ModifyFlashcard(string question, string answer)
-        {
-            Versions.Add(new CardVersion(question, answer, App.Settings.CurrentSettings.Username));
-        }
-        public void DeleteFlashcard()
-        {
-            Versions.Add(new CardVersion(App.Settings.CurrentSettings.Username, true));
         }
 
         public void RegisterStudyResult(DateTime date, bool incorrect)

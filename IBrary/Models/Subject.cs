@@ -1,12 +1,9 @@
-﻿using IBrary.Managers;
-using IBrary.Models;
-using IBrary;
+﻿using IBrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.Text.Json.Serialization;
 
 namespace IBrary.Models
@@ -23,7 +20,7 @@ namespace IBrary.Models
         {
             get
             {
-                return App.Flashcards.Load()
+                return App.Flashcards.AllFlashcards
                     .Where(f => Flashcards.Contains(f.FlashcardId))
                     .ToList();
             }
@@ -40,15 +37,6 @@ namespace IBrary.Models
         [JsonIgnore]
         public double Accuracy { get { return 1-AverageErrorRate; } }
         [JsonIgnore]
-        public DateTime? LatestSeen
-        {
-            get
-            {
-                var flashcards = FlashcardObjects.Where(f => f.LastSeen.HasValue).ToList();
-                return flashcards.Count == 0 ? null : flashcards.Max(f => f.LastSeen);
-            }
-        }
-        [JsonIgnore]
         public int TotalSeenCount
         {
             get
@@ -60,29 +48,6 @@ namespace IBrary.Models
         {
             Topics = new List<string>();
             Flashcards = new List<string>();
-        }
-        public Subject(string name) { 
-            this.SubjectName = name;
-            this.SubjectId = name.Replace(" ", "_").ToLowerInvariant(); // Simple ID generation
-            this.Topics = new List<string>();
-            this.Flashcards = new List<string>();
-        }
-        public Subject(string name, string id, List<string> topics, List<string> flashcards)
-        {
-            this.SubjectName = name;
-            this.SubjectId = id; 
-            this.Topics = topics ?? new List<string>();
-            this.Flashcards = flashcards ?? new List<string>();
-        }
-        public Topic AddTopic(Topic topic)
-        {
-            Topics.Add(topic.TopicId);
-            return topic;
-        }
-        public Flashcard AddFlashcard(Flashcard flashcard)
-        {
-            Flashcards.Add(flashcard.FlashcardId);
-            return flashcard;
         }
     }
 }
